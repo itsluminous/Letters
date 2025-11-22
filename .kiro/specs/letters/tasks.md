@@ -1,0 +1,268 @@
+# Implementation Plan
+
+- [x] 1. Set up project structure and dependencies
+  - Initialize Next.js 14 project with TypeScript and App Router
+  - Install and configure Tailwind CSS
+  - Install Supabase client library
+  - Install Framer Motion for animations
+  - Install date-fns for date handling
+  - Set up project folder structure (app, components, lib, styles)
+  - Configure TypeScript with strict mode
+  - Set up ESLint and Prettier
+  - _Requirements: All requirements depend on proper project setup_
+
+- [x] 2. Configure Supabase and create database schema
+  - Create Supabase project and obtain credentials
+  - Set up environment variables (.env.local)
+  - Create database migration script for user_profiles table
+  - Create database migration script for letters table with indexes
+  - Create database migration script for contacts table with indexes
+  - Implement Row Level Security policies for letters table
+  - Implement Row Level Security policies for contacts table
+  - Implement Row Level Security policies for user_profiles table
+  - Create Supabase client utilities (client.ts, server.ts)
+  - _Requirements: 1.2, 2.2, 16.1, 16.2, 16.3, 16.4, 16.5, 16.6, 16.7_
+
+
+- [x] 3. Create papyrus theme and base UI components
+  - Define papyrus color palette in Tailwind config
+  - Create papyrus texture CSS/SVG assets
+  - Implement PapyrusButton component with hover effects
+  - Implement PapyrusInput component with papyrus styling
+  - Implement PapyrusSelect component with dropdown styling
+  - Implement PapyrusDatePicker component with calendar styling
+  - Implement PapyrusDialog component for modals and confirmations
+  - Configure custom fonts (Cinzel, Lora, Caveat) in Next.js
+  - Create global papyrus theme styles
+  - _Requirements: 15.1, 15.2, 15.3, 15.7, 15.8_
+
+- [x] 4. Implement authentication pages and flows
+  - Create login page with email/password form using papyrus components
+  - Create signup page with email/password form and validation
+  - Create password reset request page
+  - Create password reset confirmation page
+  - Implement authentication context provider
+  - Implement login functionality with Supabase Auth
+  - Implement signup functionality with Supabase Auth
+  - Implement password reset functionality
+  - Implement logout functionality
+  - Add login timestamp update on successful authentication
+  - Create authentication middleware for protected routes
+  - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 2.1, 2.2, 2.3, 2.4, 2.5, 3.1, 3.2, 3.3, 3.4, 3.5_
+
+
+- [x] 5. Create main layout with title bar and navigation
+  - Implement TitleBar component with papyrus styling
+  - Add "Create New Letter" button to title bar
+  - Add "Add Contact" button to title bar
+  - Implement profile icon with dropdown menu
+  - Create ProfileMenu component with "Sent" and "Logout" options
+  - Implement menu open/close functionality
+  - Create main layout wrapper for authenticated pages
+  - _Requirements: 7.1, 7.2, 10.1, 12.1, 12.2, 12.3, 12.4, 12.5_
+
+- [x] 6. Implement PapyrusScroll component for letter display
+  - Create PapyrusScroll component with papyrus texture background
+  - Implement view mode for displaying letter content
+  - Implement edit mode for composing/editing letters
+  - Add letter metadata display (author, date, time)
+  - Style content area with appropriate typography
+  - Implement responsive layout for different screen sizes
+  - Add edit and delete action icons (conditionally shown)
+  - _Requirements: 6.1, 6.2, 6.3, 10.2, 10.3, 14.1, 14.2_
+
+
+- [x] 7. Create letter navigation with animations
+  - Implement LetterNavigation component with arrow buttons
+  - Style arrow buttons with papyrus theme
+  - Implement useLetterNavigation custom hook for state management
+  - Add horizontal scroll/swipe gesture detection
+  - Implement page-turning animation with Framer Motion
+  - Configure animation variants for enter/exit transitions
+  - Add support for touch gestures on mobile devices
+  - Add support for trackpad/mouse wheel on desktop
+  - Implement disabled states for navigation boundaries
+  - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 5.9, 5.10, 15.4, 15.5, 15.6_
+
+- [x] 8. Implement letter stack visualization
+  - Create LetterStack component with 3D stacking effect
+  - Add rotation variance for stacked letters
+  - Implement offset positioning for depth effect
+  - Add scale reduction for lower stack items
+  - Create unread count badge component
+  - Implement read/unread status indicators
+  - Add click handlers for letter selection
+  - Style stack for responsive layouts
+  - _Requirements: 4.2, 4.3, 4.5_
+
+
+- [x] 9. Create home page with inbox functionality
+  - Create home page route (app/(main)/page.tsx)
+  - Implement useLetters custom hook for fetching letters
+  - Fetch unread letters and sort by oldest first
+  - Fetch read letters when no unread exist and sort by newest first
+  - Implement letter selection and viewing logic
+  - Display LetterStack component with fetched letters
+  - Display PapyrusScroll component for selected letter
+  - Implement mark-as-read functionality when opening unread letter
+  - Add empty state with "Add Contact" tip when no letters exist
+  - Integrate LetterNavigation component
+  - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 6.4, 6.5, 7.4_
+
+- [x] 10. Implement filtering functionality
+  - Create FilterPanel component with papyrus styling
+  - Implement multi-select contact dropdown
+  - Implement "letters before date" date picker
+  - Implement "letters after date" date picker
+  - Create LetterFilters interface and state management
+  - Implement filter application logic in useLetters hook
+  - Add clear filters functionality
+  - Update letter queries to apply active filters
+  - Maintain sort order with filters applied
+  - Display filter panel on home page
+  - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5, 9.6, 9.7, 9.8, 9.9, 9.10_
+
+
+- [x] 11. Create contact management functionality
+  - Create add contact page route (app/(main)/contacts/add/page.tsx)
+  - Implement add contact form with user ID and display name fields
+  - Add form validation for required fields
+  - Implement useContacts custom hook
+  - Create addContact function with Supabase query
+  - Validate user ID exists in database before adding
+  - Display error messages for invalid user IDs
+  - Navigate back to home page on successful contact addition
+  - Fetch contacts list for filter dropdown
+  - _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5_
+
+- [x] 12. Implement letter composition functionality
+  - Create compose letter page route (app/(main)/compose/page.tsx)
+  - Display editable PapyrusScroll component
+  - Implement recipient selection dropdown with contacts list
+  - Add content textarea with papyrus styling
+  - Auto-populate current date and time
+  - Implement form validation (content and recipient required)
+  - Create "Send" button with papyrus styling
+  - Implement letter creation with Supabase insert
+  - Set letter status to unread on creation
+  - Navigate to home page after successful send
+  - _Requirements: 10.1, 10.2, 10.3, 10.4, 10.5, 11.1, 11.2, 11.3, 11.4, 11.5_
+
+
+- [x] 13. Create sent letters view with filtering
+  - Create sent letters page route (app/(main)/sent/page.tsx)
+  - Implement useSentLetters custom hook
+  - Fetch sent letters with recipient information
+  - Sort sent letters by newest first
+  - Display LetterStack component for sent letters
+  - Show read timestamp when recipient has viewed letter
+  - Show recipient's last login timestamp when letter is unread
+  - Implement FilterPanel for sent letters (contacts and dates)
+  - Apply filters to sent letters query
+  - Integrate LetterNavigation for browsing sent letters
+  - _Requirements: 13.1, 13.2, 13.3, 13.4, 13.5, 13.6, 13.7, 13.8, 13.9, 13.10_
+
+- [x] 14. Implement edit and delete functionality for unseen letters
+  - Add conditional rendering of edit/delete icons in PapyrusScroll
+  - Check if letter is unread before showing actions
+  - Implement edit mode toggle for sent letters
+  - Create updateLetter function in Supabase
+  - Implement save functionality for edited letters
+  - Create delete confirmation dialog with papyrus styling
+  - Implement deleteLetter function in Supabase
+  - Handle delete confirmation and cancellation
+  - Navigate back to sent view after successful deletion
+  - _Requirements: 14.1, 14.2, 14.3, 14.4, 14.5, 14.6, 14.7, 14.8, 14.9_
+
+
+- [x] 15. Implement responsive design for all screen sizes
+  - Configure Tailwind breakpoints for mobile, tablet, desktop
+  - Implement mobile layout with bottom navigation
+  - Create collapsible filter drawer for mobile
+  - Optimize letter stack depth for mobile (2-3 letters visible)
+  - Implement full-screen papyrus scroll view on mobile
+  - Adjust font sizes for mobile readability
+  - Enhance swipe gesture sensitivity for touch devices
+  - Implement tablet split-view layout (optional)
+  - Ensure minimum 44x44px touch targets on mobile
+  - Test and adjust layouts across all breakpoints
+  - _Requirements: 16.1, 16.2, 16.3, 16.4, 16.5_
+
+- [x] 16. Add error handling and loading states
+  - Create error toast/notification component with papyrus styling
+  - Implement error handling for authentication failures
+  - Add error handling for database query failures
+  - Implement validation error displays for forms
+  - Add network error handling with retry logic
+  - Create loading spinners with papyrus theme
+  - Implement loading states for letter fetching
+  - Add loading states for authentication operations
+  - Implement optimistic updates with rollback on error
+  - Add error logging for debugging
+  - _Requirements: All requirements benefit from proper error handling_
+
+
+- [x] 17. Write unit tests for core functionality
+  - [x] 17.1 Write tests for useLetters hook
+    - Test letter fetching with different filter combinations
+    - Test unread/read sorting logic
+    - _Requirements: 4.1, 4.2, 4.4, 4.5, 9.8_
+  - [x] 17.2 Write tests for useLetterNavigation hook
+    - Test navigation state management
+    - Test boundary conditions (first/last letter)
+    - _Requirements: 5.2, 5.3, 5.4, 5.5_
+  - [x] 17.3 Write tests for useContacts hook
+    - Test contact fetching and adding
+    - Test validation logic
+    - _Requirements: 8.2, 8.3, 8.5_
+  - [x] 17.4 Write tests for filter logic
+    - Test multi-select contact filtering
+    - Test date range filtering
+    - Test combined filters
+    - _Requirements: 9.2, 9.5, 9.7, 9.8_
+
+- [ ]* 18. Write integration tests for key user flows
+  - [ ]* 18.1 Test authentication flow
+    - Test signup, login, and password reset
+    - Test session management
+    - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 2.1, 2.2, 2.3, 2.4, 2.5_
+  - [ ]* 18.2 Test letter composition and sending
+    - Test creating and sending a letter
+    - Test validation errors
+    - _Requirements: 10.1, 10.2, 10.3, 10.4, 10.5, 11.1, 11.2, 11.3_
+  - [ ]* 18.3 Test letter reading and navigation
+    - Test viewing letters and marking as read
+    - Test navigation between letters
+    - _Requirements: 4.1, 4.2, 5.2, 5.3, 6.4, 6.5_
+  - [ ]* 18.4 Test edit and delete functionality
+    - Test editing unseen letters
+    - Test deleting with confirmation
+    - _Requirements: 14.3, 14.4, 14.5, 14.7, 14.8_
+
+
+- [x] 19. Create comprehensive README documentation
+  - Write project overview and description
+  - Document all features with clear descriptions
+  - List complete tech stack with versions
+  - Document prerequisites (Node.js, npm, Supabase account)
+  - Write step-by-step local setup instructions
+  - Include environment variables configuration
+  - Document database setup with SQL scripts
+  - Create usage guide for all major features
+  - Document available npm scripts
+  - Add deployment instructions for Vercel
+  - Include troubleshooting section
+  - _Requirements: All requirements should be reflected in README_
+
+- [x] 20. Optimize performance and finalize deployment
+  - Implement database query optimization with proper indexes
+  - Add code splitting for route-based lazy loading
+  - Optimize papyrus texture images (WebP format)
+  - Configure font subsetting for faster loading
+  - Set up production environment variables
+  - Create production build and test
+  - Deploy to Vercel with automatic deployments
+  - Verify all features work in production environment
+  - Test responsive design on real devices
+  - Perform final security audit of RLS policies
+  - _Requirements: All requirements depend on proper deployment_

@@ -488,7 +488,6 @@ Once setup is complete:
 
 - **Performance Guide**: [docs/PERFORMANCE.md](PERFORMANCE.md)
 - **Error Handling**: [docs/ERROR_HANDLING.md](ERROR_HANDLING.md)
-- **Deployment Guide**: [DEPLOYMENT.md](../DEPLOYMENT.md)
 - **GitHub Actions Docs**: https://docs.github.com/en/actions
 - **Conventional Commits**: https://www.conventionalcommits.org/
 - **Supabase Docs**: https://supabase.com/docs
