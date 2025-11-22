@@ -1,14 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSentLetters, useContacts, useLetterOperations } from '@/lib/hooks';
+import { useSentLetters, useContacts } from '@/lib/hooks';
 import { LetterStack, FilterPanel } from '@/components/letters';
-import { LetterNavigation } from '@/components/letters/LetterNavigation';
-import { PapyrusScroll } from '@/components/letters/PapyrusScroll';
 import { PapyrusButton, PapyrusSpinner } from '@/components/ui';
 import { LetterFilters } from '@/lib/supabase/types';
 import { useToast } from '@/lib/contexts/ToastContext';
-import { cn } from '@/lib/utils/cn';
 
 export default function SentLettersPage() {
   const { showError, showSuccess } = useToast();
@@ -19,8 +16,6 @@ export default function SentLettersPage() {
   });
   const { letters, isLoading, error, refetch } = useSentLetters(filters);
   const { contacts, isLoading: contactsLoading, error: contactsError } = useContacts();
-  const { updateLetter, deleteLetter } = useLetterOperations();
-  const [selectedLetterId, setSelectedLetterId] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Show error toasts
@@ -36,28 +31,10 @@ export default function SentLettersPage() {
     }
   }, [contactsError, showError]);
 
-  // Set initial selected letter when letters load
-  useEffect(() => {
-    if (letters.length > 0 && !selectedLetterId) {
-      setSelectedLetterId(letters[0].id);
-      setCurrentIndex(0);
-    }
-  }, [letters, selectedLetterId]);
-
   // Handle letter selection from stack
   const handleLetterSelect = (letterId: string) => {
     const index = letters.findIndex(l => l.id === letterId);
     if (index !== -1) {
-      setSelectedLetterId(letterId);
-      setCurrentIndex(index);
-    }
-  };
-
-  // Handle navigation
-  const handleNavigate = (index: number) => {
-    if (index >= 0 && index < letters.length) {
-      const letter = letters[index];
-      setSelectedLetterId(letter.id);
       setCurrentIndex(index);
     }
   };
@@ -103,62 +80,16 @@ export default function SentLettersPage() {
     );
   }
 
-  // Empty state - no sent letters
-  if (letters.length === 0) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-center max-w-md px-4">
-          <div className="bg-papyrus-bg border-4 border-papyrus-border papyrus-texture papyrus-shadow p-8">
-            <h2 className="font-heading text-2xl text-papyrus-text mb-4">
-              No Sent Letters
-            </h2>
-            <p className="font-body text-papyrus-text-light mb-6">
-              You haven&apos;t sent any letters yet. Compose a new letter to get started.
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const selectedLetter = letters.find(l => l.id === selectedLetterId);
-
   const handleFilterChange = (newFilters: LetterFilters) => {
     setFilters(newFilters);
     // Reset selection when filters change
-    setSelectedLetterId(null);
     setCurrentIndex(0);
   };
 
-  // Handle letter edit
-  const handleEdit = async (content: string) => {
-    if (!selectedLetterId) return;
-    try {
-      await updateLetter(selectedLetterId, content);
-      showSuccess('Letter updated successfully!');
-      // Refetch letters to show updated content
-      await refetch();
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to update letter';
-      showError(message);
-    }
-  };
-
-  // Handle letter delete
-  const handleDelete = async () => {
-    if (!selectedLetterId) return;
-    try {
-      await deleteLetter(selectedLetterId);
-      showSuccess('Letter deleted successfully!');
-      // Navigation is handled by the deleteLetter function
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to delete letter';
-      showError(message);
-    }
-  };
+  const hasActiveFilters = filters.contactIds.length > 0 || filters.beforeDate !== null || filters.afterDate !== null;
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
       {/* Page Title */}
       <div className="mb-4 sm:mb-6">
         <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl text-papyrus-text">
@@ -180,79 +111,31 @@ export default function SentLettersPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8">
-        {/* Letter Stack - Hidden on mobile when letter is selected, visible on desktop */}
-        <div className={cn(
-          'lg:col-span-4',
-          selectedLetter && 'hidden lg:block'
-        )}>
-          <LetterStack
-            letters={letters}
-            type="sent"
-            onLetterSelect={handleLetterSelect}
-            currentIndex={currentIndex}
-            contacts={contacts}
-          />
-        </div>
-
-        {/* Letter Viewer - Full width on mobile, right side on desktop */}
-        <div className={cn(
-          'lg:col-span-8',
-          !selectedLetter && 'hidden lg:block'
-        )}>
-          {selectedLetter ? (
-            <LetterNavigation
-              letters={letters}
-              currentIndex={currentIndex}
-              onNavigate={handleNavigate}
-            >
-              {(letter) => (
-                <PapyrusScroll
-                  letter={letter}
-                  mode="view"
-                  contacts={contacts}
-                  showActions={true}
-                  onEdit={handleEdit}
-                  onDelete={handleDelete}
-                />
-              )}
-            </LetterNavigation>
-          ) : (
-            <div className="flex items-center justify-center min-h-[400px] sm:min-h-[500px] bg-papyrus-bg border-2 sm:border-4 border-papyrus-border papyrus-texture papyrus-shadow">
-              <p className="font-body text-sm sm:text-base text-papyrus-text-light">
-                Select a letter to view
+      {/* Empty state - no sent letters */}
+      {letters.length === 0 ? (
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center max-w-md px-4">
+            <div className="bg-papyrus-bg border-4 border-papyrus-border papyrus-texture papyrus-shadow p-8">
+              <h2 className="font-heading text-2xl text-papyrus-text mb-4">
+                {hasActiveFilters ? 'No Matching Letters' : 'No Sent Letters'}
+              </h2>
+              <p className="font-body text-papyrus-text-light mb-6">
+                {hasActiveFilters 
+                  ? 'No letters match your current filters. Try adjusting your filter criteria.'
+                  : "You haven't sent any letters yet. Compose a new letter to get started."}
               </p>
             </div>
-          )}
+          </div>
         </div>
-      </div>
-
-      {/* Mobile back button when viewing a letter */}
-      {selectedLetter && (
-        <div className="lg:hidden fixed bottom-4 left-4 z-50">
-          <button
-            onClick={() => {
-              setSelectedLetterId(null);
-              setCurrentIndex(0);
-            }}
-            className="flex items-center gap-2 bg-papyrus-dark border-2 border-papyrus-border papyrus-shadow-lg px-4 py-3 font-heading text-papyrus-text hover:bg-papyrus-darker active:bg-papyrus-darker transition-colors min-h-[44px]"
-            aria-label="Back to letter list"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <span>Back</span>
-          </button>
-        </div>
+      ) : (
+        /* Letter Stack - Shows all letters as PapyrusScroll components */
+        <LetterStack
+          letters={letters}
+          type="sent"
+          onLetterSelect={handleLetterSelect}
+          currentIndex={currentIndex}
+          contacts={contacts}
+        />
       )}
     </div>
   );

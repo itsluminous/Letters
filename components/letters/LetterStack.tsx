@@ -67,8 +67,25 @@ export const LetterStack: React.FC<LetterStackProps> = ({
     );
   }
 
+  const currentLetter = letters[currentIndex];
+  const hasPrevious = currentIndex > 0;
+  const hasNext = currentIndex < letters.length - 1;
+
+  const handlePrevious = () => {
+    if (hasPrevious) {
+      onLetterSelect(letters[currentIndex - 1].id);
+    }
+  };
+
+  const handleNext = () => {
+    if (hasNext) {
+      onLetterSelect(letters[currentIndex + 1].id);
+    }
+  };
+
   return (
     <div className={cn('relative', className)}>
+      {/* Unread count badge */}
       {type === 'inbox' && unreadCount > 0 && (
         <div className="absolute -top-3 -right-3 z-50">
           <div className="bg-wax border-2 border-white shadow-md rounded-full w-10 h-10 flex items-center justify-center">
@@ -77,48 +94,159 @@ export const LetterStack: React.FC<LetterStackProps> = ({
         </div>
       )}
 
-      <div className="relative w-full" style={{ minHeight: '300px' }}>
+      {/* Stack visualization - letters behind the current one */}
+      <div className="relative w-full" style={{ minHeight: '500px' }}>
         {visibleLetters.map((letter, index) => {
-          const isSelected = currentIndex === index;
+          const stackIndex = index - currentIndex;
+          if (stackIndex < 0) return null; // Don't show letters before current
+          
+          const isTop = stackIndex === 0;
+          
           return (
             <div
               key={letter.id}
               className={cn(
-                'absolute inset-0 cursor-pointer transition-all duration-300',
-                'bg-[#fffbf0] border', // Clean paper background
-                isSelected
-                  ? 'border-wax shadow-papyrus-lg' // Active state: Red border
-                  : 'border-ink/10 shadow-papyrus hover:border-ink/30', // Inactive state
-                'p-6 sm:p-8',
-                'flex flex-col'
+                'absolute inset-0 transition-all duration-300',
+                !isTop && 'pointer-events-none'
               )}
-              style={getStackStyle(index)}
-              onClick={() => onLetterSelect(letter.id)}
+              style={getStackStyle(stackIndex)}
             >
-              {/* Header */}
-              <div className="border-b border-ink/10 pb-2 mb-2 flex justify-between items-end">
-                 <div className="font-heading text-ink text-sm font-bold uppercase tracking-wide">
-                    {type === 'inbox' 
-                      ? `From: ${getDisplayName(letter.author?.id, letter.author?.email || 'Unknown')}` 
-                      : `To: ${getDisplayName(letter.recipient?.id, letter.recipient?.email || 'Unknown')}`}
-                 </div>
-                 <div className="font-serif text-ink-light text-xs">
-                    {format(letter.createdAt, 'MMM d, yyyy')}
-                 </div>
-              </div>
+              {isTop ? (
+                // Top letter - full PapyrusScroll
+                <div className="relative w-full bg-[#fffbf0] shadow-papyrus-lg p-6 sm:p-8 md:p-12">
+                  {/* Read Status Indicator */}
+                  {type === 'inbox' && !letter.isRead && (
+                    <div className="absolute top-4 right-4 w-3 h-3 bg-wax rounded-full border-2 border-white" />
+                  )}
 
-              {/* Content Preview - Handwriting */}
-              <div className="font-handwriting text-xl text-ink/80 line-clamp-3 leading-relaxed pt-2">
-                {letter.content}
-              </div>
-              
-              {/* Read Status */}
-              {type === 'inbox' && !letter.isRead && (
-                  <div className="absolute top-3 right-3 w-2 h-2 bg-wax rounded-full" />
+                  {/* Metadata Header */}
+                  <div className="mb-6 border-b-2 border-ink/10 pb-4">
+                    <div className="flex justify-between items-end mb-2">
+                      <div className="font-heading text-ink">
+                        <p className="text-sm font-bold uppercase tracking-widest text-ink-light">
+                          {type === 'inbox' 
+                            ? `From: ${getDisplayName(letter.author?.id, letter.author?.email || 'Unknown')}` 
+                            : `To: ${getDisplayName(letter.recipient?.id, letter.recipient?.email || 'Unknown')}`}
+                        </p>
+                      </div>
+                      <div className="text-right font-serif text-ink-light italic">
+                        {format(letter.createdAt, 'MMMM d, yyyy')}
+                      </div>
+                    </div>
+                    
+                    {/* Read status for sent letters */}
+                    {type === 'sent' && (
+                      <div className="flex items-center gap-2 mt-2">
+                        {letter.isRead && letter.readAt ? (
+                          <>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-4 w-4 text-green-600"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                              <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm9.707 5.707a1 1 0 00-1.414-1.414L9 12.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                            </svg>
+                            <span className="text-xs font-body text-green-700">
+                              Seen on {format(letter.readAt, 'MMM d, yyyy')}
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-4 w-4 text-ink-light"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+                            </svg>
+                            <span className="text-xs font-body text-ink-light italic">
+                              Not yet seen
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Content - Full text in handwriting */}
+                  <div className="min-h-[300px] font-handwriting text-xl sm:text-2xl text-ink leading-loose whitespace-pre-wrap">
+                    {letter.content}
+                  </div>
+
+                  {/* Letter counter */}
+                  <div className="mt-6 pt-4 border-t border-ink/5 text-center">
+                    <span className="font-heading text-xs text-ink-light uppercase tracking-widest">
+                      Letter {currentIndex + 1} of {letters.length}
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                // Background letters - just show as stacked papers
+                <div className="w-full h-full bg-[#fffbf0] border border-ink/10 shadow-papyrus" />
               )}
             </div>
           );
         })}
+      </div>
+
+      {/* Navigation buttons */}
+      <div className="flex justify-between items-center mt-6 gap-4">
+        <button
+          onClick={handlePrevious}
+          disabled={!hasPrevious}
+          className={cn(
+            'flex items-center gap-2 px-4 py-3 font-heading text-sm uppercase tracking-wide',
+            'bg-papyrus-dark border-2 border-papyrus-border shadow-papyrus',
+            'transition-all duration-200 cursor-pointer',
+            hasPrevious 
+              ? 'hover:bg-papyrus-darker text-papyrus-text' 
+              : 'opacity-40 cursor-not-allowed text-papyrus-text-light'
+          )}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <span>Previous</span>
+        </button>
+
+        <button
+          onClick={handleNext}
+          disabled={!hasNext}
+          className={cn(
+            'flex items-center gap-2 px-4 py-3 font-heading text-sm uppercase tracking-wide',
+            'bg-papyrus-dark border-2 border-papyrus-border shadow-papyrus',
+            'transition-all duration-200 cursor-pointer',
+            hasNext 
+              ? 'hover:bg-papyrus-darker text-papyrus-text' 
+              : 'opacity-40 cursor-not-allowed text-papyrus-text-light'
+          )}
+        >
+          <span>Next</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </button>
       </div>
     </div>
   );
