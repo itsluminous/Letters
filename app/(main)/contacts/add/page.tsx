@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useContacts } from '@/lib/hooks/useContacts';
 import { useToast } from '@/lib/contexts/ToastContext';
+import { useAuth } from '@/lib/contexts/AuthContext';
 import { PapyrusButton } from '@/components/ui/PapyrusButton';
 import { PapyrusInput } from '@/components/ui/PapyrusInput';
 import { PapyrusSpinner } from '@/components/ui/PapyrusSpinner';
@@ -12,10 +13,20 @@ export default function AddContactPage() {
   const router = useRouter();
   const { addContact } = useContacts();
   const { showError, showSuccess } = useToast();
+  const { user } = useAuth();
   const [userId, setUserId] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyUserId = async () => {
+    if (user?.id) {
+      await navigator.clipboard.writeText(user.id);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
 
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
@@ -76,9 +87,58 @@ export default function AddContactPage() {
           <h1 className="text-2xl sm:text-3xl font-heading font-bold text-center mb-2 text-papyrus-text">
             Add Contact
           </h1>
-          <p className="text-sm sm:text-base text-center text-papyrus-text-light mb-6 sm:mb-8 font-body italic">
+          <p className="text-sm sm:text-base text-center text-papyrus-text-light mb-4 sm:mb-6 font-body italic">
             Add a friend to exchange letters with
           </p>
+
+          {/* User ID Display */}
+          {user?.id && (
+            <div className="mb-6 sm:mb-8 p-3 sm:p-4 bg-papyrus-darker border-2 border-papyrus-border">
+              <div className="text-xs sm:text-sm text-papyrus-text-light font-body mb-2">
+                Your User ID
+              </div>
+              <div className="flex items-center gap-2">
+                <code className="text-xs sm:text-sm text-papyrus-text font-mono flex-1 break-all">
+                  {user.id}
+                </code>
+                <button
+                  type="button"
+                  onClick={handleCopyUserId}
+                  className="flex-shrink-0 p-2 hover:bg-papyrus-accent rounded transition-colors duration-150 border border-papyrus-border"
+                  aria-label="Copy user ID"
+                  title={copied ? 'Copied!' : 'Copy user ID'}
+                >
+                  {copied ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 text-green-600"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 text-papyrus-text"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+                      <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+              <p className="text-xs text-papyrus-text-light font-body mt-2 italic">
+                Share this ID with others so they can add you as a contact
+              </p>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             <PapyrusInput

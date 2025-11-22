@@ -72,13 +72,29 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
 
       {/* Desktop Panel */}
       <div className={cn('hidden md:block bg-transparent border-b border-ink/10 pb-6 mb-6', className)}>
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="font-heading text-sm font-bold uppercase tracking-widest text-ink-light">Filter Correspondence</h3>
-          {hasActiveFilters && (
-            <button onClick={handleClearFilters} className="text-xs text-wax font-bold hover:underline uppercase tracking-wide">Clear All</button>
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className={cn(
+            'w-full flex items-center justify-between mb-4 cursor-pointer',
+            'hover:opacity-80 transition-opacity'
           )}
-        </div>
-        <FilterContent />
+        >
+          <h3 className="font-heading text-sm font-bold uppercase tracking-widest text-ink-light">
+            Filter Correspondence {hasActiveFilters && '• Active'}
+          </h3>
+          <span className="text-ink-light font-bold">{isOpen ? '−' : '+'}</span>
+        </button>
+        
+        {isOpen && (
+          <div className="animate-slide-up">
+            <FilterContent />
+            {hasActiveFilters && (
+              <button onClick={handleClearFilters} className="mt-4 text-xs text-wax font-bold hover:underline uppercase tracking-wide cursor-pointer">
+                Clear All
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </>
   );

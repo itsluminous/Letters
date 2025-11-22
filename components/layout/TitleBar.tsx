@@ -15,8 +15,8 @@ export function TitleBar() {
     router.push('/compose');
   };
 
-  const handleAddContact = () => {
-    router.push('/contacts/add');
+  const handleGoHome = () => {
+    router.push('/');
   };
 
   const handleSentLetters = () => {
@@ -36,9 +36,13 @@ export function TitleBar() {
         <div className="flex items-center justify-between h-16">
           {/* App Title */}
           <div className="flex-shrink-0">
-            <h1 className="font-heading text-2xl sm:text-3xl font-bold text-papyrus-text tracking-wide">
+            <button
+              onClick={handleGoHome}
+              className="font-heading text-2xl sm:text-3xl font-bold text-papyrus-text tracking-wide hover:text-papyrus-accent transition-colors duration-200 cursor-pointer"
+              aria-label="Go to homepage"
+            >
               Letters
-            </h1>
+            </button>
           </div>
 
           {/* Action Buttons */}
@@ -47,7 +51,7 @@ export function TitleBar() {
               variant="primary"
               size="sm"
               onClick={handleCreateLetter}
-              className="hidden sm:inline-flex"
+              className="hidden sm:inline-flex cursor-pointer"
             >
               Create New Letter
             </PapyrusButton>
@@ -55,7 +59,7 @@ export function TitleBar() {
               variant="primary"
               size="sm"
               onClick={handleCreateLetter}
-              className="sm:hidden"
+              className="sm:hidden cursor-pointer"
               aria-label="Create new letter"
             >
               <svg
@@ -68,36 +72,11 @@ export function TitleBar() {
               </svg>
             </PapyrusButton>
 
-            <PapyrusButton
-              variant="secondary"
-              size="sm"
-              onClick={handleAddContact}
-              className="hidden sm:inline-flex"
-            >
-              Add Contact
-            </PapyrusButton>
-            <PapyrusButton
-              variant="secondary"
-              size="sm"
-              onClick={handleAddContact}
-              className="sm:hidden"
-              aria-label="Add contact"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
-              </svg>
-            </PapyrusButton>
-
             {/* Profile Icon */}
             <div className="relative">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="flex items-center justify-center w-10 h-10 rounded-full bg-papyrus-darker border-2 border-papyrus-accent papyrus-shadow hover:bg-papyrus-accent transition-colors duration-200"
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-papyrus-darker border-2 border-papyrus-accent papyrus-shadow hover:bg-papyrus-accent transition-colors duration-200 cursor-pointer"
                 aria-label="Profile menu"
                 aria-expanded={isMenuOpen}
               >
