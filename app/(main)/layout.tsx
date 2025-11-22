@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { TitleBar } from '@/components/layout/TitleBar';
+import { PapyrusSpinner } from '@/components/ui';
 
 export default function MainLayout({
   children,
@@ -21,8 +22,8 @@ export default function MainLayout({
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-papyrus-bg">
-        <div className="text-papyrus-text font-heading text-xl">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center">
+        <PapyrusSpinner size="lg" text="Authenticating..." />
       </div>
     );
   }
@@ -32,9 +33,9 @@ export default function MainLayout({
   }
 
   return (
-    <div className="min-h-screen bg-papyrus-bg">
+    <div className="min-h-screen flex flex-col">
       <TitleBar />
-      <main className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
+      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {children}
       </main>
     </div>
