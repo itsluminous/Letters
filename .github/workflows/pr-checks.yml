@@ -1,0 +1,135 @@
+name: Pull Request Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  # PR Title Check
+  pr-title:
+    name: Check PR Title
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check PR title format
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            docs
+            style
+            refactor
+            perf
+            test
+            chore
+            ci
+          requireScope: false
+
+  # Check for breaking changes
+  breaking-changes:
+    name: Check for Breaking Changes
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for migration changes
+        run: |
+          if git diff --name-only origin/main...HEAD | grep -q "supabase/migrations/"; then
+            echo "⚠️ Database migration files changed"
+            echo "Please ensure backward compatibility or document breaking changes"
+            echo "migration_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "✅ No migration changes detected"
+          fi
+        id: migration-check
+
+      - name: Check for env variable changes
+        run: |
+          if git diff --name-only origin/main...HEAD | grep -q ".env.local.example"; then
+            echo "⚠️ Environment variables changed"
+            echo "Please update DEPLOYMENT.md if new variables are required"
+            echo "env_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "✅ No environment variable changes"
+          fi
+        id: env-check
+
+  # Code Review Checklist
+  review-checklist:
+    name: Review Checklist
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Generate review checklist
+        run: |
+          echo "## Review Checklist" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Code follows project style guidelines" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Tests added/updated for new functionality" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Documentation updated if needed" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] No console.logs in production code" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Error handling implemented" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Responsive design tested" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Accessibility considered" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Performance impact assessed" >> $GITHUB_STEP_SUMMARY
+
+  # File size check
+  file-size:
+    name: Check File Sizes
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for large files
+        run: |
+          echo "Checking for files larger than 500KB..."
+          LARGE_FILES=$(find . -type f -size +500k -not -path "*/node_modules/*" -not -path "*/.next/*" -not -path "*/.git/*" || true)
+          
+          if [ -n "$LARGE_FILES" ]; then
+            echo "⚠️ Large files detected:"
+            echo "$LARGE_FILES"
+            echo ""
+            echo "Consider:"
+            echo "- Compressing images"
+            echo "- Using external storage for large assets"
+            echo "- Adding to .gitignore if not needed"
+          else
+            echo "✅ No large files detected"
+          fi
+
+  # Check for TODO/FIXME comments
+  todo-check:
+    name: Check TODOs
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Find TODO/FIXME comments
+        run: |
+          echo "## TODO/FIXME Comments" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          TODOS=$(grep -r "TODO\|FIXME" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" . || true)
+          
+          if [ -n "$TODOS" ]; then
+            echo "Found TODO/FIXME comments:" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            echo "$TODOS" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ No TODO/FIXME comments found" >> $GITHUB_STEP_SUMMARY
+          fi
