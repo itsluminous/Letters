@@ -1,57 +1,50 @@
-@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=UnifrakturMaguntia&family=Philosopher:ital,wght@0,400;0,700;1,400&display=swap');
+@import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@theme {
+  /* 1. The New Light Palette */
+  --color-paper-bg: #f4e8d0;     /* Main Background (Light Beige) */
+  --color-paper-card: #fdf6e3;   /* Lighter cards/letters */
+  --color-paper-dark: #e6d5b8;   /* Darker beige for UI elements */
+  
+  --color-ink: #2a1b12;          /* Primary Text (Almost Black Brown) */
+  --color-ink-light: #5c4a3f;    /* Secondary Text */
+  
+  --color-wax: #9b2c2c;          /* Red Accents */
+  --color-border: #c7b299;       /* Borders */
 
-:root {
-  --papyrus-bg: #f4e8d0;
-  --papyrus-dark: #d4c4a8;
-  --papyrus-darker: #b8a888;
-  --papyrus-text: #3d2f1f;
-  --papyrus-text-light: #6b5d4f;
-  --papyrus-border: #c4b49a;
-  --papyrus-shadow: rgba(61, 47, 31, 0.2);
-  --papyrus-accent: #8b7355;
+  /* 2. Mapped to your existing variable names for compatibility */
+  --color-papyrus-bg: var(--color-paper-bg);
+  --color-papyrus-dark: var(--color-paper-dark);
+  --color-papyrus-darker: #d4c4a8;
+  --color-papyrus-text: var(--color-ink);
+  --color-papyrus-text-light: var(--color-ink-light);
+  --color-papyrus-border: var(--color-border);
+  --color-papyrus-accent: var(--color-wax);
+  
+  /* Fonts */
+  --font-heading: "Cinzel", serif;
+  --font-body: "Cormorant Garamond", serif;
+  --font-handwriting: "Caveat", cursive;
+
+  /* Shadows */
+  --shadow-papyrus: 0 4px 14px -2px rgba(44, 26, 15, 0.15);
+  --shadow-papyrus-lg: 0 10px 25px -5px rgba(44, 26, 15, 0.25);
 }
 
+/* Global Reset */
 body {
-  background-color: var(--papyrus-bg);
-  color: var(--papyrus-text);
-  font-family: 'IM Fell English', serif;
+  background-color: var(--color-paper-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  /* Subtle grain texture */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.4'/%3E%3C/svg%3E");
 }
 
-@layer utilities {
-  .papyrus-texture {
-    background-image: url('/papyrus-texture.svg');
-    background-size: 400px 400px;
-    background-repeat: repeat;
-  }
-  
-  .papyrus-texture-overlay {
-    position: relative;
-  }
-  
-  .papyrus-texture-overlay::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url('/papyrus-texture.svg');
-    background-size: 400px 400px;
-    background-repeat: repeat;
-    opacity: 0.3;
-    pointer-events: none;
-  }
-  
-  .papyrus-shadow {
-    box-shadow: 
-      0 2px 4px var(--papyrus-shadow),
-      0 4px 8px var(--papyrus-shadow);
-  }
-  
-  .papyrus-shadow-lg {
-    box-shadow: 
-      0 4px 8px var(--papyrus-shadow),
-      0 8px 16px var(--papyrus-shadow);
-  }
+/* Utility Classes */
+.papyrus-texture {
+  background-color: var(--color-paper-card);
+  background-image: repeating-linear-gradient(45deg, rgba(139, 69, 19, 0.03) 0px, rgba(139, 69, 19, 0.03) 1px, transparent 1px, transparent 10px);
 }
+
+.papyrus-shadow { box-shadow: var(--shadow-papyrus); }
+.papyrus-shadow-lg { box-shadow: var(--shadow-papyrus-lg); }

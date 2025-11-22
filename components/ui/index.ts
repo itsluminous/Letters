@@ -19,3 +19,6 @@ export { ErrorBoundary } from './ErrorBoundary';
 
 export { default as PapyrusToast } from './PapyrusToast';
 export type { Toast, ToastType } from './PapyrusToast';
+
+export { PapyrusScroll } from './PapyrusScroll';
+export type { PapyrusScrollProps } from './PapyrusScroll';

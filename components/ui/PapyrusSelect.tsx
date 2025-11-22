@@ -21,137 +21,83 @@ export interface PapyrusSelectProps {
 }
 
 export const PapyrusSelect: React.FC<PapyrusSelectProps> = ({
-  options,
-  value,
-  onChange,
-  placeholder = 'Select...',
-  label,
-  error,
-  multiple = false,
-  className,
-  disabled = false,
+  options, value, onChange, placeholder = 'Select...', label, error, multiple = false, className, disabled = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    const close = (e: MouseEvent) => containerRef.current && !containerRef.current.contains(e.target as Node) && setIsOpen(false);
+    document.addEventListener('mousedown', close);
+    return () => document.removeEventListener('mousedown', close);
   }, []);
 
   const handleSelect = (optionValue: string) => {
     if (multiple) {
-      const currentValues = Array.isArray(value) ? value : [];
-      const newValues = currentValues.includes(optionValue)
-        ? currentValues.filter((v) => v !== optionValue)
-        : [...currentValues, optionValue];
-      onChange(newValues);
+      const current = Array.isArray(value) ? value : [];
+      const next = current.includes(optionValue) ? current.filter(v => v !== optionValue) : [...current, optionValue];
+      onChange(next);
     } else {
       onChange(optionValue);
       setIsOpen(false);
     }
   };
 
-  const isSelected = (optionValue: string) => {
-    if (multiple) {
-      return Array.isArray(value) && value.includes(optionValue);
-    }
-    return value === optionValue;
-  };
-
-  const getDisplayText = () => {
-    if (multiple && Array.isArray(value) && value.length > 0) {
-      const selectedLabels = options
-        .filter((opt) => value.includes(opt.value))
-        .map((opt) => opt.label);
-      return selectedLabels.join(', ');
-    }
-    if (!multiple && value) {
-      const selected = options.find((opt) => opt.value === value);
-      return selected?.label || placeholder;
-    }
-    return placeholder;
-  };
+  const isSelected = (v: string) => Array.isArray(value) ? value.includes(v) : value === v;
+  
+  // Get display label
+  const displayLabel = !value || (Array.isArray(value) && value.length === 0) 
+    ? null 
+    : options.find(o => o.value === (Array.isArray(value) ? value[0] : value))?.label;
 
   return (
-    <div className={cn('w-full', className)} ref={containerRef}>
+    <div className={cn('w-full relative', className)} ref={containerRef}>
       {label && (
-        <label className="block mb-2 text-sm font-heading font-semibold text-papyrus-text">
+        <label className="block mb-1 text-xs font-heading font-bold uppercase tracking-widest text-ink-faded">
           {label}
         </label>
       )}
-      <div className="relative">
-        <button
-          type="button"
-          onClick={() => !disabled && setIsOpen(!isOpen)}
-          disabled={disabled}
-          className={cn(
-            'w-full px-4 py-2 font-body text-left text-papyrus-text bg-papyrus-bg border-2 border-papyrus-border papyrus-texture-overlay',
-            'focus:outline-none focus:border-papyrus-accent focus:ring-2 focus:ring-papyrus-accent/20',
-            'disabled:opacity-50 disabled:cursor-not-allowed',
-            'transition-all duration-200',
-            'flex items-center justify-between',
-            error && 'border-red-600'
-          )}
-        >
-          <span className={cn(!value && 'text-papyrus-text-light italic')}>
-            {getDisplayText()}
-          </span>
-          <svg
-            className={cn(
-              'w-4 h-4 transition-transform duration-200',
-              isOpen && 'rotate-180'
-            )}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
-        </button>
-
-        {isOpen && (
-          <div className="absolute z-50 w-full mt-1 bg-papyrus-bg border-2 border-papyrus-accent papyrus-shadow-lg max-h-60 overflow-auto">
-            {options.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                onClick={() => handleSelect(option.value)}
-                className={cn(
-                  'w-full px-4 py-2 text-left font-body transition-colors duration-150',
-                  'hover:bg-papyrus-dark',
-                  isSelected(option.value) &&
-                    'bg-papyrus-darker font-semibold'
-                )}
-              >
-                {multiple && (
-                  <span className="mr-2">
-                    {isSelected(option.value) ? '☑' : '☐'}
-                  </span>
-                )}
-                {option.label}
-              </button>
-            ))}
-          </div>
+      
+      <button
+        type="button"
+        onClick={() => !disabled && setIsOpen(!isOpen)}
+        disabled={disabled}
+        className={cn(
+          'w-full py-2 text-left font-hand text-2xl text-ink bg-transparent',
+          'border-b-2 border-[#5c4a3f]/30 hover:border-wax',
+          'flex items-center justify-between transition-colors duration-300 focus:outline-none',
+          disabled && 'opacity-50 cursor-not-allowed',
+          error && 'border-red-800/60'
         )}
-      </div>
-      {error && (
-        <p className="mt-1 text-sm text-red-600 font-body">{error}</p>
+      >
+        <span className={cn(!displayLabel && 'text-ink-faded/50 italic')}>
+          {displayLabel || (multiple && Array.isArray(value) && value.length > 0 ? `${value.length} selected` : placeholder)}
+        </span>
+        <span className={`text-xs text-ink-faded transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>▼</span>
+      </button>
+
+      {isOpen && (
+        <div className="absolute z-50 w-full mt-2 bg-[#e3d5b8] shadow-scroll rounded-sm overflow-hidden border border-[#2c1a0f]/10 max-h-60 overflow-y-auto">
+          {options.map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => handleSelect(option.value)}
+              className={cn(
+                'w-full px-6 py-3 text-left font-serif text-lg transition-colors',
+                'hover:bg-[#2c1a0f]/5 text-ink',
+                isSelected(option.value) && 'bg-ink/10 font-bold text-wax'
+              )}
+            >
+               <span className="inline-block w-6 text-center font-hand">
+                 {isSelected(option.value) ? '✓' : ''}
+               </span>
+               {option.label}
+            </button>
+          ))}
+        </div>
       )}
+      {error && <p className="mt-2 text-sm text-red-800 font-serif italic">{error}</p>}
     </div>
   );
 };

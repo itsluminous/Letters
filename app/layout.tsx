@@ -1,40 +1,35 @@
 import type { Metadata } from "next";
-import { Cinzel, Lora, Caveat } from "next/font/google";
+import { Cinzel, Cormorant_Garamond, Caveat } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/lib/contexts/AuthContext";
 import { ToastProvider } from "@/lib/contexts/ToastContext";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 
+// 1. Cinzel for majestic titles
 const cinzel = Cinzel({
   subsets: ["latin"],
   variable: "--font-heading",
   display: "swap",
-  weight: ["400", "700"],
-  preload: true,
-  fallback: ["serif"],
 });
 
-const lora = Lora({
+// 2. Cormorant for legitimate old-print body text (better than Lora for this vibe)
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   variable: "--font-body",
-  display: "swap",
   weight: ["400", "500", "600", "700"],
-  preload: true,
-  fallback: ["Georgia", "serif"],
+  display: "swap",
 });
 
+// 3. Caveat for the "Handwritten" feel
 const caveat = Caveat({
   subsets: ["latin"],
   variable: "--font-handwriting",
   display: "swap",
-  weight: ["400", "700"],
-  preload: true,
-  fallback: ["cursive"],
 });
 
 export const metadata: Metadata = {
   title: "Letters",
-  description: "Exchange letters with your partner in a beautiful papyrus interface",
+  description: "Exchange letters through time.",
 };
 
 export default function RootLayout({
@@ -45,7 +40,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${cinzel.variable} ${lora.variable} ${caveat.variable} font-body antialiased`}
+        className={`${cinzel.variable} ${cormorant.variable} ${caveat.variable} antialiased min-h-screen`}
       >
         <ErrorBoundary>
           <AuthProvider>
