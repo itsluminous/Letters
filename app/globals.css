@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=UnifrakturMaguntia&family=Philosopher:ital,wght@0,400;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --papyrus-bg: #f4e8d0;
+  --papyrus-dark: #d4c4a8;
+  --papyrus-darker: #b8a888;
+  --papyrus-text: #3d2f1f;
+  --papyrus-text-light: #6b5d4f;
+  --papyrus-border: #c4b49a;
+  --papyrus-shadow: rgba(61, 47, 31, 0.2);
+  --papyrus-accent: #8b7355;
+}
+
+body {
+  background-color: var(--papyrus-bg);
+  color: var(--papyrus-text);
+  font-family: 'IM Fell English', serif;
+}
+
+@layer utilities {
+  .papyrus-texture {
+    background-image: url('/papyrus-texture.svg');
+    background-size: 400px 400px;
+    background-repeat: repeat;
+  }
+  
+  .papyrus-texture-overlay {
+    position: relative;
+  }
+  
+  .papyrus-texture-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('/papyrus-texture.svg');
+    background-size: 400px 400px;
+    background-repeat: repeat;
+    opacity: 0.3;
+    pointer-events: none;
+  }
+  
+  .papyrus-shadow {
+    box-shadow: 
+      0 2px 4px var(--papyrus-shadow),
+      0 4px 8px var(--papyrus-shadow);
+  }
+  
+  .papyrus-shadow-lg {
+    box-shadow: 
+      0 4px 8px var(--papyrus-shadow),
+      0 8px 16px var(--papyrus-shadow);
+  }
+}

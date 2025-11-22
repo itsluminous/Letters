@@ -1,0 +1,13 @@
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="noise">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" />
+      <feColorMatrix type="saturate" values="0" />
+      <feComponentTransfer>
+        <feFuncA type="discrete" tableValues="0 0 0 0 0 0.05 0.1 0.15" />
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="400" height="400" fill="#f4e8d0" />
+  <rect width="400" height="400" filter="url(#noise)" opacity="0.6" />
+</svg>
