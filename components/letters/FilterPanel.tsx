@@ -5,15 +5,19 @@ import { cn } from '@/lib/utils/cn';
 import { PapyrusSelect, PapyrusDatePicker, PapyrusButton } from '@/components/ui';
 import { Contact, LetterFilters } from '@/lib/supabase/types';
 
+export type ViewMode = 'stack' | 'grid' | 'list';
+
 export interface FilterPanelProps {
   contacts: Contact[];
   filters: LetterFilters;
   onFilterChange: (filters: LetterFilters) => void;
+  viewMode: ViewMode;
+  onViewModeChange: (mode: ViewMode) => void;
   className?: string;
 }
 
 export const FilterPanel: React.FC<FilterPanelProps> = ({
-  contacts, filters, onFilterChange, className,
+  contacts, filters, onFilterChange, viewMode, onViewModeChange, className,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   
@@ -47,6 +51,43 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     <>
       {/* Mobile Toggle */}
       <div className="md:hidden mb-4">
+        {/* View Mode Selector - Mobile */}
+        <div className="flex items-center gap-1 bg-papyrus-bg border-b border-papyrus-border p-1 mb-2">
+          <button
+            onClick={() => onViewModeChange('stack')}
+            className={cn(
+              'flex-1 px-2 py-2 text-xs font-heading uppercase tracking-wide transition-colors cursor-pointer',
+              viewMode === 'stack' 
+                ? 'bg-papyrus-dark text-papyrus-text border border-papyrus-border' 
+                : 'text-papyrus-text-light'
+            )}
+          >
+            Stack
+          </button>
+          <button
+            onClick={() => onViewModeChange('grid')}
+            className={cn(
+              'flex-1 px-2 py-2 text-xs font-heading uppercase tracking-wide transition-colors cursor-pointer',
+              viewMode === 'grid' 
+                ? 'bg-papyrus-dark text-papyrus-text border border-papyrus-border' 
+                : 'text-papyrus-text-light'
+            )}
+          >
+            Grid
+          </button>
+          <button
+            onClick={() => onViewModeChange('list')}
+            className={cn(
+              'flex-1 px-2 py-2 text-xs font-heading uppercase tracking-wide transition-colors cursor-pointer',
+              viewMode === 'list' 
+                ? 'bg-papyrus-dark text-papyrus-text border border-papyrus-border' 
+                : 'text-papyrus-text-light'
+            )}
+          >
+            List
+          </button>
+        </div>
+
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={cn(
@@ -72,18 +113,60 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
 
       {/* Desktop Panel */}
       <div className={cn('hidden md:block bg-transparent border-b border-ink/10 pb-6 mb-6', className)}>
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className={cn(
-            'w-full flex items-center justify-between mb-4 cursor-pointer',
-            'hover:opacity-80 transition-opacity'
-          )}
-        >
-          <h3 className="font-heading text-sm font-bold uppercase tracking-widest text-ink-light">
-            Filter Correspondence {hasActiveFilters && '• Active'}
-          </h3>
-          <span className="text-ink-light font-bold">{isOpen ? '−' : '+'}</span>
-        </button>
+        <div className="flex items-center justify-between mb-4">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className={cn(
+              'flex items-center gap-2 cursor-pointer',
+              'hover:opacity-80 transition-opacity'
+            )}
+          >
+            <h3 className="font-heading text-sm font-bold uppercase tracking-widest text-ink-light">
+              Filter Correspondence {hasActiveFilters && '• Active'}
+            </h3>
+            <span className="text-ink-light font-bold">{isOpen ? '−' : '+'}</span>
+          </button>
+
+          {/* View Mode Selector */}
+          <div className="flex items-center gap-2 bg-papyrus-bg border border-papyrus-border p-1">
+            <button
+              onClick={() => onViewModeChange('stack')}
+              className={cn(
+                'px-3 py-1.5 text-xs font-heading uppercase tracking-wide transition-colors cursor-pointer',
+                viewMode === 'stack' 
+                  ? 'bg-papyrus-dark text-papyrus-text border border-papyrus-border' 
+                  : 'text-papyrus-text-light hover:text-papyrus-text'
+              )}
+              title="Stack View"
+            >
+              Stack
+            </button>
+            <button
+              onClick={() => onViewModeChange('grid')}
+              className={cn(
+                'px-3 py-1.5 text-xs font-heading uppercase tracking-wide transition-colors cursor-pointer',
+                viewMode === 'grid' 
+                  ? 'bg-papyrus-dark text-papyrus-text border border-papyrus-border' 
+                  : 'text-papyrus-text-light hover:text-papyrus-text'
+              )}
+              title="Grid View"
+            >
+              Grid
+            </button>
+            <button
+              onClick={() => onViewModeChange('list')}
+              className={cn(
+                'px-3 py-1.5 text-xs font-heading uppercase tracking-wide transition-colors cursor-pointer',
+                viewMode === 'list' 
+                  ? 'bg-papyrus-dark text-papyrus-text border border-papyrus-border' 
+                  : 'text-papyrus-text-light hover:text-papyrus-text'
+              )}
+              title="List View"
+            >
+              List
+            </button>
+          </div>
+        </div>
         
         {isOpen && (
           <div className="animate-slide-up">

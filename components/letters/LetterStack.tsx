@@ -18,6 +18,8 @@ export const LetterStack: React.FC<LetterStackProps> = ({
   letters, type, onLetterSelect, currentIndex, contacts = [], className,
 }) => {
   const [maxVisibleLetters, setMaxVisibleLetters] = React.useState(5);
+  const [touchStart, setTouchStart] = React.useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = React.useState<number | null>(null);
   
   React.useEffect(() => {
     const updateStackDepth = () => setMaxVisibleLetters(window.innerWidth < 768 ? 3 : 5);
@@ -83,6 +85,32 @@ export const LetterStack: React.FC<LetterStackProps> = ({
     }
   };
 
+  // Swipe gesture handlers
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      handleNext(); // Swipe left = next letter
+    } else if (isRightSwipe) {
+      handlePrevious(); // Swipe right = previous letter
+    }
+  };
+
   return (
     <div className={cn('relative', className)}>
       {/* Unread count badge */}
@@ -94,8 +122,71 @@ export const LetterStack: React.FC<LetterStackProps> = ({
         </div>
       )}
 
+      {/* Navigation Arrows - Overlay on sides */}
+      {hasPrevious && (
+        <button
+          onClick={handlePrevious}
+          className={cn(
+            'absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-40',
+            'w-10 h-10 sm:w-12 sm:h-12 rounded-full',
+            'border-2 border-papyrus-text/60 shadow-lg',
+            'flex items-center justify-center',
+            'hover:bg-papyrus-dark hover:border-papyrus-text hover:scale-110 transition-all duration-200 cursor-pointer',
+            'text-papyrus-text group'
+          )}
+          aria-label="Previous letter"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 sm:h-7 sm:w-7 group-hover:text-papyrus-bg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </button>
+      )}
+
+      {hasNext && (
+        <button
+          onClick={handleNext}
+          className={cn(
+            'absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-40',
+            'w-10 h-10 sm:w-12 sm:h-12 rounded-full',
+            'border-2 border-papyrus-text/60 shadow-lg',
+            'flex items-center justify-center',
+            'hover:bg-papyrus-dark hover:border-papyrus-text hover:scale-110 transition-all duration-200 cursor-pointer',
+            'text-papyrus-text group'
+          )}
+          aria-label="Next letter"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 sm:h-7 sm:w-7 group-hover:text-papyrus-bg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </button>
+      )}
+
       {/* Stack visualization - letters behind the current one */}
-      <div className="relative w-full" style={{ minHeight: '500px' }}>
+      <div 
+        className="relative w-full" 
+        style={{ minHeight: '500px' }}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
         {visibleLetters.map((letter, index) => {
           const stackIndex = index - currentIndex;
           if (stackIndex < 0) return null; // Don't show letters before current
@@ -118,6 +209,13 @@ export const LetterStack: React.FC<LetterStackProps> = ({
                   {type === 'inbox' && !letter.isRead && (
                     <div className="absolute top-4 right-4 w-3 h-3 bg-wax rounded-full border-2 border-white" />
                   )}
+
+                  {/* Letter counter */}
+                  <div className="border-t border-ink/5 text-center">
+                    <span className="font-heading text-xs text-ink-light uppercase tracking-widest">
+                      Letter {currentIndex + 1} of {letters.length}
+                    </span>
+                  </div>
 
                   {/* Metadata Header */}
                   <div className="mb-6 border-b-2 border-ink/10 pb-4">
@@ -171,16 +269,9 @@ export const LetterStack: React.FC<LetterStackProps> = ({
                     )}
                   </div>
 
-                  {/* Content - Full text in handwriting */}
-                  <div className="min-h-[300px] font-handwriting text-xl sm:text-2xl text-ink leading-loose whitespace-pre-wrap">
+                  {/* Content - Full text in handwriting with max height and scroll */}
+                  <div className="min-h-[200px] max-h-[calc(100vh-400px)] sm:max-h-[calc(100vh-350px)] overflow-y-auto font-handwriting text-xl sm:text-2xl text-ink leading-loose whitespace-pre-wrap scrollbar-thin scrollbar-thumb-papyrus-border scrollbar-track-papyrus-bg">
                     {letter.content}
-                  </div>
-
-                  {/* Letter counter */}
-                  <div className="mt-6 pt-4 border-t border-ink/5 text-center">
-                    <span className="font-heading text-xs text-ink-light uppercase tracking-widest">
-                      Letter {currentIndex + 1} of {letters.length}
-                    </span>
                   </div>
                 </div>
               ) : (
@@ -192,62 +283,7 @@ export const LetterStack: React.FC<LetterStackProps> = ({
         })}
       </div>
 
-      {/* Navigation buttons */}
-      <div className="flex justify-between items-center mt-6 gap-4">
-        <button
-          onClick={handlePrevious}
-          disabled={!hasPrevious}
-          className={cn(
-            'flex items-center gap-2 px-4 py-3 font-heading text-sm uppercase tracking-wide',
-            'bg-papyrus-dark border-2 border-papyrus-border shadow-papyrus',
-            'transition-all duration-200 cursor-pointer',
-            hasPrevious 
-              ? 'hover:bg-papyrus-darker text-papyrus-text' 
-              : 'opacity-40 cursor-not-allowed text-papyrus-text-light'
-          )}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-              clipRule="evenodd"
-            />
-          </svg>
-          <span>Previous</span>
-        </button>
 
-        <button
-          onClick={handleNext}
-          disabled={!hasNext}
-          className={cn(
-            'flex items-center gap-2 px-4 py-3 font-heading text-sm uppercase tracking-wide',
-            'bg-papyrus-dark border-2 border-papyrus-border shadow-papyrus',
-            'transition-all duration-200 cursor-pointer',
-            hasNext 
-              ? 'hover:bg-papyrus-darker text-papyrus-text' 
-              : 'opacity-40 cursor-not-allowed text-papyrus-text-light'
-          )}
-        >
-          <span>Next</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
-      </div>
     </div>
   );
 };

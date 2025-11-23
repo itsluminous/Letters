@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useSentLetters, useContacts } from '@/lib/hooks';
-import { LetterStack, FilterPanel } from '@/components/letters';
+import { LetterStack, FilterPanel, ViewMode } from '@/components/letters';
+import { LetterGrid } from '@/components/letters/LetterGrid';
+import { LetterList } from '@/components/letters/LetterList';
 import { PapyrusButton, PapyrusSpinner } from '@/components/ui';
 import { LetterFilters } from '@/lib/supabase/types';
 import { useToast } from '@/lib/contexts/ToastContext';
@@ -17,6 +19,7 @@ export default function SentLettersPage() {
   const { letters, isLoading, error, refetch } = useSentLetters(filters);
   const { contacts, isLoading: contactsLoading, error: contactsError } = useContacts();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [viewMode, setViewMode] = useState<ViewMode>('stack');
 
   // Show error toasts
   useEffect(() => {
@@ -31,11 +34,15 @@ export default function SentLettersPage() {
     }
   }, [contactsError, showError]);
 
-  // Handle letter selection from stack
+  // Handle letter selection from stack/grid/list
   const handleLetterSelect = (letterId: string) => {
     const index = letters.findIndex(l => l.id === letterId);
     if (index !== -1) {
       setCurrentIndex(index);
+      // Switch to stack view when a letter is selected from grid/list
+      if (viewMode !== 'stack') {
+        setViewMode('stack');
+      }
     }
   };
 
@@ -107,6 +114,8 @@ export default function SentLettersPage() {
             contacts={contacts}
             filters={filters}
             onFilterChange={handleFilterChange}
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
           />
         </div>
       )}
@@ -128,14 +137,34 @@ export default function SentLettersPage() {
           </div>
         </div>
       ) : (
-        /* Letter Stack - Shows all letters as PapyrusScroll components */
-        <LetterStack
-          letters={letters}
-          type="sent"
-          onLetterSelect={handleLetterSelect}
-          currentIndex={currentIndex}
-          contacts={contacts}
-        />
+        /* Render based on view mode */
+        <>
+          {viewMode === 'stack' && (
+            <LetterStack
+              letters={letters}
+              type="sent"
+              onLetterSelect={handleLetterSelect}
+              currentIndex={currentIndex}
+              contacts={contacts}
+            />
+          )}
+          {viewMode === 'grid' && (
+            <LetterGrid
+              letters={letters}
+              type="sent"
+              onLetterSelect={handleLetterSelect}
+              contacts={contacts}
+            />
+          )}
+          {viewMode === 'list' && (
+            <LetterList
+              letters={letters}
+              type="sent"
+              onLetterSelect={handleLetterSelect}
+              contacts={contacts}
+            />
+          )}
+        </>
       )}
     </div>
   );
