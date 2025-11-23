@@ -64,7 +64,7 @@ export function TitleBar() {
                 onClick={handleCreateLetter}
                 className="cursor-pointer"
               >
-                Create New Letter
+                Write New Letter
               </PapyrusButton>
               <button
                 onClick={() => setIsInfoOpen(true)}
@@ -184,18 +184,64 @@ export function TitleBar() {
 
               {/* Content */}
               <h2 className="font-heading text-2xl sm:text-3xl font-bold text-papyrus-text mb-4">
-                About Letters
+                Why Write Letters?
               </h2>
               <div className="font-body text-papyrus-text space-y-4">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
-                <p>
-                  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
-                <p>
-                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-                </p>
+                <p>When couples are upset, disappointed, or frustrated, they temporarily lose access to their loving feelings (trust, caring, appreciation). In this state, verbal communication often fails because it escalates into fighting, with one person feeling blamed and the other becoming defensive.</p>
+                
+                <p><b>Writing creates a "circuit breaker" in this negative loop.</b></p>
+                
+                <h4>How Letter Writing Helps:</h4>
+                <ol>
+                    <li><b>Safe Emotional Release:</b> Writing allows you to express feelings of anger, sadness, and fear freely without the immediate fear of hurting your partner or being judged.</li>
+                    <li><b>Centering Yourself:</b> The act of writing releases the intensity of negative emotions, making room for positive feelings (like love and understanding) to re-emerge.</li>
+                    <li><b>Better Communication:</b> Once the letter is written, you are no longer reacting from raw emotion. You can approach your partner with a more centered, loving attitude, increasing the chances of being heard and understood.</li>
+                </ol>
+                
+                <h4>The "Love Letter" Structure for Processing Emotions:</h4>
+                <p>The most effective method involves writing through all five emotional stages:</p>
+                <ul>
+                    <li><b>Anger & Blame</b> ("I am furious...")</li>
+                    <li><b>Sadness & Hurt</b> ("I am sad that...")</li>
+                    <li><b>Fear & Insecurity</b> ("I am afraid that...")</li>
+                    <li><b>Regret & Responsibility</b> ("I am sorry that...")</li>
+                    <li><b>Love & Forgiveness</b> ("I love you and understand...")</li>
+                </ul>
+
+                <h3>Example Situations (Use Cases)</h3>
+
+                <h4>1. Forgetfulness & Unreliability</h4>
+                <p><b>The Trigger:</b> One partner misses an important appointment or task, causing anger and disappointment.</p>
+                <p><b>The Letter Approach:</b> Instead of yelling, the frustrated partner writes a letter expressing the anger and underlying fear ("I'm afraid I can't trust you").</p>
+                <p><b>The Result:</b> The anger is filtered, and the writer can approach the partner with love and acceptance, leading to a constructive solution instead of a fight.</p>
+                
+                <h4>2. Indifference & Rejection</h4>
+                <p><b>The Trigger:</b> One partner ignores the other, maybe by being preoccupied with a book or phone when intimacy is desired.</p>
+                <p><b>The Letter Approach:</b> The hurt partner writes about their frustration ("I am angry you ignore me") and sadness ("I don't feel special").</p>
+                <p><b>The Result:</b> The writing provides the strength to confidently and lovingly ask for attention, rather than withdrawing or complaining bitterly.</p>
+
+                <h4>3. Heated Arguments</h4>
+                <p><b>The Trigger:</b> A disagreement (like over finances) quickly escalates into yelling and personal attacks.</p>
+                <p><b>The Letter Approach:</b> One partner recognizes the escalating conflict, calls a pause, and writes out all their intense feelings, including defensiveness and judgment.</p>
+                <p><b>The Result:</b> Having processed the emotion, the partner returns calm and understanding, enabling them to resolve the issue lovingly.</p>
+                
+                <h4>4. Misplaced Blame</h4>
+                <p><b>The Trigger:</b> One partner is upset about an external event (e.g., mail was forgotten), and their frustration is inadvertently directed at the other partner.</p>
+                <p><b>The Letter Approach:</b> The partner feeling blamed writes a letter processing their hurt and fear ("I'm afraid I can't make you happy").</p>
+                <p><b>The Result:</b> The defensive feelings are released. The partner can then respond with empathy and a hug ("I'm sorry you didn't get your mail"), turning a potential conflict into a loving moment.</p>
+
+                <h3>Info Card: The Power of the Virtual Letter</h3>
+
+                <p><b>Why exchange letters with your partner?</b></p>
+                <p>Use the letter format when you need to share difficult feelings (anger, hurt, fear) but want to avoid a fight. Writing allows you to fully vent and process your emotions so that you can approach your partner from a place of love, understanding, and forgiveness.</p>
+
+                <p><b>Remember:</b></p>
+                <ul>
+                    <li><b>It's a Filter:</b> Writing releases the negative intensity first.</li>
+                    <li><b>It’s Flexible:</b> You don't always have to send the letter. Sometimes, just writing it is enough to heal the moment.</li>
+                </ul>
+
+                <p>PS : This app is based on Letter writing idea from the book <i>Men Are from Mars, Women Are from Venus</i></p>
               </div>
             </div>
           </div>

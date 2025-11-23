@@ -88,7 +88,7 @@ export default function LoginPage() {
                     Signing in...
                     </span>
                 ) : (
-                    'Break Seal & Enter'
+                    'Sign In'
                 )}
                 </PapyrusButton>
             </div>
