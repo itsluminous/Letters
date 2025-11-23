@@ -41,7 +41,7 @@ export const LetterGrid: React.FC<LetterGridProps> = ({
 
           {/* Header */}
           <div className="border-b border-ink/10 pb-3 mb-3">
-            <p className="text-xs font-heading font-bold uppercase tracking-wide text-ink-light truncate">
+            <p className="text-xs font-serif font-bold tracking-wide text-ink-light truncate">
               {type === 'inbox' 
                 ? `From: ${getDisplayName(letter.author?.id, letter.author?.email || 'Unknown')}` 
                 : `To: ${getDisplayName(letter.recipient?.id, letter.recipient?.email || 'Unknown')}`}

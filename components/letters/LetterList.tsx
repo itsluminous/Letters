@@ -42,7 +42,7 @@ export const LetterList: React.FC<LetterListProps> = ({
 
           {/* Left side - Metadata */}
           <div className="flex-shrink-0 sm:w-48">
-            <p className="text-xs font-heading font-bold uppercase tracking-wide text-ink-light">
+            <p className="text-xs font-serif font-bold tracking-wide text-ink-light">
               {type === 'inbox' 
                 ? `From: ${getDisplayName(letter.author?.id, letter.author?.email || 'Unknown')}` 
                 : `To: ${getDisplayName(letter.recipient?.id, letter.recipient?.email || 'Unknown')}`}

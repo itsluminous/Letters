@@ -220,8 +220,8 @@ export const LetterStack: React.FC<LetterStackProps> = ({
                   {/* Metadata Header */}
                   <div className="mb-6 border-b-2 border-ink/10 pb-4">
                     <div className="flex justify-between items-end mb-2">
-                      <div className="font-heading text-ink">
-                        <p className="text-sm font-bold uppercase tracking-widest text-ink-light">
+                      <div className="font-serif text-ink">
+                        <p className="text-sm font-bold tracking-widest text-ink-light">
                           {type === 'inbox' 
                             ? `From: ${getDisplayName(letter.author?.id, letter.author?.email || 'Unknown')}` 
                             : `To: ${getDisplayName(letter.recipient?.id, letter.recipient?.email || 'Unknown')}`}

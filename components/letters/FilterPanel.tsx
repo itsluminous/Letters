@@ -51,7 +51,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     <>
       {/* Mobile Toggle */}
       <div className="md:hidden mb-4">
-        {/* View Mode Selector - Mobile */}
+        {/* View Mode Selector - Mobile (Stack and List only) */}
         <div className="flex items-center gap-1 bg-papyrus-bg border-b border-papyrus-border p-1 mb-2">
           <button
             onClick={() => onViewModeChange('stack')}
@@ -63,17 +63,6 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             )}
           >
             Stack
-          </button>
-          <button
-            onClick={() => onViewModeChange('grid')}
-            className={cn(
-              'flex-1 px-2 py-2 text-xs font-heading uppercase tracking-wide transition-colors cursor-pointer',
-              viewMode === 'grid' 
-                ? 'bg-papyrus-dark text-papyrus-text border border-papyrus-border' 
-                : 'text-papyrus-text-light'
-            )}
-          >
-            Grid
           </button>
           <button
             onClick={() => onViewModeChange('list')}
