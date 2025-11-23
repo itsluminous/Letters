@@ -1,16 +1,19 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSentLetters, useContacts } from '@/lib/hooks';
+import { useSentLetters, useContacts, useLetterOperations } from '@/lib/hooks';
 import { LetterStack, FilterPanel, ViewMode } from '@/components/letters';
 import { LetterGrid } from '@/components/letters/LetterGrid';
 import { LetterList } from '@/components/letters/LetterList';
-import { PapyrusButton, PapyrusSpinner } from '@/components/ui';
+import { PapyrusButton, PapyrusSpinner, PapyrusConfirmDialog } from '@/components/ui';
 import { LetterFilters } from '@/lib/supabase/types';
 import { useToast } from '@/lib/contexts/ToastContext';
+import { useRouter } from 'next/navigation';
 
 export default function SentLettersPage() {
+  const router = useRouter();
   const { showError, showSuccess } = useToast();
+  const { updateLetter, deleteLetter } = useLetterOperations();
   const [filters, setFilters] = useState<LetterFilters>({
     contactIds: [],
     beforeDate: null,
@@ -20,6 +23,8 @@ export default function SentLettersPage() {
   const { contacts, isLoading: contactsLoading, error: contactsError } = useContacts();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [viewMode, setViewMode] = useState<ViewMode>('stack');
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [letterToDelete, setLetterToDelete] = useState<string | null>(null);
 
   // Show error toasts
   useEffect(() => {
@@ -93,6 +98,31 @@ export default function SentLettersPage() {
     setCurrentIndex(0);
   };
 
+  const handleEdit = (letterId: string) => {
+    // Navigate to compose page with letter ID for editing
+    router.push(`/compose?edit=${letterId}`);
+  };
+
+  const handleDelete = (letterId: string) => {
+    setLetterToDelete(letterId);
+    setDeleteConfirmOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!letterToDelete) return;
+
+    try {
+      await deleteLetter(letterToDelete);
+      showSuccess('Letter deleted successfully');
+      await refetch();
+      setDeleteConfirmOpen(false);
+      setLetterToDelete(null);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to delete letter';
+      showError(message);
+    }
+  };
+
   const hasActiveFilters = filters.contactIds.length > 0 || filters.beforeDate !== null || filters.afterDate !== null;
 
   return (
@@ -146,6 +176,8 @@ export default function SentLettersPage() {
               onLetterSelect={handleLetterSelect}
               currentIndex={currentIndex}
               contacts={contacts}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
             />
           )}
           {viewMode === 'grid' && (
@@ -166,6 +198,20 @@ export default function SentLettersPage() {
           )}
         </>
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <PapyrusConfirmDialog
+        isOpen={deleteConfirmOpen}
+        onClose={() => {
+          setDeleteConfirmOpen(false);
+          setLetterToDelete(null);
+        }}
+        onConfirm={confirmDelete}
+        title="Delete Letter"
+        message="Are you sure you want to delete this letter? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+      />
     </div>
   );
 }

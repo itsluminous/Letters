@@ -234,7 +234,7 @@ export default function DemoPage() {
             </div>
             <div>
               <h3 className="text-lg font-heading font-semibold text-papyrus-text mb-4">
-                Sent Stack (with read status)
+                Sent Stack (with read status & edit/delete for unread)
               </h3>
               <LetterStack
                 letters={mockLetters.map(l => ({
@@ -251,6 +251,16 @@ export default function DemoPage() {
                   console.log('Selected sent letter:', id);
                 }}
                 currentIndex={mockLetters.findIndex(l => l.id === selectedLetterId)}
+                onEdit={(id) => {
+                  console.log('Edit letter:', id);
+                  alert(`Edit letter ${id}`);
+                }}
+                onDelete={(id) => {
+                  console.log('Delete letter:', id);
+                  if (confirm('Delete this letter?')) {
+                    alert(`Deleted letter ${id}`);
+                  }
+                }}
               />
             </div>
           </div>
