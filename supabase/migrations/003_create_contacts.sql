@@ -6,8 +6,7 @@ CREATE TABLE IF NOT EXISTS contacts (
   display_name TEXT NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   
-  UNIQUE(user_id, contact_user_id),
-  CONSTRAINT different_users CHECK (user_id != contact_user_id)
+  UNIQUE(user_id, contact_user_id)
 );
 
 -- Create index for faster lookups

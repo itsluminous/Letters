@@ -85,10 +85,6 @@ export function useContacts() {
         if (insertError.code === '23505') {
           throw new Error('This contact already exists.');
         }
-        // Check if error is due to same user constraint
-        if (insertError.code === '23514') {
-          throw new Error('You cannot add yourself as a contact.');
-        }
         throw insertError;
       }
 

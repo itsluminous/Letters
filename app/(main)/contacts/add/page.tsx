@@ -55,7 +55,14 @@ export default function AddContactPage() {
 
     try {
       await addContact(userId.trim(), displayName.trim());
-      showSuccess(`${displayName} has been added to your contacts!`);
+      
+      // Check if user is adding themselves
+      if (user?.id === userId.trim()) {
+        showSuccess(`${displayName} added! Writing letters to yourself is a beautiful way to heal and reflect.`);
+      } else {
+        showSuccess(`${displayName} has been added to your contacts!`);
+      }
+      
       // Navigate back to home page on success
       router.push('/');
     } catch (error) {

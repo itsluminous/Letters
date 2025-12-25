@@ -122,9 +122,10 @@ describe('useContacts', () => {
     ).rejects.toThrow('This contact already exists');
   });
 
-  it('should throw error when trying to add self as contact', async () => {
+  it('should allow adding self as contact', async () => {
+    // Mock successful insert (no error)
     mockSupabase.insert.mockReturnValue({
-      error: { code: '23514', message: 'Check constraint violation' },
+      error: null,
     });
 
     const { result } = renderHook(() => useContacts());
@@ -133,9 +134,16 @@ describe('useContacts', () => {
       expect(result.current.isLoading).toBe(false);
     });
 
+    // Should not throw an error when adding self
     await expect(
       result.current.addContact('user-123', 'Myself')
-    ).rejects.toThrow('You cannot add yourself as a contact');
+    ).resolves.not.toThrow();
+
+    expect(mockSupabase.insert).toHaveBeenCalledWith({
+      user_id: 'user-123',
+      contact_user_id: 'user-123',
+      display_name: 'Myself',
+    });
   });
 
   it('should refetch contacts after adding a new contact', async () => {

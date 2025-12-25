@@ -22,7 +22,7 @@ export default function SentLettersPage() {
   const { letters, isLoading, error, refetch } = useSentLetters(filters);
   const { contacts, isLoading: contactsLoading, error: contactsError } = useContacts();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [viewMode, setViewMode] = useState<ViewMode>('stack');
+  const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [letterToDelete, setLetterToDelete] = useState<string | null>(null);
 

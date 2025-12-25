@@ -23,7 +23,7 @@ export default function HomePage() {
   const { letters, isLoading, error, markAsRead, refetch } = useLetters(filters);
   const { contacts, isLoading: contactsLoading, error: contactsError } = useContacts();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [viewMode, setViewMode] = useState<ViewMode>('stack');
+  const [viewMode, setViewMode] = useState<ViewMode>('grid');
 
   // Debug logging
   useEffect(() => {
