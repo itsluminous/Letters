@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useEffect } from 'react';
-import { cn } from '@/lib/utils/cn';
-import { PapyrusButton } from './PapyrusButton';
+import React, { useEffect } from "react";
+import { cn } from "@/lib/utils/cn";
+import { PapyrusButton } from "./PapyrusButton";
 
 export interface PapyrusDialogProps {
   isOpen: boolean;
@@ -23,25 +23,25 @@ export const PapyrusDialog: React.FC<PapyrusDialogProps> = ({
 }) => {
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
 
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     };
   }, [isOpen]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+      if (e.key === "Escape" && isOpen) {
         onClose();
       }
     };
 
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
@@ -57,9 +57,9 @@ export const PapyrusDialog: React.FC<PapyrusDialogProps> = ({
       {/* Dialog */}
       <div
         className={cn(
-          'relative bg-papyrus-bg border-4 border-papyrus-accent papyrus-shadow-lg papyrus-texture-overlay',
-          'max-w-lg w-full max-h-[90vh] overflow-auto',
-          'animate-in fade-in zoom-in duration-200',
+          "relative bg-papyrus-bg border-4 border-papyrus-accent papyrus-shadow-lg papyrus-texture-overlay",
+          "max-w-lg w-full max-h-[90vh] overflow-auto",
+          "animate-in fade-in zoom-in duration-200",
           className
         )}
       >
@@ -112,7 +112,7 @@ export interface PapyrusConfirmDialogProps {
   message: string;
   confirmText?: string;
   cancelText?: string;
-  variant?: 'danger' | 'warning' | 'info';
+  variant?: "danger" | "warning" | "info";
 }
 
 export const PapyrusConfirmDialog: React.FC<PapyrusConfirmDialogProps> = ({
@@ -121,9 +121,9 @@ export const PapyrusConfirmDialog: React.FC<PapyrusConfirmDialogProps> = ({
   onConfirm,
   title,
   message,
-  confirmText = 'Confirm',
-  cancelText = 'Cancel',
-  variant = 'info',
+  confirmText = "Confirm",
+  cancelText = "Cancel",
+  variant = "info",
 }) => {
   const handleConfirm = () => {
     onConfirm();

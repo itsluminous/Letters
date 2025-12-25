@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React, { useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { cn } from '@/lib/utils/cn';
-import { Letter } from '@/lib/supabase/types';
-import { useLetterNavigation } from '@/lib/hooks/useLetterNavigation';
+import React, { useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils/cn";
+import { Letter } from "@/lib/supabase/types";
+import { useLetterNavigation } from "@/lib/hooks/useLetterNavigation";
 
 /**
  * Props for the LetterNavigation component
@@ -30,19 +30,19 @@ const pageTurnVariants = {
     rotateY: direction > 0 ? 90 : -90,
     opacity: 0,
     scale: 0.8,
-    transformOrigin: direction > 0 ? 'left center' : 'right center',
+    transformOrigin: direction > 0 ? "left center" : "right center",
   }),
   center: {
     rotateY: 0,
     opacity: 1,
     scale: 1,
-    transformOrigin: 'center center',
+    transformOrigin: "center center",
   },
   exit: (direction: number) => ({
     rotateY: direction > 0 ? -90 : 90,
     opacity: 0,
     scale: 0.8,
-    transformOrigin: direction > 0 ? 'right center' : 'left center',
+    transformOrigin: direction > 0 ? "right center" : "left center",
   }),
 };
 
@@ -53,7 +53,7 @@ const transition = {
 
 /**
  * LetterNavigation component with page-turning animations
- * 
+ *
  * Provides a complete navigation experience for browsing through letters with:
  * - Arrow button navigation
  * - Keyboard arrow key support (← →)
@@ -61,7 +61,7 @@ const transition = {
  * - Trackpad/mouse wheel horizontal scrolling (desktop)
  * - Smooth page-turning animations using Framer Motion
  * - Papyrus-themed styling
- * 
+ *
  * @example
  * ```tsx
  * <LetterNavigation
@@ -137,14 +137,18 @@ export const LetterNavigation: React.FC<LetterNavigationProps> = ({
       touchStartRef.current = null;
     };
 
-    container.addEventListener('touchstart', handleTouchStart, { passive: true });
-    container.addEventListener('touchmove', handleTouchMove, { passive: false });
-    container.addEventListener('touchend', handleTouchEnd, { passive: true });
+    container.addEventListener("touchstart", handleTouchStart, {
+      passive: true,
+    });
+    container.addEventListener("touchmove", handleTouchMove, {
+      passive: false,
+    });
+    container.addEventListener("touchend", handleTouchEnd, { passive: true });
 
     return () => {
-      container.removeEventListener('touchstart', handleTouchStart);
-      container.removeEventListener('touchmove', handleTouchMove);
-      container.removeEventListener('touchend', handleTouchEnd);
+      container.removeEventListener("touchstart", handleTouchStart);
+      container.removeEventListener("touchmove", handleTouchMove);
+      container.removeEventListener("touchend", handleTouchEnd);
     };
   }, [enableGestures, handleSwipe]);
 
@@ -163,10 +167,10 @@ export const LetterNavigation: React.FC<LetterNavigationProps> = ({
       }
     };
 
-    container.addEventListener('wheel', handleWheelEvent, { passive: false });
+    container.addEventListener("wheel", handleWheelEvent, { passive: false });
 
     return () => {
-      container.removeEventListener('wheel', handleWheelEvent);
+      container.removeEventListener("wheel", handleWheelEvent);
     };
   }, [enableGestures, handleWheel]);
 
@@ -175,19 +179,19 @@ export const LetterNavigation: React.FC<LetterNavigationProps> = ({
     if (!enableGestures) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') {
+      if (e.key === "ArrowLeft") {
         e.preventDefault();
         goPrev();
-      } else if (e.key === 'ArrowRight') {
+      } else if (e.key === "ArrowRight") {
         e.preventDefault();
         goNext();
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [enableGestures, goNext, goPrev]);
 
@@ -196,7 +200,7 @@ export const LetterNavigation: React.FC<LetterNavigationProps> = ({
   }
 
   return (
-    <div className={cn('relative w-full', className)}>
+    <div className={cn("relative w-full", className)}>
       {/* Navigation arrows */}
       <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between pointer-events-none z-10 px-2 sm:px-4">
         {/* Left arrow */}
@@ -204,16 +208,16 @@ export const LetterNavigation: React.FC<LetterNavigationProps> = ({
           onClick={goPrev}
           disabled={!canGoPrev}
           className={cn(
-            'pointer-events-auto',
-            'w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14',
-            'flex items-center justify-center',
-            'bg-papyrus-bg border-3 border-papyrus-border',
-            'papyrus-texture papyrus-shadow',
-            'transition-all duration-200',
-            'hover:bg-papyrus-dark hover:scale-110',
-            'active:scale-95',
-            'disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:bg-papyrus-bg',
-            'focus:outline-none focus:ring-2 focus:ring-papyrus-accent focus:ring-offset-2'
+            "pointer-events-auto",
+            "w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14",
+            "flex items-center justify-center",
+            "bg-papyrus-bg border-3 border-papyrus-border",
+            "papyrus-texture papyrus-shadow",
+            "transition-all duration-200",
+            "hover:bg-papyrus-dark hover:scale-110",
+            "active:scale-95",
+            "disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:bg-papyrus-bg",
+            "focus:outline-none focus:ring-2 focus:ring-papyrus-accent focus:ring-offset-2"
           )}
           aria-label="Previous letter"
           title="Previous letter (← or swipe right)"
@@ -237,16 +241,16 @@ export const LetterNavigation: React.FC<LetterNavigationProps> = ({
           onClick={goNext}
           disabled={!canGoNext}
           className={cn(
-            'pointer-events-auto',
-            'w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14',
-            'flex items-center justify-center',
-            'bg-papyrus-bg border-3 border-papyrus-border',
-            'papyrus-texture papyrus-shadow',
-            'transition-all duration-200',
-            'hover:bg-papyrus-dark hover:scale-110',
-            'active:scale-95',
-            'disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:bg-papyrus-bg',
-            'focus:outline-none focus:ring-2 focus:ring-papyrus-accent focus:ring-offset-2'
+            "pointer-events-auto",
+            "w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14",
+            "flex items-center justify-center",
+            "bg-papyrus-bg border-3 border-papyrus-border",
+            "papyrus-texture papyrus-shadow",
+            "transition-all duration-200",
+            "hover:bg-papyrus-dark hover:scale-110",
+            "active:scale-95",
+            "disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:bg-papyrus-bg",
+            "focus:outline-none focus:ring-2 focus:ring-papyrus-accent focus:ring-offset-2"
           )}
           aria-label="Next letter"
           title="Next letter (→ or swipe left)"
@@ -270,7 +274,7 @@ export const LetterNavigation: React.FC<LetterNavigationProps> = ({
       <div
         ref={containerRef}
         className="relative overflow-hidden"
-        style={{ perspective: '2000px' }}
+        style={{ perspective: "2000px" }}
       >
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div

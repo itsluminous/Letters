@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User } from '@supabase/supabase-js';
-import { createClient } from '@/lib/supabase/client';
-import { logError, getUserFriendlyErrorMessage } from '@/lib/utils/errorLogger';
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { User } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase/client";
+import { logError, getUserFriendlyErrorMessage } from "@/lib/utils/errorLogger";
 
 interface AuthContextType {
   user: User | null;
@@ -46,14 +46,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         email,
         password,
       });
-      
+
       if (error) {
-        logError(error, { context: 'AuthContext.signUp', email });
+        logError(error, { context: "AuthContext.signUp", email });
       }
-      
+
       return { error };
     } catch (error) {
-      logError(error, { context: 'AuthContext.signUp', email });
+      logError(error, { context: "AuthContext.signUp", email });
       return { error: new Error(getUserFriendlyErrorMessage(error)) };
     }
   };
@@ -67,23 +67,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (!error) {
         // Update login timestamp
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         if (user) {
-          await supabase
-            .from('user_profiles')
-            .upsert({
-              id: user.id,
-              last_login_at: new Date().toISOString(),
-              updated_at: new Date().toISOString(),
-            });
+          await supabase.from("user_profiles").upsert({
+            id: user.id,
+            last_login_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          });
         }
       } else {
-        logError(error, { context: 'AuthContext.signIn', email });
+        logError(error, { context: "AuthContext.signIn", email });
       }
 
       return { error };
     } catch (error) {
-      logError(error, { context: 'AuthContext.signIn', email });
+      logError(error, { context: "AuthContext.signIn", email });
       return { error: new Error(getUserFriendlyErrorMessage(error)) };
     }
   };
@@ -97,14 +97,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/reset-password/confirm`,
       });
-      
+
       if (error) {
-        logError(error, { context: 'AuthContext.resetPassword', email });
+        logError(error, { context: "AuthContext.resetPassword", email });
       }
-      
+
       return { error };
     } catch (error) {
-      logError(error, { context: 'AuthContext.resetPassword', email });
+      logError(error, { context: "AuthContext.resetPassword", email });
       return { error: new Error(getUserFriendlyErrorMessage(error)) };
     }
   };
@@ -114,14 +114,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const { error } = await supabase.auth.updateUser({
         password: newPassword,
       });
-      
+
       if (error) {
-        logError(error, { context: 'AuthContext.updatePassword' });
+        logError(error, { context: "AuthContext.updatePassword" });
       }
-      
+
       return { error };
     } catch (error) {
-      logError(error, { context: 'AuthContext.updatePassword' });
+      logError(error, { context: "AuthContext.updatePassword" });
       return { error: new Error(getUserFriendlyErrorMessage(error)) };
     }
   };
@@ -142,7 +142,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }

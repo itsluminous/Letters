@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { cn } from '@/lib/utils/cn';
-import { Letter, Contact } from '@/lib/supabase/types';
-import { format } from 'date-fns';
+import React from "react";
+import { cn } from "@/lib/utils/cn";
+import { Letter, Contact } from "@/lib/supabase/types";
+import { format } from "date-fns";
 
 export interface LetterStackProps {
   letters: Letter[];
-  type: 'inbox' | 'sent';
+  type: "inbox" | "sent";
   onLetterSelect: (letterId: string) => void;
   currentIndex: number;
   contacts?: Contact[];
@@ -17,31 +17,40 @@ export interface LetterStackProps {
 }
 
 export const LetterStack: React.FC<LetterStackProps> = ({
-  letters, type, onLetterSelect, currentIndex, contacts = [], onEdit, onDelete, className,
+  letters,
+  type,
+  onLetterSelect,
+  currentIndex,
+  contacts = [],
+  onEdit,
+  onDelete,
+  className,
 }) => {
   const [maxVisibleLetters, setMaxVisibleLetters] = React.useState(5);
   const [touchStart, setTouchStart] = React.useState<number | null>(null);
   const [touchEnd, setTouchEnd] = React.useState<number | null>(null);
-  
+
   React.useEffect(() => {
-    const updateStackDepth = () => setMaxVisibleLetters(window.innerWidth < 768 ? 3 : 5);
+    const updateStackDepth = () =>
+      setMaxVisibleLetters(window.innerWidth < 768 ? 3 : 5);
     updateStackDepth();
-    window.addEventListener('resize', updateStackDepth);
-    return () => window.removeEventListener('resize', updateStackDepth);
+    window.addEventListener("resize", updateStackDepth);
+    return () => window.removeEventListener("resize", updateStackDepth);
   }, []);
-  
+
   const visibleLetters = letters.slice(0, maxVisibleLetters);
-  const unreadCount = type === 'inbox' ? letters.filter(l => !l.isRead).length : 0;
+  const unreadCount =
+    type === "inbox" ? letters.filter((l) => !l.isRead).length : 0;
 
   const getDisplayName = (userId: string | undefined, fallback: string) => {
     if (!userId) return fallback;
-    const contact = contacts.find(c => c.contactUserId === userId);
+    const contact = contacts.find((c) => c.contactUserId === userId);
     return contact?.displayName || fallback;
   };
 
   const getStackStyle = (index: number) => {
-    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-    const rotation = (Math.random() - 0.5) * 2; 
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+    const rotation = (Math.random() - 0.5) * 2;
     const offsetX = index * (isMobile ? 5 : 8);
     const offsetY = index * (isMobile ? 4 : 6);
     const scale = 1 - index * 0.02;
@@ -55,16 +64,20 @@ export const LetterStack: React.FC<LetterStackProps> = ({
 
   if (letters.length === 0) {
     return (
-      <div className={cn(
-          'flex items-center justify-center min-h-[300px] md:min-h-[400px]',
-          'bg-[#fffbf0] border border-papyrus-border shadow-papyrus', // Lighter background
-          'p-8 text-center rounded-sm',
+      <div
+        className={cn(
+          "flex items-center justify-center min-h-[300px] md:min-h-[400px]",
+          "bg-[#fffbf0] border border-papyrus-border shadow-papyrus", // Lighter background
+          "p-8 text-center rounded-sm",
           className
-        )}>
+        )}
+      >
         <div>
           <p className="font-heading text-xl text-ink mb-2">No letters yet</p>
           <p className="font-body text-ink-light italic">
-            {type === 'inbox' ? 'Add a contact to start receiving letters' : 'Compose a letter to get started'}
+            {type === "inbox"
+              ? "Add a contact to start receiving letters"
+              : "Compose a letter to get started"}
           </p>
         </div>
       </div>
@@ -101,7 +114,7 @@ export const LetterStack: React.FC<LetterStackProps> = ({
 
   const onTouchEnd = () => {
     if (!touchStart || !touchEnd) return;
-    
+
     const distance = touchStart - touchEnd;
     const isLeftSwipe = distance > minSwipeDistance;
     const isRightSwipe = distance < -minSwipeDistance;
@@ -114,12 +127,14 @@ export const LetterStack: React.FC<LetterStackProps> = ({
   };
 
   return (
-    <div className={cn('relative', className)}>
+    <div className={cn("relative", className)}>
       {/* Unread count badge */}
-      {type === 'inbox' && unreadCount > 0 && (
+      {type === "inbox" && unreadCount > 0 && (
         <div className="absolute -top-3 -right-3 z-50">
           <div className="bg-wax border-2 border-white shadow-md rounded-full w-10 h-10 flex items-center justify-center">
-            <span className="font-heading text-[#f4e8d0] text-md font-bold">{unreadCount}</span>
+            <span className="font-heading text-[#f4e8d0] text-md font-bold">
+              {unreadCount}
+            </span>
           </div>
         </div>
       )}
@@ -129,12 +144,12 @@ export const LetterStack: React.FC<LetterStackProps> = ({
         <button
           onClick={handlePrevious}
           className={cn(
-            'absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-40',
-            'w-10 h-10 sm:w-12 sm:h-12 rounded-full',
-            'border-2 border-papyrus-text/60 shadow-lg',
-            'flex items-center justify-center',
-            'hover:bg-papyrus-dark hover:border-papyrus-text hover:scale-110 transition-all duration-200 cursor-pointer',
-            'text-papyrus-text group'
+            "absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-40",
+            "w-10 h-10 sm:w-12 sm:h-12 rounded-full",
+            "border-2 border-papyrus-text/60 shadow-lg",
+            "flex items-center justify-center",
+            "hover:bg-papyrus-dark hover:border-papyrus-text hover:scale-110 transition-all duration-200 cursor-pointer",
+            "text-papyrus-text group"
           )}
           aria-label="Previous letter"
         >
@@ -157,12 +172,12 @@ export const LetterStack: React.FC<LetterStackProps> = ({
         <button
           onClick={handleNext}
           className={cn(
-            'absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-40',
-            'w-10 h-10 sm:w-12 sm:h-12 rounded-full',
-            'border-2 border-papyrus-text/60 shadow-lg',
-            'flex items-center justify-center',
-            'hover:bg-papyrus-dark hover:border-papyrus-text hover:scale-110 transition-all duration-200 cursor-pointer',
-            'text-papyrus-text group'
+            "absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-40",
+            "w-10 h-10 sm:w-12 sm:h-12 rounded-full",
+            "border-2 border-papyrus-text/60 shadow-lg",
+            "flex items-center justify-center",
+            "hover:bg-papyrus-dark hover:border-papyrus-text hover:scale-110 transition-all duration-200 cursor-pointer",
+            "text-papyrus-text group"
           )}
           aria-label="Next letter"
         >
@@ -182,9 +197,9 @@ export const LetterStack: React.FC<LetterStackProps> = ({
       )}
 
       {/* Stack visualization - letters behind the current one */}
-      <div 
-        className="relative w-full" 
-        style={{ minHeight: '500px' }}
+      <div
+        className="relative w-full"
+        style={{ minHeight: "500px" }}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
@@ -192,15 +207,15 @@ export const LetterStack: React.FC<LetterStackProps> = ({
         {visibleLetters.map((letter, index) => {
           const stackIndex = index - currentIndex;
           if (stackIndex < 0) return null; // Don't show letters before current
-          
+
           const isTop = stackIndex === 0;
-          
+
           return (
             <div
               key={letter.id}
               className={cn(
-                'absolute inset-0 transition-all duration-300',
-                !isTop && 'pointer-events-none'
+                "absolute inset-0 transition-all duration-300",
+                !isTop && "pointer-events-none"
               )}
               style={getStackStyle(stackIndex)}
             >
@@ -208,53 +223,55 @@ export const LetterStack: React.FC<LetterStackProps> = ({
                 // Top letter - full PapyrusScroll
                 <div className="relative w-full bg-[#fffbf0] shadow-papyrus-lg p-6 sm:p-8 md:p-12">
                   {/* Read Status Indicator */}
-                  {type === 'inbox' && !letter.isRead && (
+                  {type === "inbox" && !letter.isRead && (
                     <div className="absolute top-4 right-4 w-3 h-3 bg-wax rounded-full border-2 border-white" />
                   )}
 
                   {/* Edit/Delete Actions for unseen sent letters */}
-                  {type === 'sent' && !letter.isRead && (onEdit || onDelete) && (
-                    <div className="absolute top-4 right-4 flex gap-2">
-                      {onEdit && (
-                        <button
-                          onClick={() => onEdit(letter.id)}
-                          className="p-2 rounded-full bg-papyrus-dark/80 hover:bg-papyrus-dark border border-papyrus-border transition-colors cursor-pointer"
-                          aria-label="Edit letter"
-                          title="Edit letter"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5 text-papyrus-bg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
+                  {type === "sent" &&
+                    !letter.isRead &&
+                    (onEdit || onDelete) && (
+                      <div className="absolute top-4 right-4 flex gap-2">
+                        {onEdit && (
+                          <button
+                            onClick={() => onEdit(letter.id)}
+                            className="p-2 rounded-full bg-papyrus-dark/80 hover:bg-papyrus-dark border border-papyrus-border transition-colors cursor-pointer"
+                            aria-label="Edit letter"
+                            title="Edit letter"
                           >
-                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                          </svg>
-                        </button>
-                      )}
-                      {onDelete && (
-                        <button
-                          onClick={() => onDelete(letter.id)}
-                          className="p-2 rounded-full bg-red-600/80 hover:bg-red-600 border border-red-700 transition-colors cursor-pointer"
-                          aria-label="Delete letter"
-                          title="Delete letter"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5 text-white"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5 text-papyrus-bg"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                            </svg>
+                          </button>
+                        )}
+                        {onDelete && (
+                          <button
+                            onClick={() => onDelete(letter.id)}
+                            className="p-2 rounded-full bg-red-600/80 hover:bg-red-600 border border-red-700 transition-colors cursor-pointer"
+                            aria-label="Delete letter"
+                            title="Delete letter"
                           >
-                            <path
-                              fillRule="evenodd"
-                              d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </button>
-                      )}
-                    </div>
-                  )}
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5 text-white"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                          </button>
+                        )}
+                      </div>
+                    )}
 
                   {/* Letter counter */}
                   <div className="border-t border-ink/5 text-center">
@@ -268,18 +285,18 @@ export const LetterStack: React.FC<LetterStackProps> = ({
                     <div className="flex justify-between items-end mb-2">
                       <div className="font-serif text-ink">
                         <p className="text-sm font-bold tracking-widest text-ink-light">
-                          {type === 'inbox' 
-                            ? `From: ${getDisplayName(letter.author?.id, letter.author?.email || 'Unknown')}` 
-                            : `To: ${getDisplayName(letter.recipient?.id, letter.recipient?.email || 'Unknown')}`}
+                          {type === "inbox"
+                            ? `From: ${getDisplayName(letter.author?.id, letter.author?.email || "Unknown")}`
+                            : `To: ${getDisplayName(letter.recipient?.id, letter.recipient?.email || "Unknown")}`}
                         </p>
                       </div>
                       <div className="text-right font-serif text-ink-light italic">
-                        {format(letter.createdAt, 'MMMM d, yyyy')}
+                        {format(letter.createdAt, "MMMM d, yyyy")}
                       </div>
                     </div>
-                    
+
                     {/* Read status for sent letters */}
-                    {type === 'sent' && (
+                    {type === "sent" && (
                       <div className="flex items-center gap-2 mt-2">
                         {letter.isRead && letter.readAt ? (
                           <>
@@ -290,10 +307,14 @@ export const LetterStack: React.FC<LetterStackProps> = ({
                               fill="currentColor"
                             >
                               <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                              <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm9.707 5.707a1 1 0 00-1.414-1.414L9 12.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                              <path
+                                fillRule="evenodd"
+                                d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm9.707 5.707a1 1 0 00-1.414-1.414L9 12.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clipRule="evenodd"
+                              />
                             </svg>
                             <span className="text-xs font-body text-green-700">
-                              Seen on {format(letter.readAt, 'MMM d, yyyy')}
+                              Seen on {format(letter.readAt, "MMM d, yyyy")}
                             </span>
                           </>
                         ) : (
@@ -328,8 +349,6 @@ export const LetterStack: React.FC<LetterStackProps> = ({
           );
         })}
       </div>
-
-
     </div>
   );
 };

@@ -24,18 +24,18 @@ graph TB
     Client[Next.js Client]
     API[Next.js API Routes]
     Supabase[Supabase Backend]
-    
+
     Client -->|API Calls| API
     Client -->|Direct Auth| Supabase
     API -->|Database Queries| Supabase
-    
+
     subgraph "Client Layer"
         Client
         Pages[Pages/Routes]
         Components[React Components]
         Hooks[Custom Hooks]
     end
-    
+
     subgraph "Backend Layer"
         Supabase
         Auth[Supabase Auth]
@@ -43,7 +43,6 @@ graph TB
         RLS[Row Level Security]
     end
 ```
-
 
 ### Application Structure
 
@@ -87,7 +86,6 @@ src/
     └── papyrus-theme.css
 ```
 
-
 ## Components and Interfaces
 
 ### Core Components
@@ -97,10 +95,11 @@ src/
 The main component for displaying and editing letters with papyrus styling.
 
 **Props:**
+
 ```typescript
 interface PapyrusScrollProps {
   letter?: Letter;
-  mode: 'view' | 'edit' | 'compose';
+  mode: "view" | "edit" | "compose";
   onSave?: (content: string, recipientId: string) => Promise<void>;
   onEdit?: (content: string) => Promise<void>;
   onDelete?: () => Promise<void>;
@@ -109,6 +108,7 @@ interface PapyrusScrollProps {
 ```
 
 **Features:**
+
 - Papyrus texture background with aged paper appearance
 - Editable/non-editable content area
 - Auto-populated date/time in compose mode
@@ -120,37 +120,40 @@ interface PapyrusScrollProps {
 Displays letters in a stacked papyrus layout.
 
 **Props:**
+
 ```typescript
 interface LetterStackProps {
   letters: Letter[];
-  type: 'inbox' | 'sent';
+  type: "inbox" | "sent";
   onLetterSelect: (letterId: string) => void;
   currentIndex: number;
 }
 ```
 
 **Features:**
+
 - Visual stacking effect with 3D perspective
 - Unread count badge for inbox
 - Read/unread status indicators
 - Recipient read status for sent letters
-
 
 #### 3. LetterNavigation Component
 
 Handles navigation between letters with arrow buttons and horizontal scrolling.
 
 **Props:**
+
 ```typescript
 interface LetterNavigationProps {
   currentIndex: number;
   totalLetters: number;
-  onNavigate: (direction: 'prev' | 'next') => void;
+  onNavigate: (direction: "prev" | "next") => void;
   letters: Letter[];
 }
 ```
 
 **Features:**
+
 - Left/right arrow buttons with papyrus styling
 - Horizontal scroll/swipe gesture detection
 - Page-turning animation integration
@@ -161,6 +164,7 @@ interface LetterNavigationProps {
 Provides filtering controls for letters.
 
 **Props:**
+
 ```typescript
 interface FilterPanelProps {
   contacts: Contact[];
@@ -170,17 +174,18 @@ interface FilterPanelProps {
 ```
 
 **Features:**
+
 - Multi-select contact dropdown with papyrus styling
 - Date range pickers (before/after) with papyrus theme
 - Clear filters button
 - Real-time filter application
-
 
 #### 5. TitleBar Component
 
 Main navigation bar with actions and profile menu.
 
 **Props:**
+
 ```typescript
 interface TitleBarProps {
   user: User;
@@ -189,6 +194,7 @@ interface TitleBarProps {
 ```
 
 **Features:**
+
 - App title/logo with papyrus styling
 - "Create New Letter" button
 - "Add Contact" button
@@ -203,7 +209,6 @@ Custom themed components for consistent styling:
 - **PapyrusDatePicker**: Date picker with papyrus calendar styling
 - **PapyrusSelect**: Dropdown with papyrus menu styling
 - **PapyrusDialog**: Modal/confirmation dialog with papyrus theme
-
 
 ## Data Models
 
@@ -233,7 +238,7 @@ CREATE TABLE letters (
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   is_read BOOLEAN DEFAULT FALSE,
   read_at TIMESTAMPTZ,
-  
+
   CONSTRAINT different_users CHECK (author_id != recipient_id)
 );
 
@@ -241,7 +246,6 @@ CREATE INDEX idx_letters_recipient ON letters(recipient_id, created_at);
 CREATE INDEX idx_letters_author ON letters(author_id, created_at);
 CREATE INDEX idx_letters_read_status ON letters(recipient_id, is_read, created_at);
 ```
-
 
 #### contacts Table
 
@@ -252,7 +256,7 @@ CREATE TABLE contacts (
   contact_user_id UUID NOT NULL REFERENCES auth.users(id),
   display_name TEXT NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  
+
   UNIQUE(user_id, contact_user_id),
   CONSTRAINT different_users CHECK (user_id != contact_user_id)
 );
@@ -298,7 +302,6 @@ interface LetterFilters {
 }
 ```
 
-
 ## Row Level Security Policies
 
 ### letters Table Policies
@@ -334,7 +337,6 @@ CREATE POLICY "Authors can delete unread letters"
   ON letters FOR DELETE
   USING (auth.uid() = author_id AND is_read = FALSE);
 ```
-
 
 ### contacts Table Policies
 
@@ -376,7 +378,6 @@ CREATE POLICY "Users can update own profile"
   WITH CHECK (auth.uid() = id);
 ```
 
-
 ## API Design
 
 ### Custom Hooks
@@ -417,7 +418,6 @@ function useLetterNavigation(letters: Letter[], initialIndex: number) {
 }
 ```
 
-
 ### Supabase Queries
 
 #### Fetch Inbox Letters
@@ -425,25 +425,27 @@ function useLetterNavigation(letters: Letter[], initialIndex: number) {
 ```typescript
 async function fetchInboxLetters(userId: string, filters: LetterFilters) {
   let query = supabase
-    .from('letters')
-    .select(`
+    .from("letters")
+    .select(
+      `
       *,
       author:author_id(id, email),
       recipient:recipient_id(id, email)
-    `)
-    .eq('recipient_id', userId)
-    .order('is_read', { ascending: true })
-    .order('created_at', { ascending: false });
+    `
+    )
+    .eq("recipient_id", userId)
+    .order("is_read", { ascending: true })
+    .order("created_at", { ascending: false });
 
   // Apply filters
   if (filters.contactIds.length > 0) {
-    query = query.in('author_id', filters.contactIds);
+    query = query.in("author_id", filters.contactIds);
   }
   if (filters.beforeDate) {
-    query = query.lt('created_at', filters.beforeDate.toISOString());
+    query = query.lt("created_at", filters.beforeDate.toISOString());
   }
   if (filters.afterDate) {
-    query = query.gt('created_at', filters.afterDate.toISOString());
+    query = query.gt("created_at", filters.afterDate.toISOString());
   }
 
   return query;
@@ -455,31 +457,32 @@ async function fetchInboxLetters(userId: string, filters: LetterFilters) {
 ```typescript
 async function fetchSentLetters(userId: string, filters: LetterFilters) {
   let query = supabase
-    .from('letters')
-    .select(`
+    .from("letters")
+    .select(
+      `
       *,
       recipient:recipient_id(id, email, last_login_at)
-    `)
-    .eq('author_id', userId)
-    .order('created_at', { ascending: false });
+    `
+    )
+    .eq("author_id", userId)
+    .order("created_at", { ascending: false });
 
   // Apply filters similar to inbox
   return query;
 }
 ```
 
-
 #### Mark Letter as Read
 
 ```typescript
 async function markLetterAsRead(letterId: string) {
   return supabase
-    .from('letters')
+    .from("letters")
     .update({
       is_read: true,
-      read_at: new Date().toISOString()
+      read_at: new Date().toISOString(),
     })
-    .eq('id', letterId);
+    .eq("id", letterId);
 }
 ```
 
@@ -487,16 +490,13 @@ async function markLetterAsRead(letterId: string) {
 
 ```typescript
 async function updateLoginTimestamp(userId: string) {
-  return supabase
-    .from('user_profiles')
-    .upsert({
-      id: userId,
-      last_login_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    });
+  return supabase.from("user_profiles").upsert({
+    id: userId,
+    last_login_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  });
 }
 ```
-
 
 ## Papyrus Theme Design
 
@@ -530,7 +530,6 @@ async function updateLoginTimestamp(userId: string) {
 - **Shadows**: Soft, warm shadows to create depth
 - **Aging Effects**: Subtle brown/sepia overlays and stains
 
-
 ### Animation Design
 
 #### Page-Turning Animation
@@ -542,34 +541,34 @@ const pageTurnVariants = {
   enter: (direction: number) => ({
     rotateY: direction > 0 ? 90 : -90,
     opacity: 0,
-    scale: 0.8
+    scale: 0.8,
   }),
   center: {
     rotateY: 0,
     opacity: 1,
-    scale: 1
+    scale: 1,
   },
   exit: (direction: number) => ({
     rotateY: direction > 0 ? -90 : 90,
     opacity: 0,
-    scale: 0.8
-  })
+    scale: 0.8,
+  }),
 };
 
 const transition = {
   duration: 0.6,
-  ease: [0.43, 0.13, 0.23, 0.96]
+  ease: [0.43, 0.13, 0.23, 0.96],
 };
 ```
 
 #### Stacking Animation
 
 Letters in stack should have:
+
 - Slight rotation variance (±2-3 degrees)
 - Offset positioning (5-10px increments)
 - Scale reduction for lower items (0.98, 0.96, 0.94)
 - Shadow depth increasing with stack position
-
 
 ## User Flows
 
@@ -608,7 +607,6 @@ graph TD
     J --> G
 ```
 
-
 ### Letter Composition Flow
 
 ```mermaid
@@ -641,7 +639,6 @@ graph TD
     J -->|Confirm| L[Delete Letter]
     J -->|Cancel| D
 ```
-
 
 ## Error Handling
 
@@ -678,7 +675,7 @@ Display errors in papyrus-themed toast notifications or inline messages:
 
 ```typescript
 interface ErrorDisplay {
-  type: 'error' | 'warning' | 'info';
+  type: "error" | "warning" | "info";
   message: string;
   action?: {
     label: string;
@@ -686,7 +683,6 @@ interface ErrorDisplay {
   };
 }
 ```
-
 
 #### Error Recovery
 
@@ -710,7 +706,6 @@ interface ErrorLog {
 
 Log errors to console in development, send to monitoring service in production.
 
-
 ## Testing Strategy
 
 ### Unit Testing
@@ -718,22 +713,22 @@ Log errors to console in development, send to monitoring service in production.
 **Tools**: Jest + React Testing Library
 
 **Coverage Areas**:
+
 - Custom hooks (useLetters, useContacts, useLetterNavigation)
 - Utility functions (date formatting, filtering logic)
 - Component logic (form validation, state management)
 
 **Example Test**:
+
 ```typescript
-describe('useLetterNavigation', () => {
-  it('should navigate to next letter when available', () => {
-    const { result } = renderHook(() => 
-      useLetterNavigation(mockLetters, 0)
-    );
-    
+describe("useLetterNavigation", () => {
+  it("should navigate to next letter when available", () => {
+    const { result } = renderHook(() => useLetterNavigation(mockLetters, 0));
+
     act(() => {
       result.current.goNext();
     });
-    
+
     expect(result.current.currentIndex).toBe(1);
   });
 });
@@ -744,12 +739,12 @@ describe('useLetterNavigation', () => {
 **Tools**: Playwright or Cypress
 
 **Coverage Areas**:
+
 - Authentication flows (login, signup, password reset)
 - Letter CRUD operations
 - Contact management
 - Filtering functionality
 - Navigation and animations
-
 
 ### Component Testing
 
@@ -759,13 +754,13 @@ describe('useLetterNavigation', () => {
 describe('PapyrusScroll', () => {
   it('should display edit and delete icons for unread sent letters', () => {
     render(
-      <PapyrusScroll 
-        letter={mockUnreadSentLetter} 
-        mode="view" 
+      <PapyrusScroll
+        letter={mockUnreadSentLetter}
+        mode="view"
         showActions={true}
       />
     );
-    
+
     expect(screen.getByLabelText('Edit letter')).toBeInTheDocument();
     expect(screen.getByLabelText('Delete letter')).toBeInTheDocument();
   });
@@ -775,6 +770,7 @@ describe('PapyrusScroll', () => {
 ### E2E Testing
 
 **Scenarios**:
+
 1. Complete user journey: signup → add contact → compose letter → send → view sent
 2. Recipient journey: login → view unread → navigate letters → mark as read
 3. Filter and search: apply multiple filters → verify results
@@ -783,11 +779,11 @@ describe('PapyrusScroll', () => {
 ### Performance Testing
 
 **Metrics**:
+
 - Initial page load: < 2s
 - Letter navigation animation: 60fps
 - Filter application: < 500ms
 - Database query response: < 1s
-
 
 ## Responsive Design
 
@@ -829,7 +825,6 @@ describe('PapyrusScroll', () => {
 - **Filters**: Persistent filter sidebar
 - **Touch Targets**: Minimum 44x44px for all interactive elements
 
-
 ## Performance Optimization
 
 ### Database Optimization
@@ -854,7 +849,6 @@ describe('PapyrusScroll', () => {
 3. **SVG**: Use SVG for icons and decorative elements
 4. **CSS**: Extract critical CSS for above-the-fold content
 
-
 ## Security Considerations
 
 ### Authentication Security
@@ -878,7 +872,6 @@ describe('PapyrusScroll', () => {
 3. **Letter Privacy**: Ensure only author and recipient can access
 4. **Audit Trail**: Log sensitive operations (letter deletion, account changes)
 
-
 ## Deployment Strategy
 
 ### Environment Configuration
@@ -900,6 +893,7 @@ SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 ### Deployment Platforms
 
 **Recommended**: Vercel (optimal for Next.js)
+
 - Automatic deployments from Git
 - Preview deployments for PRs
 - Edge functions for API routes
@@ -915,7 +909,6 @@ Use Supabase migrations for schema changes:
 supabase migration new create_letters_table
 supabase db push
 ```
-
 
 ## Future Enhancements
 
@@ -939,7 +932,6 @@ supabase db push
 3. **Accessibility**: WCAG 2.1 AA compliance audit
 4. **Internationalization**: Multi-language support
 5. **Analytics**: User behavior tracking and insights
-
 
 ## Documentation
 
@@ -1005,4 +997,3 @@ The project README should include:
     - Guidelines for contributors
 
 The README should be comprehensive enough for a new developer to set up and run the project independently.
-

@@ -1,27 +1,27 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { useAuth } from '@/lib/contexts/AuthContext';
-import { PapyrusButton } from '@/components/ui/PapyrusButton';
-import { PapyrusInput } from '@/components/ui/PapyrusInput';
+import React, { useState } from "react";
+import Link from "next/link";
+import { useAuth } from "@/lib/contexts/AuthContext";
+import { PapyrusButton } from "@/components/ui/PapyrusButton";
+import { PapyrusInput } from "@/components/ui/PapyrusInput";
 
 export default function ResetPasswordPage() {
   const { resetPassword } = useAuth();
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     const { error } = await resetPassword(email);
 
     if (error) {
-      setError(error.message || 'Failed to send reset email');
+      setError(error.message || "Failed to send reset email");
       setLoading(false);
     } else {
       setSuccess(true);
@@ -38,7 +38,7 @@ export default function ResetPasswordPage() {
               Check Your Email
             </h1>
             <p className="text-center text-papyrus-text-light font-body mb-6">
-              We&apos;ve sent a password reset link to <strong>{email}</strong>. 
+              We&apos;ve sent a password reset link to <strong>{email}</strong>.
               Please check your inbox and follow the instructions.
             </p>
             <Link href="/login">
@@ -87,7 +87,7 @@ export default function ResetPasswordPage() {
               className="w-full"
               disabled={loading}
             >
-              {loading ? 'Sending...' : 'Send Reset Link'}
+              {loading ? "Sending..." : "Send Reset Link"}
             </PapyrusButton>
           </form>
 

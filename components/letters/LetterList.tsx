@@ -1,58 +1,62 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { cn } from '@/lib/utils/cn';
-import { Letter, Contact } from '@/lib/supabase/types';
-import { format } from 'date-fns';
+import React from "react";
+import { cn } from "@/lib/utils/cn";
+import { Letter, Contact } from "@/lib/supabase/types";
+import { format } from "date-fns";
 
 export interface LetterListProps {
   letters: Letter[];
-  type: 'inbox' | 'sent';
+  type: "inbox" | "sent";
   onLetterSelect: (letterId: string) => void;
   contacts?: Contact[];
   className?: string;
 }
 
 export const LetterList: React.FC<LetterListProps> = ({
-  letters, type, onLetterSelect, contacts = [], className,
+  letters,
+  type,
+  onLetterSelect,
+  contacts = [],
+  className,
 }) => {
   const getDisplayName = (userId: string | undefined, fallback: string) => {
     if (!userId) return fallback;
-    const contact = contacts.find(c => c.contactUserId === userId);
+    const contact = contacts.find((c) => c.contactUserId === userId);
     return contact?.displayName || fallback;
   };
 
   return (
-    <div className={cn('space-y-3', className)}>
+    <div className={cn("space-y-3", className)}>
       {letters.map((letter) => (
         <div
           key={letter.id}
           onClick={() => onLetterSelect(letter.id)}
           className={cn(
-            'relative bg-[#fffbf0] border border-ink/10 shadow-papyrus',
-            'p-4 sm:p-5 cursor-pointer transition-all duration-200',
-            'hover:shadow-papyrus-lg hover:border-wax/30',
-            'flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4'
+            "relative bg-[#fffbf0] border border-ink/10 shadow-papyrus",
+            "p-4 sm:p-5 cursor-pointer transition-all duration-200",
+            "hover:shadow-papyrus-lg hover:border-wax/30",
+            "flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4"
           )}
         >
           {/* Read Status Indicator */}
-          {type === 'inbox' && !letter.isRead && (
+          {type === "inbox" && !letter.isRead && (
             <div className="absolute top-4 right-4 w-2.5 h-2.5 bg-wax rounded-full border border-white" />
           )}
 
           {/* Left side - Metadata */}
           <div className="flex-shrink-0 sm:w-48">
             <p className="text-xs font-serif font-bold tracking-wide text-ink-light">
-              {type === 'inbox' 
-                ? `From: ${getDisplayName(letter.author?.id, letter.author?.email || 'Unknown')}` 
-                : `To: ${getDisplayName(letter.recipient?.id, letter.recipient?.email || 'Unknown')}`}
+              {type === "inbox"
+                ? `From: ${getDisplayName(letter.author?.id, letter.author?.email || "Unknown")}`
+                : `To: ${getDisplayName(letter.recipient?.id, letter.recipient?.email || "Unknown")}`}
             </p>
             <p className="text-xs font-serif text-ink-light italic mt-1">
-              {format(letter.createdAt, 'MMM d, yyyy')}
+              {format(letter.createdAt, "MMM d, yyyy")}
             </p>
-            
+
             {/* Read status for sent letters */}
-            {type === 'sent' && (
+            {type === "sent" && (
               <div className="mt-2">
                 {letter.isRead && letter.readAt ? (
                   <div className="flex items-center gap-1.5">
@@ -63,10 +67,14 @@ export const LetterList: React.FC<LetterListProps> = ({
                       fill="currentColor"
                     >
                       <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                      <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm9.707 5.707a1 1 0 00-1.414-1.414L9 12.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      <path
+                        fillRule="evenodd"
+                        d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm9.707 5.707a1 1 0 00-1.414-1.414L9 12.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                     <span className="text-xs font-body text-green-700">
-                      Seen {format(letter.readAt, 'MMM d')}
+                      Seen {format(letter.readAt, "MMM d")}
                     </span>
                   </div>
                 ) : (

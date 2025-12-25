@@ -1,9 +1,9 @@
 ---
 name: Feature Request
 about: Suggest an idea for this project
-title: '[FEATURE] '
+title: "[FEATURE] "
 labels: enhancement
-assignees: ''
+assignees: ""
 ---
 
 ## Feature Description
@@ -27,17 +27,17 @@ assignees: ''
 
 <!-- Describe specific use cases for this feature -->
 
-1. 
-2. 
-3. 
+1.
+2.
+3.
 
 ## Benefits
 
 <!-- What benefits will this feature provide? -->
 
-- 
-- 
-- 
+-
+-
+-
 
 ## Mockups/Examples
 
@@ -70,9 +70,9 @@ assignees: ''
 
 <!-- What needs to be true for this feature to be considered complete? -->
 
-- [ ] 
-- [ ] 
-- [ ] 
+- [ ]
+- [ ]
+- [ ]
 
 ## Dependencies
 
@@ -81,13 +81,17 @@ assignees: ''
 ## Impact
 
 **User Impact:**
+
 <!-- How will this affect users? -->
 
 **Performance Impact:**
+
 <!-- Will this affect performance? -->
 
 **Security Impact:**
+
 <!-- Are there any security considerations? -->
 
 **Breaking Changes:**
+
 <!-- Will this introduce breaking changes? -->

@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { useAuth } from '@/lib/contexts/AuthContext';
-import { useToast } from '@/lib/contexts/ToastContext';
-import { PapyrusButton } from '@/components/ui/PapyrusButton';
-import { PapyrusInput } from '@/components/ui/PapyrusInput';
-import { PapyrusSpinner } from '@/components/ui/PapyrusSpinner';
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useAuth } from "@/lib/contexts/AuthContext";
+import { useToast } from "@/lib/contexts/ToastContext";
+import { PapyrusButton } from "@/components/ui/PapyrusButton";
+import { PapyrusInput } from "@/components/ui/PapyrusInput";
+import { PapyrusSpinner } from "@/components/ui/PapyrusSpinner";
 
 export default function LoginPage() {
   const router = useRouter();
   const { signIn } = useAuth();
   const { showError, showSuccess } = useToast();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,11 +23,11 @@ export default function LoginPage() {
     const { error } = await signIn(email, password);
 
     if (error) {
-      showError(error.message || 'Invalid email or password');
+      showError(error.message || "Invalid email or password");
       setLoading(false);
     } else {
-      showSuccess('Successfully logged in!');
-      router.push('/');
+      showSuccess("Successfully logged in!");
+      router.push("/");
     }
   };
 
@@ -40,11 +40,11 @@ export default function LoginPage() {
            3. Removed heavy borders
         */}
         <div className="bg-[#fffbf0] shadow-papyrus-lg p-8 sm:p-12 relative rounded-sm border border-[#d4c4a8]">
-            {/* Decorative Corners */}
-            <div className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-[#8b7355]/40" />
-            <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-[#8b7355]/40" />
-            <div className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-[#8b7355]/40" />
-            <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-[#8b7355]/40" />
+          {/* Decorative Corners */}
+          <div className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-[#8b7355]/40" />
+          <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-[#8b7355]/40" />
+          <div className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-[#8b7355]/40" />
+          <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-[#8b7355]/40" />
 
           <h1 className="text-4xl font-heading font-bold text-center mb-2 text-ink drop-shadow-sm">
             Letters
@@ -75,22 +75,22 @@ export default function LoginPage() {
             />
 
             <div className="pt-4">
-                <PapyrusButton
+              <PapyrusButton
                 type="submit"
                 variant="primary"
                 size="lg"
                 className="w-full"
                 disabled={loading}
-                >
+              >
                 {loading ? (
-                    <span className="flex items-center justify-center gap-2">
+                  <span className="flex items-center justify-center gap-2">
                     <PapyrusSpinner size="sm" />
                     Signing in...
-                    </span>
+                  </span>
                 ) : (
-                    'Sign In'
+                  "Sign In"
                 )}
-                </PapyrusButton>
+              </PapyrusButton>
             </div>
           </form>
 
@@ -102,7 +102,7 @@ export default function LoginPage() {
               Forgot your password?
             </Link>
             <div className="text-sm text-ink-light font-body">
-              Don&apos;t have an account?{' '}
+              Don&apos;t have an account?{" "}
               <Link
                 href="/signup"
                 className="text-wax hover:text-wax-hover font-bold hover:underline"

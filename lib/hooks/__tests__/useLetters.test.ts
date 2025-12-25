@@ -1,41 +1,43 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { renderHook, waitFor } from '@testing-library/react';
-import { useLetters } from '../useLetters';
-import { createClient } from '@/lib/supabase/client';
-import { LetterFilters } from '@/lib/supabase/types';
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { renderHook, waitFor } from "@testing-library/react";
+import { useLetters } from "../useLetters";
+import { createClient } from "@/lib/supabase/client";
+import { LetterFilters } from "@/lib/supabase/types";
 
 // Mock Supabase client
-vi.mock('@/lib/supabase/client', () => ({
+vi.mock("@/lib/supabase/client", () => ({
   createClient: vi.fn(),
 }));
 
 // Mock error logger
-vi.mock('@/lib/utils/errorLogger', () => ({
+vi.mock("@/lib/utils/errorLogger", () => ({
   logError: vi.fn(),
-  getUserFriendlyErrorMessage: vi.fn((err) => err?.message || 'An error occurred'),
+  getUserFriendlyErrorMessage: vi.fn(
+    (err) => err?.message || "An error occurred"
+  ),
   retryWithBackoff: vi.fn((fn) => fn()),
 }));
 
-describe('useLetters', () => {
-  const mockUser = { id: 'user-123' };
+describe("useLetters", () => {
+  const mockUser = { id: "user-123" };
   const mockUnreadLetters = [
     {
-      id: 'letter-1',
-      author_id: 'author-1',
-      recipient_id: 'user-123',
-      content: 'First unread letter',
-      created_at: '2024-01-01T10:00:00Z',
-      updated_at: '2024-01-01T10:00:00Z',
+      id: "letter-1",
+      author_id: "author-1",
+      recipient_id: "user-123",
+      content: "First unread letter",
+      created_at: "2024-01-01T10:00:00Z",
+      updated_at: "2024-01-01T10:00:00Z",
       is_read: false,
       read_at: null,
     },
     {
-      id: 'letter-2',
-      author_id: 'author-2',
-      recipient_id: 'user-123',
-      content: 'Second unread letter',
-      created_at: '2024-01-02T10:00:00Z',
-      updated_at: '2024-01-02T10:00:00Z',
+      id: "letter-2",
+      author_id: "author-2",
+      recipient_id: "user-123",
+      content: "Second unread letter",
+      created_at: "2024-01-02T10:00:00Z",
+      updated_at: "2024-01-02T10:00:00Z",
       is_read: false,
       read_at: null,
     },
@@ -43,24 +45,24 @@ describe('useLetters', () => {
 
   const mockReadLetters = [
     {
-      id: 'letter-3',
-      author_id: 'author-1',
-      recipient_id: 'user-123',
-      content: 'First read letter',
-      created_at: '2024-01-03T10:00:00Z',
-      updated_at: '2024-01-03T10:00:00Z',
+      id: "letter-3",
+      author_id: "author-1",
+      recipient_id: "user-123",
+      content: "First read letter",
+      created_at: "2024-01-03T10:00:00Z",
+      updated_at: "2024-01-03T10:00:00Z",
       is_read: true,
-      read_at: '2024-01-03T11:00:00Z',
+      read_at: "2024-01-03T11:00:00Z",
     },
     {
-      id: 'letter-4',
-      author_id: 'author-2',
-      recipient_id: 'user-123',
-      content: 'Second read letter',
-      created_at: '2024-01-04T10:00:00Z',
-      updated_at: '2024-01-04T10:00:00Z',
+      id: "letter-4",
+      author_id: "author-2",
+      recipient_id: "user-123",
+      content: "Second read letter",
+      created_at: "2024-01-04T10:00:00Z",
+      updated_at: "2024-01-04T10:00:00Z",
       is_read: true,
-      read_at: '2024-01-04T11:00:00Z',
+      read_at: "2024-01-04T11:00:00Z",
     },
   ];
 
@@ -88,9 +90,9 @@ describe('useLetters', () => {
     vi.clearAllMocks();
   });
 
-  it('should fetch unread letters sorted by oldest first', async () => {
+  it("should fetch unread letters sorted by oldest first", async () => {
     mockSupabase.eq.mockImplementation((field: string, value: any) => {
-      if (field === 'is_read' && value === false) {
+      if (field === "is_read" && value === false) {
         return {
           ...mockSupabase,
           order: vi.fn(() => ({
@@ -110,15 +112,15 @@ describe('useLetters', () => {
     });
 
     expect(result.current.letters).toHaveLength(2);
-    expect(result.current.letters[0].id).toBe('letter-1');
-    expect(result.current.letters[1].id).toBe('letter-2');
+    expect(result.current.letters[0].id).toBe("letter-1");
+    expect(result.current.letters[1].id).toBe("letter-2");
     expect(result.current.letters[0].isRead).toBe(false);
   });
 
-  it('should fetch read letters sorted by newest first when no unread letters exist', async () => {
+  it("should fetch read letters sorted by newest first when no unread letters exist", async () => {
     let callCount = 0;
     mockSupabase.eq.mockImplementation((field: string, value: any) => {
-      if (field === 'is_read') {
+      if (field === "is_read") {
         callCount++;
         if (value === false) {
           // First call for unread letters - return empty
@@ -152,21 +154,23 @@ describe('useLetters', () => {
     });
 
     expect(result.current.letters).toHaveLength(2);
-    expect(result.current.letters[0].id).toBe('letter-4'); // Newest first
-    expect(result.current.letters[1].id).toBe('letter-3');
+    expect(result.current.letters[0].id).toBe("letter-4"); // Newest first
+    expect(result.current.letters[1].id).toBe("letter-3");
     expect(result.current.letters[0].isRead).toBe(true);
   });
 
-  it('should apply contact filter correctly', async () => {
+  it("should apply contact filter correctly", async () => {
     const filters: LetterFilters = {
-      contactIds: ['author-1'],
+      contactIds: ["author-1"],
       beforeDate: null,
       afterDate: null,
     };
 
     mockSupabase.in.mockImplementation((field: string, values: any[]) => {
-      if (field === 'author_id') {
-        const filtered = mockUnreadLetters.filter((l) => values.includes(l.author_id));
+      if (field === "author_id") {
+        const filtered = mockUnreadLetters.filter((l) =>
+          values.includes(l.author_id)
+        );
         return {
           ...mockSupabase,
           order: vi.fn(() => ({
@@ -180,7 +184,7 @@ describe('useLetters', () => {
     });
 
     mockSupabase.eq.mockImplementation((field: string, value: any) => {
-      if (field === 'is_read' && value === false) {
+      if (field === "is_read" && value === false) {
         return mockSupabase;
       }
       return mockSupabase;
@@ -192,12 +196,12 @@ describe('useLetters', () => {
       expect(result.current.isLoading).toBe(false);
     });
 
-    expect(mockSupabase.in).toHaveBeenCalledWith('author_id', ['author-1']);
+    expect(mockSupabase.in).toHaveBeenCalledWith("author_id", ["author-1"]);
   });
 
-  it('should apply date range filters correctly', async () => {
-    const beforeDate = new Date('2024-01-02T00:00:00Z');
-    const afterDate = new Date('2024-01-01T00:00:00Z');
+  it("should apply date range filters correctly", async () => {
+    const beforeDate = new Date("2024-01-02T00:00:00Z");
+    const afterDate = new Date("2024-01-01T00:00:00Z");
 
     const filters: LetterFilters = {
       contactIds: [],
@@ -206,7 +210,7 @@ describe('useLetters', () => {
     };
 
     mockSupabase.eq.mockImplementation((field: string, value: any) => {
-      if (field === 'is_read' && value === false) {
+      if (field === "is_read" && value === false) {
         return mockSupabase;
       }
       return mockSupabase;
@@ -226,19 +230,25 @@ describe('useLetters', () => {
       expect(result.current.isLoading).toBe(false);
     });
 
-    expect(mockSupabase.lt).toHaveBeenCalledWith('created_at', beforeDate.toISOString());
-    expect(mockSupabase.gt).toHaveBeenCalledWith('created_at', afterDate.toISOString());
+    expect(mockSupabase.lt).toHaveBeenCalledWith(
+      "created_at",
+      beforeDate.toISOString()
+    );
+    expect(mockSupabase.gt).toHaveBeenCalledWith(
+      "created_at",
+      afterDate.toISOString()
+    );
   });
 
-  it('should apply combined filters correctly', async () => {
+  it("should apply combined filters correctly", async () => {
     const filters: LetterFilters = {
-      contactIds: ['author-1', 'author-2'],
-      beforeDate: new Date('2024-01-03T00:00:00Z'),
-      afterDate: new Date('2024-01-01T00:00:00Z'),
+      contactIds: ["author-1", "author-2"],
+      beforeDate: new Date("2024-01-03T00:00:00Z"),
+      afterDate: new Date("2024-01-01T00:00:00Z"),
     };
 
     mockSupabase.eq.mockImplementation((field: string, value: any) => {
-      if (field === 'is_read' && value === false) {
+      if (field === "is_read" && value === false) {
         return mockSupabase;
       }
       return mockSupabase;
@@ -259,8 +269,17 @@ describe('useLetters', () => {
       expect(result.current.isLoading).toBe(false);
     });
 
-    expect(mockSupabase.in).toHaveBeenCalledWith('author_id', ['author-1', 'author-2']);
-    expect(mockSupabase.lt).toHaveBeenCalledWith('created_at', filters.beforeDate!.toISOString());
-    expect(mockSupabase.gt).toHaveBeenCalledWith('created_at', filters.afterDate!.toISOString());
+    expect(mockSupabase.in).toHaveBeenCalledWith("author_id", [
+      "author-1",
+      "author-2",
+    ]);
+    expect(mockSupabase.lt).toHaveBeenCalledWith(
+      "created_at",
+      filters.beforeDate!.toISOString()
+    );
+    expect(mockSupabase.gt).toHaveBeenCalledWith(
+      "created_at",
+      filters.afterDate!.toISOString()
+    );
   });
 });

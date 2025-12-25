@@ -1,14 +1,18 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useSentLetters, useContacts, useLetterOperations } from '@/lib/hooks';
-import { LetterStack, FilterPanel, ViewMode } from '@/components/letters';
-import { LetterGrid } from '@/components/letters/LetterGrid';
-import { LetterList } from '@/components/letters/LetterList';
-import { PapyrusButton, PapyrusSpinner, PapyrusConfirmDialog } from '@/components/ui';
-import { LetterFilters } from '@/lib/supabase/types';
-import { useToast } from '@/lib/contexts/ToastContext';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from "react";
+import { useSentLetters, useContacts, useLetterOperations } from "@/lib/hooks";
+import { LetterStack, FilterPanel, ViewMode } from "@/components/letters";
+import { LetterGrid } from "@/components/letters/LetterGrid";
+import { LetterList } from "@/components/letters/LetterList";
+import {
+  PapyrusButton,
+  PapyrusSpinner,
+  PapyrusConfirmDialog,
+} from "@/components/ui";
+import { LetterFilters } from "@/lib/supabase/types";
+import { useToast } from "@/lib/contexts/ToastContext";
+import { useRouter } from "next/navigation";
 
 export default function SentLettersPage() {
   const router = useRouter();
@@ -20,9 +24,13 @@ export default function SentLettersPage() {
     afterDate: null,
   });
   const { letters, isLoading, error, refetch } = useSentLetters(filters);
-  const { contacts, isLoading: contactsLoading, error: contactsError } = useContacts();
+  const {
+    contacts,
+    isLoading: contactsLoading,
+    error: contactsError,
+  } = useContacts();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [letterToDelete, setLetterToDelete] = useState<string | null>(null);
 
@@ -41,12 +49,12 @@ export default function SentLettersPage() {
 
   // Handle letter selection from stack/grid/list
   const handleLetterSelect = (letterId: string) => {
-    const index = letters.findIndex(l => l.id === letterId);
+    const index = letters.findIndex((l) => l.id === letterId);
     if (index !== -1) {
       setCurrentIndex(index);
       // Switch to stack view when a letter is selected from grid/list
-      if (viewMode !== 'stack') {
-        setViewMode('stack');
+      if (viewMode !== "stack") {
+        setViewMode("stack");
       }
     }
   };
@@ -81,12 +89,8 @@ export default function SentLettersPage() {
           <p className="font-heading text-xl text-papyrus-text mb-4">
             Failed to load sent letters
           </p>
-          <p className="font-body text-papyrus-text-light mb-6">
-            {error}
-          </p>
-          <PapyrusButton onClick={() => refetch()}>
-            Try Again
-          </PapyrusButton>
+          <p className="font-body text-papyrus-text-light mb-6">{error}</p>
+          <PapyrusButton onClick={() => refetch()}>Try Again</PapyrusButton>
         </div>
       </div>
     );
@@ -113,17 +117,21 @@ export default function SentLettersPage() {
 
     try {
       await deleteLetter(letterToDelete);
-      showSuccess('Letter deleted successfully');
+      showSuccess("Letter deleted successfully");
       await refetch();
       setDeleteConfirmOpen(false);
       setLetterToDelete(null);
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to delete letter';
+      const message =
+        err instanceof Error ? err.message : "Failed to delete letter";
       showError(message);
     }
   };
 
-  const hasActiveFilters = filters.contactIds.length > 0 || filters.beforeDate !== null || filters.afterDate !== null;
+  const hasActiveFilters =
+    filters.contactIds.length > 0 ||
+    filters.beforeDate !== null ||
+    filters.afterDate !== null;
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -138,17 +146,20 @@ export default function SentLettersPage() {
       </div>
 
       {/* Filter Panel - only show if contacts loaded successfully and there are contacts */}
-      {!contactsLoading && !contactsError && contacts && contacts.length > 0 && (
-        <div className="mb-4 sm:mb-6">
-          <FilterPanel
-            contacts={contacts}
-            filters={filters}
-            onFilterChange={handleFilterChange}
-            viewMode={viewMode}
-            onViewModeChange={setViewMode}
-          />
-        </div>
-      )}
+      {!contactsLoading &&
+        !contactsError &&
+        contacts &&
+        contacts.length > 0 && (
+          <div className="mb-4 sm:mb-6">
+            <FilterPanel
+              contacts={contacts}
+              filters={filters}
+              onFilterChange={handleFilterChange}
+              viewMode={viewMode}
+              onViewModeChange={setViewMode}
+            />
+          </div>
+        )}
 
       {/* Empty state - no sent letters */}
       {letters.length === 0 ? (
@@ -156,11 +167,11 @@ export default function SentLettersPage() {
           <div className="text-center max-w-md px-4">
             <div className="bg-papyrus-bg border-4 border-papyrus-border papyrus-texture papyrus-shadow p-8">
               <h2 className="font-heading text-2xl text-papyrus-text mb-4">
-                {hasActiveFilters ? 'No Matching Letters' : 'No Sent Letters'}
+                {hasActiveFilters ? "No Matching Letters" : "No Sent Letters"}
               </h2>
               <p className="font-body text-papyrus-text-light mb-6">
-                {hasActiveFilters 
-                  ? 'No letters match your current filters. Try adjusting your filter criteria.'
+                {hasActiveFilters
+                  ? "No letters match your current filters. Try adjusting your filter criteria."
                   : "You haven't sent any letters yet. Compose a new letter to get started."}
               </p>
             </div>
@@ -169,7 +180,7 @@ export default function SentLettersPage() {
       ) : (
         /* Render based on view mode */
         <>
-          {viewMode === 'stack' && (
+          {viewMode === "stack" && (
             <LetterStack
               letters={letters}
               type="sent"
@@ -180,7 +191,7 @@ export default function SentLettersPage() {
               onDelete={handleDelete}
             />
           )}
-          {viewMode === 'grid' && (
+          {viewMode === "grid" && (
             <LetterGrid
               letters={letters}
               type="sent"
@@ -188,7 +199,7 @@ export default function SentLettersPage() {
               contacts={contacts}
             />
           )}
-          {viewMode === 'list' && (
+          {viewMode === "list" && (
             <LetterList
               letters={letters}
               type="sent"

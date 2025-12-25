@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { Component, ReactNode } from 'react';
-import { PapyrusButton } from './PapyrusButton';
+import React, { Component, ReactNode } from "react";
+import { PapyrusButton } from "./PapyrusButton";
 
 interface Props {
   children: ReactNode;
@@ -24,7 +24,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    console.error("ErrorBoundary caught an error:", error, errorInfo);
   }
 
   handleReset = () => {
@@ -75,7 +75,7 @@ export class ErrorBoundary extends Component<Props, State> {
                   Try Again
                 </PapyrusButton>
                 <PapyrusButton
-                  onClick={() => window.location.href = '/'}
+                  onClick={() => (window.location.href = "/")}
                   variant="secondary"
                 >
                   Go Home

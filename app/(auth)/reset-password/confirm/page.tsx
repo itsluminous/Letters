@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { useAuth } from '@/lib/contexts/AuthContext';
-import { PapyrusButton } from '@/components/ui/PapyrusButton';
-import { PapyrusInput } from '@/components/ui/PapyrusInput';
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useAuth } from "@/lib/contexts/AuthContext";
+import { PapyrusButton } from "@/components/ui/PapyrusButton";
+import { PapyrusInput } from "@/components/ui/PapyrusInput";
 
 export default function ResetPasswordConfirmPage() {
   const router = useRouter();
   const { updatePassword } = useAuth();
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -20,17 +20,21 @@ export default function ResetPasswordConfirmPage() {
     const newErrors: { [key: string]: string } = {};
 
     if (!password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = "Password is required";
     } else if (password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters';
-    } else if (!/(?=.*[a-z])(?=.*[A-Z])|(?=.*[a-z])(?=.*[0-9])|(?=.*[A-Z])(?=.*[0-9])/.test(password)) {
-      newErrors.password = 'Password must contain letters and numbers';
+      newErrors.password = "Password must be at least 8 characters";
+    } else if (
+      !/(?=.*[a-z])(?=.*[A-Z])|(?=.*[a-z])(?=.*[0-9])|(?=.*[A-Z])(?=.*[0-9])/.test(
+        password
+      )
+    ) {
+      newErrors.password = "Password must contain letters and numbers";
     }
 
     if (!confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password';
+      newErrors.confirmPassword = "Please confirm your password";
     } else if (password !== confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
+      newErrors.confirmPassword = "Passwords do not match";
     }
 
     setErrors(newErrors);
@@ -50,13 +54,13 @@ export default function ResetPasswordConfirmPage() {
     const { error } = await updatePassword(password);
 
     if (error) {
-      setErrors({ general: error.message || 'Failed to update password' });
+      setErrors({ general: error.message || "Failed to update password" });
       setLoading(false);
     } else {
       setSuccess(true);
       setLoading(false);
       // Redirect to home after successful password reset
-      setTimeout(() => router.push('/'), 2000);
+      setTimeout(() => router.push("/"), 2000);
     }
   };
 
@@ -122,7 +126,7 @@ export default function ResetPasswordConfirmPage() {
               className="w-full"
               disabled={loading}
             >
-              {loading ? 'Updating...' : 'Update Password'}
+              {loading ? "Updating..." : "Update Password"}
             </PapyrusButton>
           </form>
 

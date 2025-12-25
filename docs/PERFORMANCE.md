@@ -9,6 +9,7 @@ This document details all performance optimizations implemented in the Letters.
 All critical query paths are indexed for optimal performance:
 
 #### letters table
+
 ```sql
 -- Recipient queries (inbox view)
 CREATE INDEX idx_letters_recipient ON letters(recipient_id, created_at);
@@ -21,6 +22,7 @@ CREATE INDEX idx_letters_read_status ON letters(recipient_id, is_read, created_a
 ```
 
 #### contacts table
+
 ```sql
 -- User's contacts lookup
 CREATE INDEX idx_contacts_user ON contacts(user_id);
@@ -30,6 +32,7 @@ CREATE INDEX idx_contacts_contact_user ON contacts(contact_user_id);
 ```
 
 #### user_profiles table
+
 ```sql
 -- Login timestamp queries
 CREATE INDEX idx_user_profiles_last_login ON user_profiles(last_login_at);
@@ -45,6 +48,7 @@ CREATE INDEX idx_user_profiles_last_login ON user_profiles(last_login_at);
 ### Row Level Security
 
 RLS policies are optimized to use indexes:
+
 - Policies filter on indexed columns (user_id, author_id, recipient_id)
 - Minimal policy complexity for fast evaluation
 - Separate policies for different operations (SELECT, INSERT, UPDATE, DELETE)
@@ -54,6 +58,7 @@ RLS policies are optimized to use indexes:
 ### Code Splitting
 
 Next.js App Router provides automatic code splitting:
+
 - Each route is a separate chunk
 - Shared components are intelligently bundled
 - Dynamic imports for heavy components (if needed)
@@ -63,15 +68,16 @@ Next.js App Router provides automatic code splitting:
 ```typescript
 // Font subsetting and preloading
 const cinzel = Cinzel({
-  subsets: ["latin"],           // Only Latin characters
-  weight: ["400", "700"],       // Only needed weights
-  display: "swap",              // Show fallback while loading
-  preload: true,                // Preload critical font
-  fallback: ["serif"],          // Fallback font stack
+  subsets: ["latin"], // Only Latin characters
+  weight: ["400", "700"], // Only needed weights
+  display: "swap", // Show fallback while loading
+  preload: true, // Preload critical font
+  fallback: ["serif"], // Fallback font stack
 });
 ```
 
 Benefits:
+
 - Reduced font file size (Latin subset only)
 - Faster initial render (display: swap)
 - Preloaded critical fonts
@@ -89,6 +95,7 @@ images: {
 ```
 
 Benefits:
+
 - AVIF/WebP for smaller file sizes
 - Responsive images for different devices
 - Lazy loading by default
@@ -97,9 +104,10 @@ Benefits:
 ### Asset Optimization
 
 #### Papyrus Texture
+
 - **Format**: SVG (vector, scalable)
 - **Size**: ~500 bytes (tiny!)
-- **Benefits**: 
+- **Benefits**:
   - Scales to any resolution
   - No pixelation
   - Instant loading
@@ -119,6 +127,7 @@ optimizeFonts: true,             // Optimize font loading
 ```
 
 Benefits:
+
 - Smaller bundle size (no console.logs)
 - Faster minification (SWC vs Terser)
 - Optimized font delivery
@@ -136,6 +145,7 @@ experimental: {
 ```
 
 Benefits:
+
 - Tree-shaking for large packages
 - Smaller bundle size
 - Faster initial load
@@ -159,6 +169,7 @@ Benefits:
 ### Animation Performance
 
 Framer Motion optimizations:
+
 - **GPU acceleration**: Transform and opacity animations
 - **Will-change hints**: Browser optimization hints
 - **Reduced motion**: Respect user preferences
@@ -169,12 +180,12 @@ Framer Motion optimizations:
 const pageTurnVariants = {
   enter: { rotateY: 90, opacity: 0, scale: 0.8 },
   center: { rotateY: 0, opacity: 1, scale: 1 },
-  exit: { rotateY: -90, opacity: 0, scale: 0.8 }
+  exit: { rotateY: -90, opacity: 0, scale: 0.8 },
 };
 
 const transition = {
   duration: 0.6,
-  ease: [0.43, 0.13, 0.23, 0.96]  // Custom easing
+  ease: [0.43, 0.13, 0.23, 0.96], // Custom easing
 };
 ```
 
@@ -324,6 +335,7 @@ lighthouse http://localhost:3000 --view
 ### Load Testing
 
 For high-traffic scenarios:
+
 - Use tools like k6, Artillery, or JMeter
 - Test database performance under load
 - Monitor Supabase metrics
@@ -335,6 +347,7 @@ For high-traffic scenarios:
 
 **Symptoms**: High TTFB, slow FCP
 **Solutions**:
+
 - Check Vercel region (should be close to users)
 - Verify database indexes
 - Review Supabase query performance
@@ -344,6 +357,7 @@ For high-traffic scenarios:
 
 **Symptoms**: Low FPS, stuttering
 **Solutions**:
+
 - Use transform and opacity only
 - Avoid animating layout properties
 - Reduce animation complexity
@@ -353,6 +367,7 @@ For high-traffic scenarios:
 
 **Symptoms**: Slow download, high TTI
 **Solutions**:
+
 - Analyze bundle with `npm run analyze`
 - Remove unused dependencies
 - Use dynamic imports
@@ -362,6 +377,7 @@ For high-traffic scenarios:
 
 **Symptoms**: High API response times
 **Solutions**:
+
 - Check Supabase query performance
 - Verify indexes are used
 - Simplify complex queries

@@ -2,15 +2,15 @@
 
 @theme {
   /* 1. The New Light Palette */
-  --color-paper-bg: #f4e8d0;     /* Main Background (Light Beige) */
-  --color-paper-card: #fdf6e3;   /* Lighter cards/letters */
-  --color-paper-dark: #e6d5b8;   /* Darker beige for UI elements */
-  
-  --color-ink: #2a1b12;          /* Primary Text (Almost Black Brown) */
-  --color-ink-light: #5c4a3f;    /* Secondary Text */
-  
-  --color-wax: #9b2c2c;          /* Red Accents */
-  --color-border: #c7b299;       /* Borders */
+  --color-paper-bg: #f4e8d0; /* Main Background (Light Beige) */
+  --color-paper-card: #fdf6e3; /* Lighter cards/letters */
+  --color-paper-dark: #e6d5b8; /* Darker beige for UI elements */
+
+  --color-ink: #2a1b12; /* Primary Text (Almost Black Brown) */
+  --color-ink-light: #5c4a3f; /* Secondary Text */
+
+  --color-wax: #9b2c2c; /* Red Accents */
+  --color-border: #c7b299; /* Borders */
 
   /* 2. Mapped to your existing variable names for compatibility */
   --color-papyrus-bg: var(--color-paper-bg);
@@ -20,7 +20,7 @@
   --color-papyrus-text-light: var(--color-ink-light);
   --color-papyrus-border: var(--color-border);
   --color-papyrus-accent: var(--color-wax);
-  
+
   /* Fonts */
   --font-heading: "Cinzel", serif;
   --font-body: "Cormorant Garamond", serif;
@@ -43,8 +43,18 @@ body {
 /* Utility Classes */
 .papyrus-texture {
   background-color: var(--color-paper-card);
-  background-image: repeating-linear-gradient(45deg, rgba(139, 69, 19, 0.03) 0px, rgba(139, 69, 19, 0.03) 1px, transparent 1px, transparent 10px);
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(139, 69, 19, 0.03) 0px,
+    rgba(139, 69, 19, 0.03) 1px,
+    transparent 1px,
+    transparent 10px
+  );
 }
 
-.papyrus-shadow { box-shadow: var(--shadow-papyrus); }
-.papyrus-shadow-lg { box-shadow: var(--shadow-papyrus-lg); }
+.papyrus-shadow {
+  box-shadow: var(--shadow-papyrus);
+}
+.papyrus-shadow-lg {
+  box-shadow: var(--shadow-papyrus-lg);
+}

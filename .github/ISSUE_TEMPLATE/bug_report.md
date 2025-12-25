@@ -1,9 +1,9 @@
 ---
 name: Bug Report
 about: Create a report to help us improve
-title: '[BUG] '
+title: "[BUG] "
 labels: bug
-assignees: ''
+assignees: ""
 ---
 
 ## Bug Description
@@ -32,26 +32,29 @@ assignees: ''
 ## Environment
 
 **Device:**
+
 - [ ] Desktop
 - [ ] Tablet
 - [ ] Mobile
 
 **Browser:**
+
 - [ ] Chrome
 - [ ] Firefox
 - [ ] Safari
 - [ ] Edge
-- [ ] Other: 
+- [ ] Other:
 
 **Operating System:**
+
 - [ ] Windows
 - [ ] macOS
 - [ ] Linux
 - [ ] iOS
 - [ ] Android
 
-**Browser Version:** 
-**OS Version:** 
+**Browser Version:**
+**OS Version:**
 
 ## Additional Context
 

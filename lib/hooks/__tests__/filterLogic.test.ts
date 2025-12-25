@@ -1,52 +1,54 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { renderHook, waitFor } from '@testing-library/react';
-import { useLetters } from '../useLetters';
-import { useSentLetters } from '../useSentLetters';
-import { createClient } from '@/lib/supabase/client';
-import { LetterFilters } from '@/lib/supabase/types';
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { renderHook, waitFor } from "@testing-library/react";
+import { useLetters } from "../useLetters";
+import { useSentLetters } from "../useSentLetters";
+import { createClient } from "@/lib/supabase/client";
+import { LetterFilters } from "@/lib/supabase/types";
 
 // Mock Supabase client
-vi.mock('@/lib/supabase/client', () => ({
+vi.mock("@/lib/supabase/client", () => ({
   createClient: vi.fn(),
 }));
 
 // Mock error logger
-vi.mock('@/lib/utils/errorLogger', () => ({
+vi.mock("@/lib/utils/errorLogger", () => ({
   logError: vi.fn(),
-  getUserFriendlyErrorMessage: vi.fn((err) => err?.message || 'An error occurred'),
+  getUserFriendlyErrorMessage: vi.fn(
+    (err) => err?.message || "An error occurred"
+  ),
   retryWithBackoff: vi.fn((fn) => fn()),
 }));
 
-describe('Filter Logic', () => {
-  const mockUser = { id: 'user-123' };
+describe("Filter Logic", () => {
+  const mockUser = { id: "user-123" };
   const mockLetters = [
     {
-      id: 'letter-1',
-      author_id: 'author-1',
-      recipient_id: 'user-123',
-      content: 'Letter from author 1',
-      created_at: '2024-01-01T10:00:00Z',
-      updated_at: '2024-01-01T10:00:00Z',
+      id: "letter-1",
+      author_id: "author-1",
+      recipient_id: "user-123",
+      content: "Letter from author 1",
+      created_at: "2024-01-01T10:00:00Z",
+      updated_at: "2024-01-01T10:00:00Z",
       is_read: false,
       read_at: null,
     },
     {
-      id: 'letter-2',
-      author_id: 'author-2',
-      recipient_id: 'user-123',
-      content: 'Letter from author 2',
-      created_at: '2024-01-05T10:00:00Z',
-      updated_at: '2024-01-05T10:00:00Z',
+      id: "letter-2",
+      author_id: "author-2",
+      recipient_id: "user-123",
+      content: "Letter from author 2",
+      created_at: "2024-01-05T10:00:00Z",
+      updated_at: "2024-01-05T10:00:00Z",
       is_read: false,
       read_at: null,
     },
     {
-      id: 'letter-3',
-      author_id: 'author-1',
-      recipient_id: 'user-123',
-      content: 'Another letter from author 1',
-      created_at: '2024-01-10T10:00:00Z',
-      updated_at: '2024-01-10T10:00:00Z',
+      id: "letter-3",
+      author_id: "author-1",
+      recipient_id: "user-123",
+      content: "Another letter from author 1",
+      created_at: "2024-01-10T10:00:00Z",
+      updated_at: "2024-01-10T10:00:00Z",
       is_read: false,
       read_at: null,
     },
@@ -75,17 +77,19 @@ describe('Filter Logic', () => {
     vi.clearAllMocks();
   });
 
-  describe('Multi-select contact filtering', () => {
-    it('should filter by single contact', async () => {
+  describe("Multi-select contact filtering", () => {
+    it("should filter by single contact", async () => {
       const filters: LetterFilters = {
-        contactIds: ['author-1'],
+        contactIds: ["author-1"],
         beforeDate: null,
         afterDate: null,
       };
 
       mockSupabase.in.mockImplementation((field: string, values: any[]) => {
-        if (field === 'author_id') {
-          const filtered = mockLetters.filter((l) => values.includes(l.author_id));
+        if (field === "author_id") {
+          const filtered = mockLetters.filter((l) =>
+            values.includes(l.author_id)
+          );
           return {
             ...mockSupabase,
             order: vi.fn(() => ({
@@ -98,7 +102,7 @@ describe('Filter Logic', () => {
       });
 
       mockSupabase.eq.mockImplementation((field: string, value: any) => {
-        if (field === 'is_read' && value === false) {
+        if (field === "is_read" && value === false) {
           return mockSupabase;
         }
         return mockSupabase;
@@ -110,19 +114,21 @@ describe('Filter Logic', () => {
         expect(result.current.isLoading).toBe(false);
       });
 
-      expect(mockSupabase.in).toHaveBeenCalledWith('author_id', ['author-1']);
+      expect(mockSupabase.in).toHaveBeenCalledWith("author_id", ["author-1"]);
     });
 
-    it('should filter by multiple contacts', async () => {
+    it("should filter by multiple contacts", async () => {
       const filters: LetterFilters = {
-        contactIds: ['author-1', 'author-2'],
+        contactIds: ["author-1", "author-2"],
         beforeDate: null,
         afterDate: null,
       };
 
       mockSupabase.in.mockImplementation((field: string, values: any[]) => {
-        if (field === 'author_id') {
-          const filtered = mockLetters.filter((l) => values.includes(l.author_id));
+        if (field === "author_id") {
+          const filtered = mockLetters.filter((l) =>
+            values.includes(l.author_id)
+          );
           return {
             ...mockSupabase,
             order: vi.fn(() => ({
@@ -135,7 +141,7 @@ describe('Filter Logic', () => {
       });
 
       mockSupabase.eq.mockImplementation((field: string, value: any) => {
-        if (field === 'is_read' && value === false) {
+        if (field === "is_read" && value === false) {
           return mockSupabase;
         }
         return mockSupabase;
@@ -147,10 +153,13 @@ describe('Filter Logic', () => {
         expect(result.current.isLoading).toBe(false);
       });
 
-      expect(mockSupabase.in).toHaveBeenCalledWith('author_id', ['author-1', 'author-2']);
+      expect(mockSupabase.in).toHaveBeenCalledWith("author_id", [
+        "author-1",
+        "author-2",
+      ]);
     });
 
-    it('should not apply contact filter when contactIds is empty', async () => {
+    it("should not apply contact filter when contactIds is empty", async () => {
       const filters: LetterFilters = {
         contactIds: [],
         beforeDate: null,
@@ -158,7 +167,7 @@ describe('Filter Logic', () => {
       };
 
       mockSupabase.eq.mockImplementation((field: string, value: any) => {
-        if (field === 'is_read' && value === false) {
+        if (field === "is_read" && value === false) {
           return {
             ...mockSupabase,
             order: vi.fn(() => ({
@@ -180,9 +189,9 @@ describe('Filter Logic', () => {
     });
   });
 
-  describe('Date range filtering', () => {
-    it('should filter letters before a specific date', async () => {
-      const beforeDate = new Date('2024-01-06T00:00:00Z');
+  describe("Date range filtering", () => {
+    it("should filter letters before a specific date", async () => {
+      const beforeDate = new Date("2024-01-06T00:00:00Z");
       const filters: LetterFilters = {
         contactIds: [],
         beforeDate,
@@ -190,7 +199,7 @@ describe('Filter Logic', () => {
       };
 
       mockSupabase.eq.mockImplementation((field: string, value: any) => {
-        if (field === 'is_read' && value === false) {
+        if (field === "is_read" && value === false) {
           return mockSupabase;
         }
         return mockSupabase;
@@ -198,9 +207,7 @@ describe('Filter Logic', () => {
 
       mockSupabase.lt.mockReturnValue(mockSupabase);
       mockSupabase.order.mockReturnValue({
-        data: mockLetters.filter(
-          (l) => new Date(l.created_at) < beforeDate
-        ),
+        data: mockLetters.filter((l) => new Date(l.created_at) < beforeDate),
         error: null,
       });
 
@@ -210,11 +217,14 @@ describe('Filter Logic', () => {
         expect(result.current.isLoading).toBe(false);
       });
 
-      expect(mockSupabase.lt).toHaveBeenCalledWith('created_at', beforeDate.toISOString());
+      expect(mockSupabase.lt).toHaveBeenCalledWith(
+        "created_at",
+        beforeDate.toISOString()
+      );
     });
 
-    it('should filter letters after a specific date', async () => {
-      const afterDate = new Date('2024-01-04T00:00:00Z');
+    it("should filter letters after a specific date", async () => {
+      const afterDate = new Date("2024-01-04T00:00:00Z");
       const filters: LetterFilters = {
         contactIds: [],
         beforeDate: null,
@@ -222,7 +232,7 @@ describe('Filter Logic', () => {
       };
 
       mockSupabase.eq.mockImplementation((field: string, value: any) => {
-        if (field === 'is_read' && value === false) {
+        if (field === "is_read" && value === false) {
           return mockSupabase;
         }
         return mockSupabase;
@@ -230,9 +240,7 @@ describe('Filter Logic', () => {
 
       mockSupabase.gt.mockReturnValue(mockSupabase);
       mockSupabase.order.mockReturnValue({
-        data: mockLetters.filter(
-          (l) => new Date(l.created_at) > afterDate
-        ),
+        data: mockLetters.filter((l) => new Date(l.created_at) > afterDate),
         error: null,
       });
 
@@ -242,12 +250,15 @@ describe('Filter Logic', () => {
         expect(result.current.isLoading).toBe(false);
       });
 
-      expect(mockSupabase.gt).toHaveBeenCalledWith('created_at', afterDate.toISOString());
+      expect(mockSupabase.gt).toHaveBeenCalledWith(
+        "created_at",
+        afterDate.toISOString()
+      );
     });
 
-    it('should filter letters within a date range', async () => {
-      const beforeDate = new Date('2024-01-08T00:00:00Z');
-      const afterDate = new Date('2024-01-02T00:00:00Z');
+    it("should filter letters within a date range", async () => {
+      const beforeDate = new Date("2024-01-08T00:00:00Z");
+      const afterDate = new Date("2024-01-02T00:00:00Z");
       const filters: LetterFilters = {
         contactIds: [],
         beforeDate,
@@ -255,7 +266,7 @@ describe('Filter Logic', () => {
       };
 
       mockSupabase.eq.mockImplementation((field: string, value: any) => {
-        if (field === 'is_read' && value === false) {
+        if (field === "is_read" && value === false) {
           return mockSupabase;
         }
         return mockSupabase;
@@ -278,23 +289,29 @@ describe('Filter Logic', () => {
         expect(result.current.isLoading).toBe(false);
       });
 
-      expect(mockSupabase.lt).toHaveBeenCalledWith('created_at', beforeDate.toISOString());
-      expect(mockSupabase.gt).toHaveBeenCalledWith('created_at', afterDate.toISOString());
+      expect(mockSupabase.lt).toHaveBeenCalledWith(
+        "created_at",
+        beforeDate.toISOString()
+      );
+      expect(mockSupabase.gt).toHaveBeenCalledWith(
+        "created_at",
+        afterDate.toISOString()
+      );
     });
   });
 
-  describe('Combined filters', () => {
-    it('should apply contact and date filters together', async () => {
-      const beforeDate = new Date('2024-01-08T00:00:00Z');
-      const afterDate = new Date('2024-01-02T00:00:00Z');
+  describe("Combined filters", () => {
+    it("should apply contact and date filters together", async () => {
+      const beforeDate = new Date("2024-01-08T00:00:00Z");
+      const afterDate = new Date("2024-01-02T00:00:00Z");
       const filters: LetterFilters = {
-        contactIds: ['author-1'],
+        contactIds: ["author-1"],
         beforeDate,
         afterDate,
       };
 
       mockSupabase.eq.mockImplementation((field: string, value: any) => {
-        if (field === 'is_read' && value === false) {
+        if (field === "is_read" && value === false) {
           return mockSupabase;
         }
         return mockSupabase;
@@ -306,7 +323,7 @@ describe('Filter Logic', () => {
       mockSupabase.order.mockReturnValue({
         data: mockLetters.filter(
           (l) =>
-            l.author_id === 'author-1' &&
+            l.author_id === "author-1" &&
             new Date(l.created_at) > afterDate &&
             new Date(l.created_at) < beforeDate
         ),
@@ -319,21 +336,27 @@ describe('Filter Logic', () => {
         expect(result.current.isLoading).toBe(false);
       });
 
-      expect(mockSupabase.in).toHaveBeenCalledWith('author_id', ['author-1']);
-      expect(mockSupabase.lt).toHaveBeenCalledWith('created_at', beforeDate.toISOString());
-      expect(mockSupabase.gt).toHaveBeenCalledWith('created_at', afterDate.toISOString());
+      expect(mockSupabase.in).toHaveBeenCalledWith("author_id", ["author-1"]);
+      expect(mockSupabase.lt).toHaveBeenCalledWith(
+        "created_at",
+        beforeDate.toISOString()
+      );
+      expect(mockSupabase.gt).toHaveBeenCalledWith(
+        "created_at",
+        afterDate.toISOString()
+      );
     });
 
-    it('should apply multiple contacts with date range', async () => {
-      const beforeDate = new Date('2024-01-12T00:00:00Z');
+    it("should apply multiple contacts with date range", async () => {
+      const beforeDate = new Date("2024-01-12T00:00:00Z");
       const filters: LetterFilters = {
-        contactIds: ['author-1', 'author-2'],
+        contactIds: ["author-1", "author-2"],
         beforeDate,
         afterDate: null,
       };
 
       mockSupabase.eq.mockImplementation((field: string, value: any) => {
-        if (field === 'is_read' && value === false) {
+        if (field === "is_read" && value === false) {
           return mockSupabase;
         }
         return mockSupabase;
@@ -344,7 +367,7 @@ describe('Filter Logic', () => {
       mockSupabase.order.mockReturnValue({
         data: mockLetters.filter(
           (l) =>
-            ['author-1', 'author-2'].includes(l.author_id) &&
+            ["author-1", "author-2"].includes(l.author_id) &&
             new Date(l.created_at) < beforeDate
         ),
         error: null,
@@ -356,19 +379,25 @@ describe('Filter Logic', () => {
         expect(result.current.isLoading).toBe(false);
       });
 
-      expect(mockSupabase.in).toHaveBeenCalledWith('author_id', ['author-1', 'author-2']);
-      expect(mockSupabase.lt).toHaveBeenCalledWith('created_at', beforeDate.toISOString());
+      expect(mockSupabase.in).toHaveBeenCalledWith("author_id", [
+        "author-1",
+        "author-2",
+      ]);
+      expect(mockSupabase.lt).toHaveBeenCalledWith(
+        "created_at",
+        beforeDate.toISOString()
+      );
     });
 
-    it('should maintain sort order with filters applied', async () => {
+    it("should maintain sort order with filters applied", async () => {
       const filters: LetterFilters = {
-        contactIds: ['author-1'],
+        contactIds: ["author-1"],
         beforeDate: null,
         afterDate: null,
       };
 
       mockSupabase.eq.mockImplementation((field: string, value: any) => {
-        if (field === 'is_read' && value === false) {
+        if (field === "is_read" && value === false) {
           return mockSupabase;
         }
         return mockSupabase;
@@ -376,7 +405,7 @@ describe('Filter Logic', () => {
 
       mockSupabase.in.mockReturnValue(mockSupabase);
       mockSupabase.order.mockReturnValue({
-        data: mockLetters.filter((l) => l.author_id === 'author-1'),
+        data: mockLetters.filter((l) => l.author_id === "author-1"),
         error: null,
       });
 
@@ -387,12 +416,14 @@ describe('Filter Logic', () => {
       });
 
       // Verify that order is called with correct parameters for unread letters (oldest first)
-      expect(mockSupabase.order).toHaveBeenCalledWith('created_at', { ascending: true });
+      expect(mockSupabase.order).toHaveBeenCalledWith("created_at", {
+        ascending: true,
+      });
     });
   });
 
-  describe('Filter clearing', () => {
-    it('should return all letters when filters are cleared', async () => {
+  describe("Filter clearing", () => {
+    it("should return all letters when filters are cleared", async () => {
       const emptyFilters: LetterFilters = {
         contactIds: [],
         beforeDate: null,
@@ -400,7 +431,7 @@ describe('Filter Logic', () => {
       };
 
       mockSupabase.eq.mockImplementation((field: string, value: any) => {
-        if (field === 'is_read' && value === false) {
+        if (field === "is_read" && value === false) {
           return {
             ...mockSupabase,
             order: vi.fn(() => ({

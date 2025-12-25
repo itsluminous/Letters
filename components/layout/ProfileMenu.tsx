@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/lib/contexts/AuthContext';
-import { cn } from '@/lib/utils/cn';
+import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/contexts/AuthContext";
+import { cn } from "@/lib/utils/cn";
 
 interface ProfileMenuProps {
   isOpen: boolean;
@@ -24,7 +24,7 @@ export function ProfileMenu({
   const [copied, setCopied] = useState(false);
 
   const handleAddContact = () => {
-    router.push('/contacts/add');
+    router.push("/contacts/add");
     onClose();
   };
 
@@ -44,19 +44,19 @@ export function ProfileMenu({
     };
 
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         onClose();
       }
     };
 
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      document.addEventListener('keydown', handleEscape);
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("keydown", handleEscape);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('keydown', handleEscape);
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
     };
   }, [isOpen, onClose]);
 
@@ -66,8 +66,8 @@ export function ProfileMenu({
     <div
       ref={menuRef}
       className={cn(
-        'absolute right-0 mt-2 w-64 bg-papyrus-dark border-2 border-papyrus-border papyrus-shadow-lg',
-        'animate-in'
+        "absolute right-0 mt-2 w-64 bg-papyrus-dark border-2 border-papyrus-border papyrus-shadow-lg",
+        "animate-in"
       )}
       role="menu"
       aria-orientation="vertical"
@@ -76,7 +76,9 @@ export function ProfileMenu({
         {/* User ID Display */}
         {user?.id && (
           <div className="px-4 py-3 border-b border-papyrus-border">
-            <div className="text-xs text-papyrus-text-light font-body mb-1">Your User ID</div>
+            <div className="text-xs text-papyrus-text-light font-body mb-1">
+              Your User ID
+            </div>
             <div className="flex items-center gap-2">
               <code className="text-xs text-papyrus-text font-mono flex-1 truncate">
                 {user.id}
@@ -85,7 +87,7 @@ export function ProfileMenu({
                 onClick={handleCopyUserId}
                 className="flex-shrink-0 p-1 hover:bg-papyrus-darker rounded transition-colors duration-150 cursor-pointer"
                 aria-label="Copy user ID"
-                title={copied ? 'Copied!' : 'Copy user ID'}
+                title={copied ? "Copied!" : "Copy user ID"}
               >
                 {copied ? (
                   <svg

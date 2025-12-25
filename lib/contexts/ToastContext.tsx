@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { createContext, useContext, useState, useCallback } from 'react';
-import PapyrusToast, { Toast, ToastType } from '@/components/ui/PapyrusToast';
+import React, { createContext, useContext, useState, useCallback } from "react";
+import PapyrusToast, { Toast, ToastType } from "@/components/ui/PapyrusToast";
 
 interface ToastContextType {
   showToast: (message: string, type?: ToastType, duration?: number) => void;
@@ -17,7 +17,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const showToast = useCallback(
-    (message: string, type: ToastType = 'info', duration?: number) => {
+    (message: string, type: ToastType = "info", duration?: number) => {
       const id = Math.random().toString(36).substring(2, 9);
       const newToast: Toast = { id, message, type, duration };
       setToasts((prev) => [...prev, newToast]);
@@ -27,28 +27,28 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 
   const showError = useCallback(
     (message: string, duration?: number) => {
-      showToast(message, 'error', duration);
+      showToast(message, "error", duration);
     },
     [showToast]
   );
 
   const showSuccess = useCallback(
     (message: string, duration?: number) => {
-      showToast(message, 'success', duration);
+      showToast(message, "success", duration);
     },
     [showToast]
   );
 
   const showWarning = useCallback(
     (message: string, duration?: number) => {
-      showToast(message, 'warning', duration);
+      showToast(message, "warning", duration);
     },
     [showToast]
   );
 
   const showInfo = useCallback(
     (message: string, duration?: number) => {
-      showToast(message, 'info', duration);
+      showToast(message, "info", duration);
     },
     [showToast]
   );
@@ -66,7 +66,11 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       <div className="fixed top-4 right-4 z-50 max-w-md w-full pointer-events-none">
         <div className="pointer-events-auto">
           {toasts.map((toast) => (
-            <PapyrusToast key={toast.id} toast={toast} onDismiss={dismissToast} />
+            <PapyrusToast
+              key={toast.id}
+              toast={toast}
+              onDismiss={dismissToast}
+            />
           ))}
         </div>
       </div>
@@ -77,7 +81,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 export function useToast() {
   const context = useContext(ToastContext);
   if (context === undefined) {
-    throw new Error('useToast must be used within a ToastProvider');
+    throw new Error("useToast must be used within a ToastProvider");
   }
   return context;
 }

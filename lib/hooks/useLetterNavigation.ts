@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { Letter } from '@/lib/supabase/types';
+import { useState, useEffect, useCallback, useRef } from "react";
+import { Letter } from "@/lib/supabase/types";
 
 /**
  * Options for configuring the letter navigation hook
@@ -41,7 +41,7 @@ export interface UseLetterNavigationReturn {
 
 // Responsive thresholds based on device type
 const getSwipeThreshold = () => {
-  if (typeof window === 'undefined') return 50;
+  if (typeof window === "undefined") return 50;
   // Lower threshold on mobile for easier swiping
   return window.innerWidth < 768 ? 30 : 50;
 };
@@ -50,18 +50,18 @@ const WHEEL_THRESHOLD = 50; // Minimum wheel delta for navigation
 
 /**
  * Custom hook for managing letter navigation state and gestures
- * 
+ *
  * Provides navigation controls, boundary detection, and gesture handling
  * for navigating through a collection of letters.
- * 
+ *
  * @param letters - Array of letters to navigate through
  * @param initialIndex - Starting index (default: 0)
  * @param options - Configuration options
  * @returns Navigation state and control functions
- * 
+ *
  * @example
  * ```tsx
- * const { currentLetter, goNext, goPrev, canGoNext, canGoPrev } = 
+ * const { currentLetter, goNext, goPrev, canGoNext, canGoPrev } =
  *   useLetterNavigation(letters, 0, {
  *     onNavigate: (index) => console.log('Navigated to', index),
  *     enableGestures: true
@@ -75,12 +75,12 @@ export function useLetterNavigation(
   options: UseLetterNavigationOptions = {}
 ): UseLetterNavigationReturn {
   const { onNavigate, enableGestures = true } = options;
-  
+
   const [currentIndex, setCurrentIndex] = useState(
     Math.max(0, Math.min(initialIndex, letters.length - 1))
   );
   const [direction, setDirection] = useState(0);
-  
+
   const wheelAccumulatorRef = useRef(0);
   const lastWheelTimeRef = useRef(0);
 
@@ -131,7 +131,7 @@ export function useLetterNavigation(
       if (!enableGestures) return;
 
       const threshold = getSwipeThreshold();
-      
+
       if (deltaX < -threshold) {
         // Swipe left - go to next
         goNext();

@@ -45,6 +45,7 @@ cd letters
 ### Step 4: Configure Environment Variables
 
 1. In the project root, copy the example environment file:
+
    ```bash
    cp .env.local.example .env.local
    ```
@@ -155,6 +156,7 @@ The CI/CD workflows need your Supabase credentials to build the application.
 #### Verify Secrets
 
 After adding both secrets, you should see them listed:
+
 - ✅ NEXT_PUBLIC_SUPABASE_URL
 - ✅ NEXT_PUBLIC_SUPABASE_ANON_KEY
 
@@ -178,6 +180,7 @@ Replace `itsluminous` with your actual GitHub username in these files:
    - Security advisory link
 
 **Quick command** (macOS/Linux):
+
 ```bash
 # Replace 'itsluminous' with your username
 sed -i '' 's/itsluminous/YOUR_GITHUB_USERNAME/g' README.md
@@ -215,11 +218,13 @@ sed -i '' 's/itsluminous/YOUR_GITHUB_USERNAME/g' .github/ISSUE_TEMPLATE/config.y
 ### Step 5: Test the CI/CD Pipeline
 
 1. Create a test branch:
+
    ```bash
    git checkout -b test/verify-ci-pipeline
    ```
 
 2. Make a small change:
+
    ```bash
    echo "# CI/CD Test" >> test.md
    git add test.md
@@ -227,6 +232,7 @@ sed -i '' 's/itsluminous/YOUR_GITHUB_USERNAME/g' .github/ISSUE_TEMPLATE/config.y
    ```
 
 3. Push to GitHub:
+
    ```bash
    git push origin test/verify-ci-pipeline
    ```
@@ -257,6 +263,7 @@ sed -i '' 's/itsluminous/YOUR_GITHUB_USERNAME/g' .github/ISSUE_TEMPLATE/config.y
 ### Automated Checks
 
 Every push and pull request triggers:
+
 - ✅ Code quality checks (ESLint, TypeScript, Prettier)
 - ✅ Security audits (npm audit, CodeQL, secret scanning)
 - ✅ Unit tests with coverage reporting
@@ -295,6 +302,7 @@ Use conventional commit format for all commits:
 ```
 
 **Types**:
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -306,6 +314,7 @@ Use conventional commit format for all commits:
 - `ci`: CI/CD changes
 
 **Examples**:
+
 ```bash
 feat: add letter filtering by date range
 fix: resolve navigation bug on mobile
@@ -320,21 +329,25 @@ test: add navigation tests
 ### Local Development Issues
 
 #### "Invalid API key" error
+
 - Double-check your `.env.local` file has the correct credentials
 - Make sure you copied the full keys without any extra spaces
 - Restart the dev server after changing environment variables
 
 #### Database connection errors
+
 - Verify your Supabase project is active (not paused)
 - Check that all migrations ran successfully
 - Ensure RLS policies are enabled on all tables
 
 #### Authentication issues
+
 - Clear your browser cookies and try again
 - Check the Supabase dashboard → Authentication → Users to see if users are being created
 - Verify the `user_profiles` table has the correct RLS policies
 
 #### Build fails locally
+
 ```bash
 # Clear cache and rebuild
 rm -rf .next node_modules package-lock.json
@@ -349,6 +362,7 @@ npm run build
 **Cause**: GitHub Secrets not configured or incorrect
 
 **Solution**:
+
 1. Verify secrets are added: Settings → Secrets and variables → Actions
 2. Check secret names match exactly: `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 3. Verify values are complete (anon key is very long)
@@ -359,6 +373,7 @@ npm run build
 **Cause**: GitHub Actions not enabled
 
 **Solution**:
+
 1. Go to Settings → Actions → General
 2. Enable "Allow all actions and reusable workflows"
 3. Enable "Read and write permissions"
@@ -368,6 +383,7 @@ npm run build
 **Cause**: Branch protection not configured correctly
 
 **Solution**:
+
 1. Go to Settings → Branches
 2. Edit the branch protection rule for `main`
 3. Verify required status checks are selected
@@ -376,6 +392,7 @@ npm run build
 #### Tests fail in CI but pass locally
 
 **Solution**:
+
 1. Check Node.js version matches (20.x)
 2. Ensure environment variables are set in GitHub Secrets
 3. Review CI logs for specific errors
@@ -384,6 +401,7 @@ npm run build
 #### Security audit fails
 
 **Solution**:
+
 1. Run `npm audit` locally
 2. Review vulnerability details
 3. Update vulnerable packages: `npm audit fix`
@@ -437,12 +455,14 @@ npm start
 ### Required Environment Variables
 
 **Local Development** (`.env.local`):
+
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
 ```
 
 **GitHub Secrets** (for CI/CD):
+
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
@@ -469,12 +489,14 @@ GitHub Repository → Settings → Secrets and variables → Actions → New rep
 Once setup is complete:
 
 ### For Local Development
+
 1. Add a contact by clicking "Add Contact" in the title bar
 2. Compose a letter by clicking "Create New Letter"
 3. View sent letters from the profile menu
 4. Filter letters by contact and date range
 
 ### For CI/CD
+
 1. Create feature branches for new work
 2. Use conventional commits
 3. Create pull requests

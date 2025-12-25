@@ -8,11 +8,11 @@ const config: Config = {
   ],
   theme: {
     screens: {
-      'sm': '640px',   // Mobile landscape / Small tablets
-      'md': '768px',   // Tablets
-      'lg': '1024px',  // Desktop
-      'xl': '1280px',  // Large desktop
-      '2xl': '1536px', // Extra large desktop
+      sm: "640px", // Mobile landscape / Small tablets
+      md: "768px", // Tablets
+      lg: "1024px", // Desktop
+      xl: "1280px", // Large desktop
+      "2xl": "1536px", // Extra large desktop
     },
     extend: {
       colors: {
@@ -50,7 +50,7 @@ const config: Config = {
         },
       },
       animation: {
-        "in": "fade-in 0.2s ease-out, zoom-in 0.2s ease-out",
+        in: "fade-in 0.2s ease-out, zoom-in 0.2s ease-out",
         "slide-up": "slide-up 0.3s ease-out",
         "slide-down": "slide-down 0.3s ease-out",
       },

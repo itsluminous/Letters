@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useRef, useEffect } from 'react';
-import { cn } from '@/lib/utils/cn';
+import React, { useState, useRef, useEffect } from "react";
+import { cn } from "@/lib/utils/cn";
 
 export interface PapyrusSelectOption {
   value: string;
@@ -21,21 +21,34 @@ export interface PapyrusSelectProps {
 }
 
 export const PapyrusSelect: React.FC<PapyrusSelectProps> = ({
-  options, value, onChange, placeholder = 'Select...', label, error, multiple = false, className, disabled = false,
+  options,
+  value,
+  onChange,
+  placeholder = "Select...",
+  label,
+  error,
+  multiple = false,
+  className,
+  disabled = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const close = (e: MouseEvent) => containerRef.current && !containerRef.current.contains(e.target as Node) && setIsOpen(false);
-    document.addEventListener('mousedown', close);
-    return () => document.removeEventListener('mousedown', close);
+    const close = (e: MouseEvent) =>
+      containerRef.current &&
+      !containerRef.current.contains(e.target as Node) &&
+      setIsOpen(false);
+    document.addEventListener("mousedown", close);
+    return () => document.removeEventListener("mousedown", close);
   }, []);
 
   const handleSelect = (optionValue: string) => {
     if (multiple) {
       const current = Array.isArray(value) ? value : [];
-      const next = current.includes(optionValue) ? current.filter(v => v !== optionValue) : [...current, optionValue];
+      const next = current.includes(optionValue)
+        ? current.filter((v) => v !== optionValue)
+        : [...current, optionValue];
       onChange(next);
     } else {
       onChange(optionValue);
@@ -43,37 +56,48 @@ export const PapyrusSelect: React.FC<PapyrusSelectProps> = ({
     }
   };
 
-  const isSelected = (v: string) => Array.isArray(value) ? value.includes(v) : value === v;
-  
+  const isSelected = (v: string) =>
+    Array.isArray(value) ? value.includes(v) : value === v;
+
   // Get display label
-  const displayLabel = !value || (Array.isArray(value) && value.length === 0) 
-    ? null 
-    : options.find(o => o.value === (Array.isArray(value) ? value[0] : value))?.label;
+  const displayLabel =
+    !value || (Array.isArray(value) && value.length === 0)
+      ? null
+      : options.find(
+          (o) => o.value === (Array.isArray(value) ? value[0] : value)
+        )?.label;
 
   return (
-    <div className={cn('w-full relative', className)} ref={containerRef}>
+    <div className={cn("w-full relative", className)} ref={containerRef}>
       {label && (
         <label className="block mb-1 text-xs font-heading font-bold uppercase tracking-widest text-ink-faded">
           {label}
         </label>
       )}
-      
+
       <button
         type="button"
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
         className={cn(
-          'w-full py-2 text-left font-hand text-2xl text-ink bg-transparent',
-          'border-b-2 border-[#5c4a3f]/30 hover:border-wax',
-          'flex items-center justify-between transition-colors duration-300 focus:outline-none',
-          disabled && 'opacity-50 cursor-not-allowed',
-          error && 'border-red-800/60'
+          "w-full py-2 text-left font-hand text-2xl text-ink bg-transparent",
+          "border-b-2 border-[#5c4a3f]/30 hover:border-wax",
+          "flex items-center justify-between transition-colors duration-300 focus:outline-none",
+          disabled && "opacity-50 cursor-not-allowed",
+          error && "border-red-800/60"
         )}
       >
-        <span className={cn(!displayLabel && 'text-ink-faded/50 italic')}>
-          {displayLabel || (multiple && Array.isArray(value) && value.length > 0 ? `${value.length} selected` : placeholder)}
+        <span className={cn(!displayLabel && "text-ink-faded/50 italic")}>
+          {displayLabel ||
+            (multiple && Array.isArray(value) && value.length > 0
+              ? `${value.length} selected`
+              : placeholder)}
         </span>
-        <span className={`text-xs text-ink-faded transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>▼</span>
+        <span
+          className={`text-xs text-ink-faded transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+        >
+          ▼
+        </span>
       </button>
 
       {isOpen && (
@@ -84,20 +108,22 @@ export const PapyrusSelect: React.FC<PapyrusSelectProps> = ({
               type="button"
               onClick={() => handleSelect(option.value)}
               className={cn(
-                'w-full px-6 py-3 text-left font-serif text-lg transition-colors',
-                'hover:bg-[#2c1a0f]/5 text-ink',
-                isSelected(option.value) && 'bg-ink/10 font-bold text-wax'
+                "w-full px-6 py-3 text-left font-serif text-lg transition-colors",
+                "hover:bg-[#2c1a0f]/5 text-ink",
+                isSelected(option.value) && "bg-ink/10 font-bold text-wax"
               )}
             >
-               <span className="inline-block w-6 text-center font-hand">
-                 {isSelected(option.value) ? '✓' : ''}
-               </span>
-               {option.label}
+              <span className="inline-block w-6 text-center font-hand">
+                {isSelected(option.value) ? "✓" : ""}
+              </span>
+              {option.label}
             </button>
           ))}
         </div>
       )}
-      {error && <p className="mt-2 text-sm text-red-800 font-serif italic">{error}</p>}
+      {error && (
+        <p className="mt-2 text-sm text-red-800 font-serif italic">{error}</p>
+      )}
     </div>
   );
 };

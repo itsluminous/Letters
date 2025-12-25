@@ -5,6 +5,7 @@ This document describes the comprehensive error handling and loading state syste
 ## Components
 
 ### 1. Toast Notifications (`PapyrusToast`)
+
 - **Location**: `components/ui/PapyrusToast.tsx`
 - **Purpose**: Display temporary notifications for errors, success, warnings, and info messages
 - **Features**:
@@ -15,17 +16,20 @@ This document describes the comprehensive error handling and loading state syste
   - Stacks multiple toasts vertically
 
 ### 2. Toast Context (`ToastContext`)
+
 - **Location**: `lib/contexts/ToastContext.tsx`
 - **Purpose**: Global toast management system
 - **Usage**:
+
   ```typescript
   const { showError, showSuccess, showWarning, showInfo } = useToast();
-  
-  showError('Something went wrong');
-  showSuccess('Operation completed!');
+
+  showError("Something went wrong");
+  showSuccess("Operation completed!");
   ```
 
 ### 3. Loading Spinners (`PapyrusSpinner`)
+
 - **Location**: `components/ui/PapyrusSpinner.tsx`
 - **Components**:
   - `PapyrusSpinner`: Standalone spinner with optional text
@@ -38,6 +42,7 @@ This document describes the comprehensive error handling and loading state syste
   ```
 
 ### 4. Error Boundary (`ErrorBoundary`)
+
 - **Location**: `components/ui/ErrorBoundary.tsx`
 - **Purpose**: Catch React component errors and display fallback UI
 - **Features**:
@@ -47,6 +52,7 @@ This document describes the comprehensive error handling and loading state syste
   - Wraps entire app in root layout
 
 ### 5. Error Logger (`errorLogger`)
+
 - **Location**: `lib/utils/errorLogger.ts`
 - **Functions**:
   - `logError()`: Log errors with context
@@ -75,17 +81,20 @@ All custom hooks have been updated with:
 ## Implementation in Pages
 
 ### Authentication Pages
+
 - Display loading spinners during auth operations
 - Show toast notifications for errors and success
 - Remove inline error displays in favor of toasts
 
 ### Main Pages (Home, Sent, Compose)
+
 - Use `PapyrusSpinner` for loading states
 - Display error states with retry button
 - Show toast notifications for all operations
 - Loading overlays for async operations
 
 ### Contact Management
+
 - Toast notifications for add/delete operations
 - Inline validation errors for form fields
 - Loading states on submit buttons
@@ -93,22 +102,27 @@ All custom hooks have been updated with:
 ## Error Types and Messages
 
 ### Network Errors
+
 - Original: "fetch failed", "network error"
 - User-friendly: "Network error. Please check your connection and try again."
 
 ### Authentication Errors
+
 - Original: "unauthorized", "auth failed"
 - User-friendly: "Authentication failed. Please log in again."
 
 ### Timeout Errors
+
 - Original: "timeout"
 - User-friendly: "Request timed out. Please try again."
 
 ### Not Found Errors
+
 - Original: "not found", "404"
 - User-friendly: "The requested resource was not found."
 
 ### Permission Errors
+
 - Original: "forbidden", "permission denied"
 - User-friendly: "You do not have permission to perform this action."
 

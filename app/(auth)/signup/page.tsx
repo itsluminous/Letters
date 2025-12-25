@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { useAuth } from '@/lib/contexts/AuthContext';
-import { PapyrusButton } from '@/components/ui/PapyrusButton';
-import { PapyrusInput } from '@/components/ui/PapyrusInput';
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useAuth } from "@/lib/contexts/AuthContext";
+import { PapyrusButton } from "@/components/ui/PapyrusButton";
+import { PapyrusInput } from "@/components/ui/PapyrusInput";
 
 export default function SignupPage() {
   const router = useRouter();
   const { signUp } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -21,23 +21,27 @@ export default function SignupPage() {
     const newErrors: { [key: string]: string } = {};
 
     if (!email) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = 'Email is invalid';
+      newErrors.email = "Email is invalid";
     }
 
     if (!password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = "Password is required";
     } else if (password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters';
-    } else if (!/(?=.*[a-z])(?=.*[A-Z])|(?=.*[a-z])(?=.*[0-9])|(?=.*[A-Z])(?=.*[0-9])/.test(password)) {
-      newErrors.password = 'Password must contain letters and numbers';
+      newErrors.password = "Password must be at least 8 characters";
+    } else if (
+      !/(?=.*[a-z])(?=.*[A-Z])|(?=.*[a-z])(?=.*[0-9])|(?=.*[A-Z])(?=.*[0-9])/.test(
+        password
+      )
+    ) {
+      newErrors.password = "Password must contain letters and numbers";
     }
 
     if (!confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password';
+      newErrors.confirmPassword = "Please confirm your password";
     } else if (password !== confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
+      newErrors.confirmPassword = "Passwords do not match";
     }
 
     setErrors(newErrors);
@@ -57,13 +61,13 @@ export default function SignupPage() {
     const { error } = await signUp(email, password);
 
     if (error) {
-      setErrors({ general: error.message || 'Failed to create account' });
+      setErrors({ general: error.message || "Failed to create account" });
       setLoading(false);
     } else {
       setSuccess(true);
       setLoading(false);
       // Redirect to home after successful signup
-      setTimeout(() => router.push('/'), 1500);
+      setTimeout(() => router.push("/"), 1500);
     }
   };
 
@@ -139,13 +143,13 @@ export default function SignupPage() {
               className="w-full"
               disabled={loading}
             >
-              {loading ? 'Creating account...' : 'Sign Up'}
+              {loading ? "Creating account..." : "Sign Up"}
             </PapyrusButton>
           </form>
 
           <div className="mt-6 text-center">
             <div className="text-sm text-papyrus-text-light font-body">
-              Already have an account?{' '}
+              Already have an account?{" "}
               <Link
                 href="/login"
                 className="text-papyrus-accent hover:text-papyrus-text font-semibold underline"

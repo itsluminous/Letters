@@ -23,7 +23,6 @@
   - Create Supabase client utilities (client.ts, server.ts)
   - _Requirements: 1.2, 2.2, 16.1, 16.2, 16.3, 16.4, 16.5, 16.6, 16.7_
 
-
 - [x] 3. Create papyrus theme and base UI components
   - Define papyrus color palette in Tailwind config
   - Create papyrus texture CSS/SVG assets
@@ -50,7 +49,6 @@
   - Create authentication middleware for protected routes
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 2.1, 2.2, 2.3, 2.4, 2.5, 3.1, 3.2, 3.3, 3.4, 3.5_
 
-
 - [x] 5. Create main layout with title bar and navigation
   - Implement TitleBar component with papyrus styling
   - Add "Create New Letter" button to title bar
@@ -70,7 +68,6 @@
   - Implement responsive layout for different screen sizes
   - Add edit and delete action icons (conditionally shown)
   - _Requirements: 6.1, 6.2, 6.3, 10.2, 10.3, 14.1, 14.2_
-
 
 - [x] 7. Create letter navigation with animations
   - Implement LetterNavigation component with arrow buttons
@@ -94,7 +91,6 @@
   - Add click handlers for letter selection
   - Style stack for responsive layouts
   - _Requirements: 4.2, 4.3, 4.5_
-
 
 - [x] 9. Create home page with inbox functionality
   - Create home page route (app/(main)/page.tsx)
@@ -122,7 +118,6 @@
   - Display filter panel on home page
   - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5, 9.6, 9.7, 9.8, 9.9, 9.10_
 
-
 - [x] 11. Create contact management functionality
   - Create add contact page route (app/(main)/contacts/add/page.tsx)
   - Implement add contact form with user ID and display name fields
@@ -148,7 +143,6 @@
   - Navigate to home page after successful send
   - _Requirements: 10.1, 10.2, 10.3, 10.4, 10.5, 11.1, 11.2, 11.3, 11.4, 11.5_
 
-
 - [x] 13. Create sent letters view with filtering
   - Create sent letters page route (app/(main)/sent/page.tsx)
   - Implement useSentLetters custom hook
@@ -173,7 +167,6 @@
   - Handle delete confirmation and cancellation
   - Navigate back to sent view after successful deletion
   - _Requirements: 14.1, 14.2, 14.3, 14.4, 14.5, 14.6, 14.7, 14.8, 14.9_
-
 
 - [x] 15. Implement responsive design for all screen sizes
   - Configure Tailwind breakpoints for mobile, tablet, desktop
@@ -201,7 +194,6 @@
   - Add error logging for debugging
   - _Requirements: All requirements benefit from proper error handling_
 
-
 - [x] 17. Write unit tests for core functionality
   - [x] 17.1 Write tests for useLetters hook
     - Test letter fetching with different filter combinations
@@ -221,24 +213,23 @@
     - Test combined filters
     - _Requirements: 9.2, 9.5, 9.7, 9.8_
 
-- [ ]* 18. Write integration tests for key user flows
-  - [ ]* 18.1 Test authentication flow
+- [ ]\* 18. Write integration tests for key user flows
+  - [ ]\* 18.1 Test authentication flow
     - Test signup, login, and password reset
     - Test session management
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 2.1, 2.2, 2.3, 2.4, 2.5_
-  - [ ]* 18.2 Test letter composition and sending
+  - [ ]\* 18.2 Test letter composition and sending
     - Test creating and sending a letter
     - Test validation errors
     - _Requirements: 10.1, 10.2, 10.3, 10.4, 10.5, 11.1, 11.2, 11.3_
-  - [ ]* 18.3 Test letter reading and navigation
+  - [ ]\* 18.3 Test letter reading and navigation
     - Test viewing letters and marking as read
     - Test navigation between letters
     - _Requirements: 4.1, 4.2, 5.2, 5.3, 6.4, 6.5_
-  - [ ]* 18.4 Test edit and delete functionality
+  - [ ]\* 18.4 Test edit and delete functionality
     - Test editing unseen letters
     - Test deleting with confirmation
     - _Requirements: 14.3, 14.4, 14.5, 14.7, 14.8_
-
 
 - [x] 19. Create comprehensive README documentation
   - Write project overview and description

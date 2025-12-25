@@ -35,16 +35,19 @@ SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 ### Option 2: Using Supabase CLI
 
 1. Install Supabase CLI:
+
 ```bash
 npm install -g supabase
 ```
 
 2. Link your project:
+
 ```bash
 supabase link --project-ref your-project-ref
 ```
 
 3. Push migrations:
+
 ```bash
 supabase db push
 ```
@@ -54,14 +57,18 @@ supabase db push
 ### Tables
 
 #### user_profiles
+
 Extends Supabase auth.users with additional profile information.
+
 - `id` (UUID, PK): References auth.users(id)
 - `last_login_at` (TIMESTAMPTZ): Last login timestamp
 - `created_at` (TIMESTAMPTZ): Profile creation timestamp
 - `updated_at` (TIMESTAMPTZ): Last update timestamp
 
 #### letters
+
 Stores letters exchanged between users.
+
 - `id` (UUID, PK): Unique letter identifier
 - `author_id` (UUID, FK): References auth.users(id)
 - `recipient_id` (UUID, FK): References auth.users(id)
@@ -72,7 +79,9 @@ Stores letters exchanged between users.
 - `read_at` (TIMESTAMPTZ): When recipient read the letter
 
 #### contacts
+
 Stores user contact relationships.
+
 - `id` (UUID, PK): Unique contact identifier
 - `user_id` (UUID, FK): References auth.users(id)
 - `contact_user_id` (UUID, FK): References auth.users(id)
@@ -84,9 +93,11 @@ Stores user contact relationships.
 All tables have RLS enabled with the following policies:
 
 ### user_profiles
+
 - Users can read, update, and insert their own profile
 
 ### letters
+
 - Users can read letters they authored or received
 - Users can create letters as author
 - Recipients can mark letters as read
@@ -94,11 +105,13 @@ All tables have RLS enabled with the following policies:
 - Authors can delete unread letters
 
 ### contacts
+
 - Users can read, create, update, and delete their own contacts
 
 ## Indexes
 
 Performance indexes are created on:
+
 - `letters`: recipient_id, author_id, read_status with created_at
 - `contacts`: user_id, contact_user_id
 - `user_profiles`: last_login_at
@@ -108,21 +121,24 @@ Performance indexes are created on:
 After running migrations, verify the setup:
 
 1. Check tables exist:
+
 ```sql
-SELECT table_name FROM information_schema.tables 
+SELECT table_name FROM information_schema.tables
 WHERE table_schema = 'public';
 ```
 
 2. Verify RLS is enabled:
+
 ```sql
-SELECT tablename, rowsecurity 
-FROM pg_tables 
+SELECT tablename, rowsecurity
+FROM pg_tables
 WHERE schemaname = 'public';
 ```
 
 3. Check policies:
+
 ```sql
-SELECT schemaname, tablename, policyname 
-FROM pg_policies 
+SELECT schemaname, tablename, policyname
+FROM pg_policies
 WHERE schemaname = 'public';
 ```

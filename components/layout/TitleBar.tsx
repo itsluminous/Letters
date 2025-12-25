@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { PapyrusButton } from '@/components/ui/PapyrusButton';
-import { ProfileMenu } from './ProfileMenu';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/lib/contexts/AuthContext';
+import React, { useState, useEffect } from "react";
+import { PapyrusButton } from "@/components/ui/PapyrusButton";
+import { ProfileMenu } from "./ProfileMenu";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/contexts/AuthContext";
 
 export function TitleBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,33 +15,33 @@ export function TitleBar() {
   // Handle Esc key to close info popup
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isInfoOpen) {
+      if (e.key === "Escape" && isInfoOpen) {
         setIsInfoOpen(false);
       }
     };
 
     if (isInfoOpen) {
-      document.addEventListener('keydown', handleEscape);
-      return () => document.removeEventListener('keydown', handleEscape);
+      document.addEventListener("keydown", handleEscape);
+      return () => document.removeEventListener("keydown", handleEscape);
     }
   }, [isInfoOpen]);
 
   const handleCreateLetter = () => {
-    router.push('/compose');
+    router.push("/compose");
   };
 
   const handleGoHome = () => {
-    router.push('/');
+    router.push("/");
   };
 
   const handleSentLetters = () => {
-    router.push('/sent');
+    router.push("/sent");
     setIsMenuOpen(false);
   };
 
   const handleLogout = async () => {
     await signOut();
-    router.push('/login');
+    router.push("/login");
     setIsMenuOpen(false);
   };
 
@@ -179,7 +179,7 @@ export function TitleBar() {
 
       {/* Info Popup */}
       {isInfoOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
           onClick={handleBackdropClick}
         >
@@ -210,61 +210,174 @@ export function TitleBar() {
                 Why Write Letters?
               </h2>
               <div className="font-body text-papyrus-text space-y-4">
-                <p>When couples are upset, disappointed, or frustrated, they temporarily lose access to their loving feelings (trust, caring, appreciation). In this state, verbal communication often fails because it escalates into fighting, with one person feeling blamed and the other becoming defensive.</p>
-                
-                <p><b>Writing creates a &ldquo;circuit breaker&rdquo; in this negative loop.</b></p>
-                
+                <p>
+                  When couples are upset, disappointed, or frustrated, they
+                  temporarily lose access to their loving feelings (trust,
+                  caring, appreciation). In this state, verbal communication
+                  often fails because it escalates into fighting, with one
+                  person feeling blamed and the other becoming defensive.
+                </p>
+
+                <p>
+                  <b>
+                    Writing creates a &ldquo;circuit breaker&rdquo; in this
+                    negative loop.
+                  </b>
+                </p>
+
                 <h4>How Letter Writing Helps:</h4>
                 <ol>
-                    <li><b>Safe Emotional Release:</b> Writing allows you to express feelings of anger, sadness, and fear freely without the immediate fear of hurting your partner or being judged.</li>
-                    <li><b>Centering Yourself:</b> The act of writing releases the intensity of negative emotions, making room for positive feelings (like love and understanding) to re-emerge.</li>
-                    <li><b>Better Communication:</b> Once the letter is written, you are no longer reacting from raw emotion. You can approach your partner with a more centered, loving attitude, increasing the chances of being heard and understood.</li>
+                  <li>
+                    <b>Safe Emotional Release:</b> Writing allows you to express
+                    feelings of anger, sadness, and fear freely without the
+                    immediate fear of hurting your partner or being judged.
+                  </li>
+                  <li>
+                    <b>Centering Yourself:</b> The act of writing releases the
+                    intensity of negative emotions, making room for positive
+                    feelings (like love and understanding) to re-emerge.
+                  </li>
+                  <li>
+                    <b>Better Communication:</b> Once the letter is written, you
+                    are no longer reacting from raw emotion. You can approach
+                    your partner with a more centered, loving attitude,
+                    increasing the chances of being heard and understood.
+                  </li>
                 </ol>
-                
-                <h4>The &ldquo;Love Letter&rdquo; Structure for Processing Emotions:</h4>
-                <p>The most effective method involves writing through all five emotional stages:</p>
+
+                <h4>
+                  The &ldquo;Love Letter&rdquo; Structure for Processing
+                  Emotions:
+                </h4>
+                <p>
+                  The most effective method involves writing through all five
+                  emotional stages:
+                </p>
                 <ul>
-                    <li><b>Anger & Blame</b> (&ldquo;I am furious...&rdquo;)</li>
-                    <li><b>Sadness & Hurt</b> (&ldquo;I am sad that...&rdquo;)</li>
-                    <li><b>Fear & Insecurity</b> (&ldquo;I am afraid that...&rdquo;)</li>
-                    <li><b>Regret & Responsibility</b> (&ldquo;I am sorry that...&rdquo;)</li>
-                    <li><b>Love & Forgiveness</b> (&ldquo;I love you and understand...&rdquo;)</li>
+                  <li>
+                    <b>Anger & Blame</b> (&ldquo;I am furious...&rdquo;)
+                  </li>
+                  <li>
+                    <b>Sadness & Hurt</b> (&ldquo;I am sad that...&rdquo;)
+                  </li>
+                  <li>
+                    <b>Fear & Insecurity</b> (&ldquo;I am afraid that...&rdquo;)
+                  </li>
+                  <li>
+                    <b>Regret & Responsibility</b> (&ldquo;I am sorry
+                    that...&rdquo;)
+                  </li>
+                  <li>
+                    <b>Love & Forgiveness</b> (&ldquo;I love you and
+                    understand...&rdquo;)
+                  </li>
                 </ul>
 
                 <h3>Example Situations (Use Cases)</h3>
 
                 <h4>1. Forgetfulness & Unreliability</h4>
-                <p><b>The Trigger:</b> One partner misses an important appointment or task, causing anger and disappointment.</p>
-                <p><b>The Letter Approach:</b> Instead of yelling, the frustrated partner writes a letter expressing the anger and underlying fear (&ldquo;I&apos;m afraid I can&apos;t trust you&rdquo;).</p>
-                <p><b>The Result:</b> The anger is filtered, and the writer can approach the partner with love and acceptance, leading to a constructive solution instead of a fight.</p>
-                
+                <p>
+                  <b>The Trigger:</b> One partner misses an important
+                  appointment or task, causing anger and disappointment.
+                </p>
+                <p>
+                  <b>The Letter Approach:</b> Instead of yelling, the frustrated
+                  partner writes a letter expressing the anger and underlying
+                  fear (&ldquo;I&apos;m afraid I can&apos;t trust you&rdquo;).
+                </p>
+                <p>
+                  <b>The Result:</b> The anger is filtered, and the writer can
+                  approach the partner with love and acceptance, leading to a
+                  constructive solution instead of a fight.
+                </p>
+
                 <h4>2. Indifference & Rejection</h4>
-                <p><b>The Trigger:</b> One partner ignores the other, maybe by being preoccupied with a book or phone when intimacy is desired.</p>
-                <p><b>The Letter Approach:</b> The hurt partner writes about their frustration (&ldquo;I am angry you ignore me&rdquo;) and sadness (&ldquo;I don&apos;t feel special&rdquo;).</p>
-                <p><b>The Result:</b> The writing provides the strength to confidently and lovingly ask for attention, rather than withdrawing or complaining bitterly.</p>
+                <p>
+                  <b>The Trigger:</b> One partner ignores the other, maybe by
+                  being preoccupied with a book or phone when intimacy is
+                  desired.
+                </p>
+                <p>
+                  <b>The Letter Approach:</b> The hurt partner writes about
+                  their frustration (&ldquo;I am angry you ignore me&rdquo;) and
+                  sadness (&ldquo;I don&apos;t feel special&rdquo;).
+                </p>
+                <p>
+                  <b>The Result:</b> The writing provides the strength to
+                  confidently and lovingly ask for attention, rather than
+                  withdrawing or complaining bitterly.
+                </p>
 
                 <h4>3. Heated Arguments</h4>
-                <p><b>The Trigger:</b> A disagreement (like over finances) quickly escalates into yelling and personal attacks.</p>
-                <p><b>The Letter Approach:</b> One partner recognizes the escalating conflict, calls a pause, and writes out all their intense feelings, including defensiveness and judgment.</p>
-                <p><b>The Result:</b> Having processed the emotion, the partner returns calm and understanding, enabling them to resolve the issue lovingly.</p>
-                
+                <p>
+                  <b>The Trigger:</b> A disagreement (like over finances)
+                  quickly escalates into yelling and personal attacks.
+                </p>
+                <p>
+                  <b>The Letter Approach:</b> One partner recognizes the
+                  escalating conflict, calls a pause, and writes out all their
+                  intense feelings, including defensiveness and judgment.
+                </p>
+                <p>
+                  <b>The Result:</b> Having processed the emotion, the partner
+                  returns calm and understanding, enabling them to resolve the
+                  issue lovingly.
+                </p>
+
                 <h4>4. Misplaced Blame</h4>
-                <p><b>The Trigger:</b> One partner is upset about an external event (e.g., mail was forgotten), and their frustration is inadvertently directed at the other partner.</p>
-                <p><b>The Letter Approach:</b> The partner feeling blamed writes a letter processing their hurt and fear (&ldquo;I&apos;m afraid I can&apos;t make you happy&rdquo;).</p>
-                <p><b>The Result:</b> The defensive feelings are released. The partner can then respond with empathy and a hug (&ldquo;I&apos;m sorry you didn&apos;t get your mail&rdquo;), turning a potential conflict into a loving moment.</p>
+                <p>
+                  <b>The Trigger:</b> One partner is upset about an external
+                  event (e.g., mail was forgotten), and their frustration is
+                  inadvertently directed at the other partner.
+                </p>
+                <p>
+                  <b>The Letter Approach:</b> The partner feeling blamed writes
+                  a letter processing their hurt and fear (&ldquo;I&apos;m
+                  afraid I can&apos;t make you happy&rdquo;).
+                </p>
+                <p>
+                  <b>The Result:</b> The defensive feelings are released. The
+                  partner can then respond with empathy and a hug
+                  (&ldquo;I&apos;m sorry you didn&apos;t get your mail&rdquo;),
+                  turning a potential conflict into a loving moment.
+                </p>
 
                 <h3>Info Card: The Power of the Virtual Letter</h3>
 
-                <p><b>Why exchange letters with your partner?</b></p>
-                <p>Use the letter format when you need to share difficult feelings (anger, hurt, fear) but want to avoid a fight. Writing allows you to fully vent and process your emotions so that you can approach your partner from a place of love, understanding, and forgiveness.</p>
+                <p>
+                  <b>Why exchange letters with your partner?</b>
+                </p>
+                <p>
+                  Use the letter format when you need to share difficult
+                  feelings (anger, hurt, fear) but want to avoid a fight.
+                  Writing allows you to fully vent and process your emotions so
+                  that you can approach your partner from a place of love,
+                  understanding, and forgiveness.
+                </p>
 
-                <p><b>Remember:</b></p>
+                <p>
+                  <b>Remember:</b>
+                </p>
                 <ul>
-                    <li><b>It&apos;s a Filter:</b> Writing releases the negative intensity first.</li>
-                    <li><b>It’s Flexible:</b> You don&apos;t always have to send the letter. Sometimes, just writing it is enough to heal the moment.</li>
+                  <li>
+                    <b>It&apos;s a Filter:</b> Writing releases the negative
+                    intensity first.
+                  </li>
+                  <li>
+                    <b>It’s Flexible:</b> You don&apos;t always have to send the
+                    letter. Sometimes, just writing it is enough to heal the
+                    moment.
+                  </li>
                 </ul>
 
-                <p>PS : This app is based on Letter writing idea from the book <i>Men Are from Mars, Women Are from Venus</i></p>
+                <p>
+                  PS : This app is based on Letter writing idea from the book{" "}
+                  <i>Men Are from Mars, Women Are from Venus</i>
+                </p>
+
+                <p>
+                  <b><a href="https://github.com/itsluminous/Letters">source code</a></b>
+                </p>
               </div>
             </div>
           </div>

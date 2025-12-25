@@ -19,12 +19,15 @@ When couples are upset, disappointed, or frustrated, they temporarily lose acces
 **Writing creates a "circuit breaker" in this negative loop.**
 
 ### How Letter Writing Helps:
+
 1.  **Safe Emotional Release:** Writing allows you to express feelings of anger, sadness, and fear freely without the immediate fear of hurting your partner or being judged.
 2.  **Centering Yourself:** The act of writing releases the intensity of negative emotions, making room for positive feelings (like love and understanding) to re-emerge.
 3.  **Better Communication:** Once the letter is written, you are no longer reacting from raw emotion. You can approach your partner with a more centered, loving attitude, increasing the chances of being heard and understood.
 
 ### The "Love Letter" Structure for Processing Emotions:
+
 The most effective method involves writing through all five emotional stages:
+
 - **Anger & Blame** ("I am furious...")
 - **Sadness & Hurt** ("I am sad that...")
 - **Fear & Insecurity** ("I am afraid that...")
@@ -34,24 +37,28 @@ The most effective method involves writing through all five emotional stages:
 ### Example Situations (Use Cases)
 
 #### 1. Forgetfulness & Unreliability
--   **The Trigger:** One partner misses an important appointment or task, causing anger and disappointment.
--   **The Letter Approach:** Instead of yelling, the frustrated partner writes a letter expressing the anger and underlying fear ("I'm afraid I can't trust you").
--   **The Result:** The anger is filtered, and the writer can approach the partner with love and acceptance, leading to a constructive solution instead of a fight.
+
+- **The Trigger:** One partner misses an important appointment or task, causing anger and disappointment.
+- **The Letter Approach:** Instead of yelling, the frustrated partner writes a letter expressing the anger and underlying fear ("I'm afraid I can't trust you").
+- **The Result:** The anger is filtered, and the writer can approach the partner with love and acceptance, leading to a constructive solution instead of a fight.
 
 #### 2. Indifference & Rejection
--   **The Trigger:** One partner ignores the other, maybe by being preoccupied with a book or phone when intimacy is desired.
--   **The Letter Approach:** The hurt partner writes about their frustration ("I am angry you ignore me") and sadness ("I don't feel special").
--   **The Result:** The writing provides the strength to confidently and lovingly ask for attention, rather than withdrawing or complaining bitterly.
+
+- **The Trigger:** One partner ignores the other, maybe by being preoccupied with a book or phone when intimacy is desired.
+- **The Letter Approach:** The hurt partner writes about their frustration ("I am angry you ignore me") and sadness ("I don't feel special").
+- **The Result:** The writing provides the strength to confidently and lovingly ask for attention, rather than withdrawing or complaining bitterly.
 
 #### 3. Heated Arguments
--   **The Trigger:** A disagreement (like over finances) quickly escalates into yelling and personal attacks.
--   **The Letter Approach:** One partner recognizes the escalating conflict, calls a pause, and writes out all their intense feelings, including defensiveness and judgment.
--   **The Result:** Having processed the emotion, the partner returns calm and understanding, enabling them to resolve the issue lovingly.
+
+- **The Trigger:** A disagreement (like over finances) quickly escalates into yelling and personal attacks.
+- **The Letter Approach:** One partner recognizes the escalating conflict, calls a pause, and writes out all their intense feelings, including defensiveness and judgment.
+- **The Result:** Having processed the emotion, the partner returns calm and understanding, enabling them to resolve the issue lovingly.
 
 #### 4. Misplaced Blame
--   **The Trigger:** One partner is upset about an external event (e.g., mail was forgotten), and their frustration is inadvertently directed at the other partner.
--   **The Letter Approach:** The partner feeling blamed writes a letter processing their hurt and fear ("I'm afraid I can't make you happy").
--   **The Result:** The defensive feelings are released. The partner can then respond with empathy and a hug ("I'm sorry you didn't get your mail"), turning a potential conflict into a loving moment.
+
+- **The Trigger:** One partner is upset about an external event (e.g., mail was forgotten), and their frustration is inadvertently directed at the other partner.
+- **The Letter Approach:** The partner feeling blamed writes a letter processing their hurt and fear ("I'm afraid I can't make you happy").
+- **The Result:** The defensive feelings are released. The partner can then respond with empathy and a hug ("I'm sorry you didn't get your mail"), turning a potential conflict into a loving moment.
 
 ### The Power of the Virtual Letter
 
@@ -60,22 +67,23 @@ The most effective method involves writing through all five emotional stages:
 Use the letter format when you need to share difficult feelings (anger, hurt, fear) but want to avoid a fight. Writing allows you to fully vent and process your emotions so that you can approach your partner from a place of love, understanding, and forgiveness.
 
 **Remember:**
--   **It's a Filter:** Writing releases the negative intensity first.
--   **It’s Flexible:** You don't always have to send the letter. Sometimes, just writing it is enough to heal the moment.
 
-*PS: This app is based on the letter-writing idea from the book "Men Are from Mars, Women Are from Venus".*
+- **It's a Filter:** Writing releases the negative intensity first.
+- **It’s Flexible:** You don't always have to send the letter. Sometimes, just writing it is enough to heal the moment.
 
-
+_PS: This app is based on the letter-writing idea from the book "Men Are from Mars, Women Are from Venus"._
 
 ## Features
 
 ### 🔐 Authentication
+
 - **Secure signup and login** with email and password
 - **Password reset** functionality via email
 - **Session management** with automatic login timestamp tracking
 - **Protected routes** with authentication middleware
 
 ### 📜 Letter Management
+
 - **Compose letters** in an editable papyrus scroll interface
 - **Send letters** to contacts with automatic date/time stamping
 - **View letters** with beautiful papyrus styling and typography
@@ -85,17 +93,20 @@ Use the letter format when you need to share difficult feelings (anger, hurt, fe
 - **Delete unseen letters** with confirmation dialog
 
 ### 👥 Contact Management
+
 - **Add contacts** by user ID with custom display names
 - **Validate contacts** to ensure user exists before adding
 - **Manage contact list** for easy recipient selection
 
 ### 🔍 Advanced Filtering
+
 - **Filter by contacts** with multi-select dropdown
 - **Filter by date range** with "before" and "after" date pickers
 - **Combine filters** to find specific correspondence
 - **Clear filters** to view all letters
 
 ### 🎨 Papyrus Theme
+
 - **Authentic papyrus styling** throughout the entire app
 - **Custom UI components** (buttons, inputs, date pickers, dialogs)
 - **Papyrus texture** backgrounds with aged paper appearance
@@ -103,6 +114,7 @@ Use the letter format when you need to share difficult feelings (anger, hurt, fe
 - **Warm color palette** evoking historical documents
 
 ### ✨ Animations
+
 - **Page-turning animations** when navigating between letters
 - **3D letter stacking** effect with rotation and depth
 - **Smooth transitions** powered by Framer Motion
@@ -110,12 +122,14 @@ Use the letter format when you need to share difficult feelings (anger, hurt, fe
 - **Trackpad/mouse wheel** support for desktop
 
 ### 📱 Responsive Design
+
 - **Mobile-optimized** layout with touch-friendly controls
 - **Tablet support** with optimized layouts
 - **Desktop experience** with full features
 - **Adaptive UI** that works seamlessly across all screen sizes
 
 ### 🔒 Security
+
 - **Row Level Security (RLS)** enforced at database level
 - **Private letters** accessible only to author and recipient
 - **Secure authentication** with Supabase Auth
@@ -124,6 +138,7 @@ Use the letter format when you need to share difficult feelings (anger, hurt, fe
 ## Tech Stack
 
 ### Frontend
+
 - **Next.js** 14.2.33 - React framework with App Router
 - **React** 18.3.1 - UI library
 - **TypeScript** 5.x - Type-safe JavaScript
@@ -131,6 +146,7 @@ Use the letter format when you need to share difficult feelings (anger, hurt, fe
 - **Framer Motion** 12.23.24 - Animation library
 
 ### Backend & Database
+
 - **Supabase** 2.84.0 - Backend-as-a-Service
   - PostgreSQL database
   - Authentication
@@ -138,11 +154,13 @@ Use the letter format when you need to share difficult feelings (anger, hurt, fe
   - Real-time capabilities
 
 ### Utilities
+
 - **date-fns** 4.1.0 - Date manipulation
 - **clsx** 2.1.1 - Conditional class names
 - **tailwind-merge** 3.4.0 - Merge Tailwind classes
 
 ### Development Tools
+
 - **ESLint** - Code linting
 - **Prettier** - Code formatting
 - **Vitest** 4.0.13 - Unit testing
@@ -257,39 +275,42 @@ Runs tests in watch mode for development.
 ### Tables
 
 #### user_profiles
+
 Extends Supabase auth.users with additional fields.
 
-| Column | Type | Description |
-|--------|------|-------------|
-| id | UUID | Primary key, references auth.users(id) |
-| last_login_at | TIMESTAMPTZ | Last login timestamp |
-| created_at | TIMESTAMPTZ | Profile creation timestamp |
-| updated_at | TIMESTAMPTZ | Last update timestamp |
+| Column        | Type        | Description                            |
+| ------------- | ----------- | -------------------------------------- |
+| id            | UUID        | Primary key, references auth.users(id) |
+| last_login_at | TIMESTAMPTZ | Last login timestamp                   |
+| created_at    | TIMESTAMPTZ | Profile creation timestamp             |
+| updated_at    | TIMESTAMPTZ | Last update timestamp                  |
 
 #### letters
+
 Stores all letters exchanged between users.
 
-| Column | Type | Description |
-|--------|------|-------------|
-| id | UUID | Primary key |
-| author_id | UUID | References auth.users(id) |
-| recipient_id | UUID | References auth.users(id) |
-| content | TEXT | Letter content |
-| created_at | TIMESTAMPTZ | Letter creation timestamp |
-| updated_at | TIMESTAMPTZ | Last update timestamp |
-| is_read | BOOLEAN | Read status |
-| read_at | TIMESTAMPTZ | When recipient read the letter |
+| Column       | Type        | Description                    |
+| ------------ | ----------- | ------------------------------ |
+| id           | UUID        | Primary key                    |
+| author_id    | UUID        | References auth.users(id)      |
+| recipient_id | UUID        | References auth.users(id)      |
+| content      | TEXT        | Letter content                 |
+| created_at   | TIMESTAMPTZ | Letter creation timestamp      |
+| updated_at   | TIMESTAMPTZ | Last update timestamp          |
+| is_read      | BOOLEAN     | Read status                    |
+| read_at      | TIMESTAMPTZ | When recipient read the letter |
 
 #### contacts
+
 Stores user contact relationships.
 
-| Column | Type | Description |
-|--------|------|-------------|
-| id | UUID | Primary key |
-| user_id | UUID | References auth.users(id) |
-| contact_user_id | UUID | References auth.users(id) |
-| display_name | TEXT | Custom display name for contact |
-| created_at | TIMESTAMPTZ | Contact creation timestamp |
+| Column          | Type        | Description                     |
+| --------------- | ----------- | ------------------------------- |
+| id              | UUID        | Primary key                     |
+| user_id         | UUID        | References auth.users(id)       |
+| contact_user_id | UUID        | References auth.users(id)       |
+| display_name    | TEXT        | Custom display name for contact |
+| created_at      | TIMESTAMPTZ | Contact creation timestamp      |
 
 ### Row Level Security
 
@@ -411,6 +432,7 @@ Contributions are welcome! Please follow these guidelines:
 ### Conventional Commits
 
 Use conventional commit format:
+
 - `feat:` - New feature
 - `fix:` - Bug fix
 - `docs:` - Documentation changes

@@ -1,31 +1,36 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { cn } from '@/lib/utils/cn';
+import React from "react";
+import { cn } from "@/lib/utils/cn";
 
 export interface PapyrusSpinnerProps {
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: "sm" | "md" | "lg" | "xl";
   className?: string;
   text?: string;
 }
 
 export const PapyrusSpinner: React.FC<PapyrusSpinnerProps> = ({
-  size = 'md',
+  size = "md",
   className,
   text,
 }) => {
   const sizes = {
-    sm: 'w-4 h-4 border-2',
-    md: 'w-8 h-8 border-2',
-    lg: 'w-12 h-12 border-3',
-    xl: 'w-16 h-16 border-4',
+    sm: "w-4 h-4 border-2",
+    md: "w-8 h-8 border-2",
+    lg: "w-12 h-12 border-3",
+    xl: "w-16 h-16 border-4",
   };
 
   return (
-    <div className={cn('flex flex-col items-center justify-center gap-3', className)}>
+    <div
+      className={cn(
+        "flex flex-col items-center justify-center gap-3",
+        className
+      )}
+    >
       <div
         className={cn(
-          'animate-spin rounded-full border-papyrus-border border-t-papyrus-accent',
+          "animate-spin rounded-full border-papyrus-border border-t-papyrus-accent",
           sizes[size]
         )}
       />
@@ -46,7 +51,7 @@ export interface PapyrusLoadingOverlayProps {
 
 export const PapyrusLoadingOverlay: React.FC<PapyrusLoadingOverlayProps> = ({
   isLoading,
-  text = 'Loading...',
+  text = "Loading...",
   className,
 }) => {
   if (!isLoading) return null;
@@ -54,8 +59,8 @@ export const PapyrusLoadingOverlay: React.FC<PapyrusLoadingOverlayProps> = ({
   return (
     <div
       className={cn(
-        'absolute inset-0 bg-papyrus-bg/80 backdrop-blur-sm',
-        'flex items-center justify-center z-40',
+        "absolute inset-0 bg-papyrus-bg/80 backdrop-blur-sm",
+        "flex items-center justify-center z-40",
         className
       )}
     >

@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useContacts } from '@/lib/hooks/useContacts';
-import { useToast } from '@/lib/contexts/ToastContext';
-import { useAuth } from '@/lib/contexts/AuthContext';
-import { PapyrusButton } from '@/components/ui/PapyrusButton';
-import { PapyrusInput } from '@/components/ui/PapyrusInput';
-import { PapyrusSpinner } from '@/components/ui/PapyrusSpinner';
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useContacts } from "@/lib/hooks/useContacts";
+import { useToast } from "@/lib/contexts/ToastContext";
+import { useAuth } from "@/lib/contexts/AuthContext";
+import { PapyrusButton } from "@/components/ui/PapyrusButton";
+import { PapyrusInput } from "@/components/ui/PapyrusInput";
+import { PapyrusSpinner } from "@/components/ui/PapyrusSpinner";
 
 export default function AddContactPage() {
   const router = useRouter();
   const { addContact } = useContacts();
   const { showError, showSuccess } = useToast();
   const { user } = useAuth();
-  const [userId, setUserId] = useState('');
-  const [displayName, setDisplayName] = useState('');
+  const [userId, setUserId] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -32,11 +32,11 @@ export default function AddContactPage() {
     const newErrors: { [key: string]: string } = {};
 
     if (!userId.trim()) {
-      newErrors.userId = 'User ID is required';
+      newErrors.userId = "User ID is required";
     }
 
     if (!displayName.trim()) {
-      newErrors.displayName = 'Display name is required';
+      newErrors.displayName = "Display name is required";
     }
 
     setErrors(newErrors);
@@ -55,26 +55,34 @@ export default function AddContactPage() {
 
     try {
       await addContact(userId.trim(), displayName.trim());
-      
+
       // Check if user is adding themselves
       if (user?.id === userId.trim()) {
-        showSuccess(`${displayName} added! Writing letters to yourself is a beautiful way to heal and reflect.`);
+        showSuccess(
+          `${displayName} added! Writing letters to yourself is a beautiful way to heal and reflect.`
+        );
       } else {
         showSuccess(`${displayName} has been added to your contacts!`);
       }
-      
+
       // Navigate back to home page on success
-      router.push('/');
+      router.push("/");
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to add contact';
-      
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to add contact";
+
       // Check if it's a user validation error
-      if (errorMessage.includes('User ID does not exist')) {
-        setErrors({ userId: 'User ID does not exist. Please check and try again.' });
-        showError('User ID does not exist. Please check and try again.');
-      } else if (errorMessage.includes('duplicate') || errorMessage.includes('already exists')) {
-        setErrors({ general: 'This contact has already been added.' });
-        showError('This contact has already been added.');
+      if (errorMessage.includes("User ID does not exist")) {
+        setErrors({
+          userId: "User ID does not exist. Please check and try again.",
+        });
+        showError("User ID does not exist. Please check and try again.");
+      } else if (
+        errorMessage.includes("duplicate") ||
+        errorMessage.includes("already exists")
+      ) {
+        setErrors({ general: "This contact has already been added." });
+        showError("This contact has already been added.");
       } else {
         setErrors({ general: errorMessage });
         showError(errorMessage);
@@ -84,7 +92,7 @@ export default function AddContactPage() {
   };
 
   const handleCancel = () => {
-    router.push('/');
+    router.push("/");
   };
 
   return (
@@ -113,7 +121,7 @@ export default function AddContactPage() {
                   onClick={handleCopyUserId}
                   className="flex-shrink-0 p-2 hover:bg-papyrus-accent rounded transition-colors duration-150 border border-papyrus-border"
                   aria-label="Copy user ID"
-                  title={copied ? 'Copied!' : 'Copy user ID'}
+                  title={copied ? "Copied!" : "Copy user ID"}
                 >
                   {copied ? (
                     <svg
@@ -198,7 +206,7 @@ export default function AddContactPage() {
                     Adding...
                   </span>
                 ) : (
-                  'Add Contact'
+                  "Add Contact"
                 )}
               </PapyrusButton>
             </div>
