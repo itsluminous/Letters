@@ -376,7 +376,11 @@ export function TitleBar() {
                 </p>
 
                 <p>
-                  <b><a href="https://github.com/itsluminous/Letters">source code</a></b>
+                  <b>
+                    <a href="https://github.com/itsluminous/Letters">
+                      source code
+                    </a>
+                  </b>
                 </p>
               </div>
             </div>
