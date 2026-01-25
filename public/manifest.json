@@ -1,0 +1,58 @@
+{
+  "name": "Letters - Exchange letters through time",
+  "short_name": "Letters",
+  "description": "Exchange letters through time with a beautiful papyrus-themed interface",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fffbf0",
+  "theme_color": "#5c4a2f",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["communication", "social"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Compose Letter",
+      "short_name": "Compose",
+      "description": "Write a new letter",
+      "url": "/compose",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Inbox",
+      "short_name": "Inbox",
+      "description": "View received letters",
+      "url": "/",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
