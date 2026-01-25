@@ -52,7 +52,10 @@ export const LetterList: React.FC<LetterListProps> = ({
                 : `To: ${getDisplayName(letter.recipient?.id, letter.recipient?.email || "Unknown")}`}
             </p>
             <p className="text-xs font-serif text-ink-light italic mt-1">
-              {format(letter.createdAt, "MMM d, yyyy")} <span className="text-[10px]">{format(letter.createdAt, "h:mm a")}</span>
+              {format(letter.createdAt, "MMM d, yyyy")}{" "}
+              <span className="text-[10px]">
+                {format(letter.createdAt, "h:mm a")}
+              </span>
             </p>
 
             {/* Read status for sent letters */}

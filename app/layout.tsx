@@ -33,7 +33,8 @@ export const metadata: Metadata = {
   description: "Exchange letters through time.",
   manifest: "/manifest.json",
   themeColor: "#5c4a2f",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
+  viewport:
+    "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
