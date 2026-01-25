@@ -291,7 +291,7 @@ export const LetterStack: React.FC<LetterStackProps> = ({
                         </p>
                       </div>
                       <div className="text-right font-serif text-ink-light italic">
-                        {format(letter.createdAt, "MMMM d, yyyy")}
+                        {format(letter.createdAt, "MMMM d, yyyy")} <span className="text-[10px] block">{format(letter.createdAt, "h:mm a")}</span>
                       </div>
                     </div>
 

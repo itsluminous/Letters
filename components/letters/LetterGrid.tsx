@@ -56,7 +56,7 @@ export const LetterGrid: React.FC<LetterGridProps> = ({
                 : `To: ${getDisplayName(letter.recipient?.id, letter.recipient?.email || "Unknown")}`}
             </p>
             <p className="text-xs font-serif text-ink-light italic mt-1">
-              {format(letter.createdAt, "MMM d, yyyy")}
+              {format(letter.createdAt, "MMM d, yyyy")} <span className="text-[10px]">{format(letter.createdAt, "h:mm a")}</span>
             </p>
           </div>
 
@@ -84,7 +84,7 @@ export const LetterGrid: React.FC<LetterGridProps> = ({
                     />
                   </svg>
                   <span className="text-xs font-body text-green-700">
-                    Seen {format(letter.readAt, "MMM d")}
+                    Seen {format(letter.readAt, "MMM d, h:mm a")}
                   </span>
                 </div>
               ) : (
