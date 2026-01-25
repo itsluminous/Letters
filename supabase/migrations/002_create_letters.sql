@@ -7,9 +7,7 @@ CREATE TABLE IF NOT EXISTS letters (
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   is_read BOOLEAN DEFAULT FALSE,
-  read_at TIMESTAMPTZ,
-  
-  CONSTRAINT different_users CHECK (author_id != recipient_id)
+  read_at TIMESTAMPTZ
 );
 
 -- Create indexes for performance
